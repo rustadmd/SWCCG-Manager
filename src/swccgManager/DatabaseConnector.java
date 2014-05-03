@@ -1,3 +1,4 @@
+package swccgManager;
 /**
  * Creates a connection with the SWCCGdb.
  * @author Mark Rustad
@@ -73,8 +74,18 @@ public class DatabaseConnector {
 	 */
 	public void closeDB()
 	{
+		closeDB(swdb);
+	}
+	/**
+	 * Closes an open connection. For closing a connection from getConnection().
+	 * Available at any point in time
+	 *
+	 * @param dbConnnect a sql Connection that is open
+	 */
+	public static void closeDB (Connection dbConnect)
+	{
 		try{
-			swdb.close();
+			dbConnect.close();
 			System.out.println("Connection successfully closed.");
 		}
 		

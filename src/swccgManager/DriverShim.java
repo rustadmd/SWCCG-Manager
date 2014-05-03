@@ -1,3 +1,4 @@
+package swccgManager;
 /**
  * Code taken from http://www.kfu.com/~nsayer/Java/dyn-jdbc.html
  * 

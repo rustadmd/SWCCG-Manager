@@ -19,13 +19,23 @@ public class GenericDBLoadsUpdates {
 	{
 		DatabaseConnector dbc = new DatabaseConnector();
 		db = dbc.getConnection();
+		
+		//Test image loader
+		
+		ImageManager im = new ImageManager();
+		im.getImageFileLocation(db);
+		
+		//GenericSQLQueries.getCollectionList(db);
+		
 		dbc.closeDB();
+		
+		closeDBLoadsUpdates();
 	}
 	
 	/**
 	 * Closes the open connection
 	 */
-	public void closeDB()
+	public void closeDBLoadsUpdates()
 	{
 		DatabaseConnector.closeDB(db);
 	}

@@ -22,8 +22,10 @@ public class ImageManager {
 	{
 		//Get the list of cards to get the images
 		ResultSet cardList = GenericSQLQueries.getCardVitals(dbc);
+		int numSuccesses = 0;
+		int numFailures = 0;
 		try {
-			ResultSetMetaData cardListMd= cardList.getMetaData();
+			//ResultSetMetaData cardListMd= cardList.getMetaData();
 		
 			while (cardList.next())
 			{
@@ -41,21 +43,24 @@ public class ImageManager {
 				String s = "/";
 				String cardImageFolder = "images" + s + "starwars";
 				
-				String cardImagePath = cardImageFolder + s + expansion_p + "-"+ side_p +s+ "large";
+				String cardImagePath = s+ cardImageFolder + s + expansion_p + "-"+ side_p +s+ "large";
 				
 				String fileType = ".gif";
 				String fileName = cardName_p + fileType;
 				
-				String totalPath = cardImagePath + fileName;
+				String totalPath = cardImagePath + s + fileName;
 				
 				//Does the file exist?
 				try{
-					Image img = ImageIO.read(new File(totalPath));
+					Image img = ImageIO.read(getClass().getResource(totalPath));
 					System.out.println("Success, file exists: " + totalPath);
+					numSuccesses++;
 				}
 				catch(Exception e)
 				{
 					System.out.println("Image NOT found: " + totalPath);
+					e.printStackTrace();
+					numFailures++;
 				}
 			}
 		} catch (SQLException e1) {
@@ -63,7 +68,8 @@ public class ImageManager {
 			e1.printStackTrace();
 		}
 		
-		
+		System.out.println("Number of images successfully loaded: " + numSuccesses);
+		System.out.println("Number of images failed to load: " + numFailures);
 		try{
 			cardList.close();
 		}
@@ -88,11 +94,17 @@ public class ImageManager {
 		{
 			char testChar = workingString.charAt(i);
 			int asciiTestChar = testChar;
-			if (asciiTestChar < 65 || asciiTestChar > 132)
+			boolean charIsLetter = asciiTestChar >= 65 && asciiTestChar <= 132;
+			boolean charIsNumber = asciiTestChar >= 48 && asciiTestChar <= 57;
+			if (!charIsLetter && !charIsNumber)
 			{
 				workingString.deleteCharAt(i);
 			}
-			i++;
+			else //only increment if we did not delete
+			{
+				i++;
+			}
+			
 		}
 		String parsedString = workingString.toString();
 		

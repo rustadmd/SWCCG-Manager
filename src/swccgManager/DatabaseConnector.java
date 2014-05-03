@@ -39,7 +39,7 @@ public class DatabaseConnector {
 			
 			//Construct the file path from the current file location
 			String filePrefix = "jdbc:sqlite:";
-			String dbName = "testdb.sdb";
+			String dbName = "testing3.s3db";
 			String totalPath = filePrefix + programPath + dbName;
 
 			//System.out.println(totalPath);//debugging

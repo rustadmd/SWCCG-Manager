@@ -21,8 +21,8 @@ public class GenericSQLQueries {
 			Statement statement = swdb.createStatement();
 			//write query
 			String cardVitalQuery = 
-					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity"
-					+ "FROM SWD"
+					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
+					+ "FROM SWD "
 					+ "WHERE id < 20"//Current limit, only want 20 at first
 					;
 			cardVitals = statement.executeQuery(cardVitalQuery);
@@ -36,5 +36,30 @@ public class GenericSQLQueries {
 		//return results
 		return cardVitals;
 	}
+	
+	public static ResultSet getCollectionList(Connection swdb)
+	{
+		String collectionListQuery = "SELECT * FROM CollectionList";
+		return getQueryResults(swdb, collectionListQuery);
+	}
+	
+	private static ResultSet getQueryResults(Connection swdb, String query)
+	{
+		ResultSet queryResults = null;
+		try{
+			Statement statement = swdb.createStatement();
+			//write query
+			statement.executeQuery(query);
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		//return results
+		return queryResults;
+	}		
+
 
 }

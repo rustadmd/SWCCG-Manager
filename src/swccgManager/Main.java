@@ -13,6 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		DatabaseConnector dbc = new DatabaseConnector();
+		GenericDBLoadsUpdates test = new GenericDBLoadsUpdates();
 		dbc.closeDB();
 
 	}

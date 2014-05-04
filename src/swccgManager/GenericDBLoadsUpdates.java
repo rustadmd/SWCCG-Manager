@@ -39,5 +39,6 @@ public class GenericDBLoadsUpdates {
 	{
 		DatabaseConnector.closeDB(db);
 	}
+	
 
 }

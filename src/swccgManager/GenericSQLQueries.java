@@ -23,7 +23,7 @@ public class GenericSQLQueries {
 			String cardVitalQuery = 
 					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
 					+ "FROM SWD "
-					+ "WHERE id < 20"//Current limit, only want 20 at first
+					//+ "WHERE id < 100"//Current limit, only want 20 at first
 					;
 			cardVitals = statement.executeQuery(cardVitalQuery);
 		}
@@ -43,13 +43,27 @@ public class GenericSQLQueries {
 		return getQueryResults(swdb, collectionListQuery);
 	}
 	
+	public static ResultSet getCardsWithoutImages (Connection swdb)
+	{
+		String cardsWOImages = "SELECT "
+				+ "id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
+				+ "FROM SWD s "
+				+ "WHERE NOT EXISTS "
+				+ "	(SELECT * "
+				+ "FROM ImagePaths ip "
+				+ "WHERE ip.cardID = s.id);";
+		ResultSet cardList = getQueryResults(swdb, cardsWOImages);
+		return cardList;
+		
+	}
 	private static ResultSet getQueryResults(Connection swdb, String query)
 	{
 		ResultSet queryResults = null;
 		try{
 			Statement statement = swdb.createStatement();
 			//write query
-			statement.executeQuery(query);
+			queryResults = statement.executeQuery(query);
+			//System.out.println("Current row: " + queryResults.getRow());//debugging
 		}
 		
 		catch (SQLException e)
@@ -60,6 +74,6 @@ public class GenericSQLQueries {
 		//return results
 		return queryResults;
 	}		
-
-
+	
+	
 }

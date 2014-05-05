@@ -105,7 +105,7 @@ public class ImageManager {
 				
 				//Construct the file location
 				String s = "/";
-				String cardImageFolder = "images" + s + "starwars";
+				String cardImageFolder = "starwars";
 				
 				String cardImagePath = s+ cardImageFolder + s + expansion_p + "-"+ side_p +s+ "large";
 				
@@ -123,7 +123,7 @@ public class ImageManager {
 				}
 				catch(Exception e)
 				{
-					System.out.println("Image NOT found: " + totalPath);
+					System.out.println(cardId + "|" + totalPath);
 					//e.printStackTrace();
 					numFailures++;
 				}

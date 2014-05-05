@@ -23,6 +23,7 @@ public class GenericSQLQueries {
 			String cardVitalQuery = 
 					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
 					+ "FROM SWD "
+					+ "ORDER BY Expansion, Grouping"
 					//+ "WHERE id < 100"//Current limit, only want 20 at first
 					;
 			cardVitals = statement.executeQuery(cardVitalQuery);

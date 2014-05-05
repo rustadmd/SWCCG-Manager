@@ -22,8 +22,8 @@ public class GenericDBLoadsUpdates {
 		
 		//Test image loader
 		
-		ImageManager im = new ImageManager();
-		im.getImageFileLocation(db);
+		//ImageManager im = new ImageManager();
+		//im.getImageFileLocation(db);
 		
 		//GenericSQLQueries.getCollectionList(db);
 		

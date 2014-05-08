@@ -21,7 +21,7 @@ public class ImageManager {
 	
 	Connection m_swdb;
 	
-	public void getImageFileLocation(Connection swdb)
+	public ImageManager(Connection swdb)
 	{
 		m_swdb = swdb;
 		
@@ -33,6 +33,32 @@ public class ImageManager {
 		
 		//check that all image paths lead to an image
 		testImagePathsValid(swdb);
+	}
+	/**
+	 * Returns a card image for a particular card
+	 * @param cardId ID for the card
+	 * @param side Which side of the card is to be retrieved: 1 = front, 2 = back
+	 * @return Image of the card
+	 */
+	public Image getCardImage(int cardId, int side)
+	{
+		//Retrieve card path from db
+		String getCardImageQuery =
+			"SELECT large "
+			+ "FROM ImagePaths "
+			+ "WHERE cardId = " + cardId + "AND side = " + side;
+		ResultSet imageLocation = GenericSQLQueries.getQueryResults(m_swdb, getCardImageQuery);
+		String imageLocation_s;
+		
+		//access the image and load it
+		Image cardImage = null;
+		try {
+			imageLocation_s = imageLocation.getString("large");
+			cardImage = ImageIO.read(getClass().getResource(imageLocation_s));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return cardImage;
 	}
 	
 	/**
@@ -191,6 +217,8 @@ public class ImageManager {
 	 * @param swdb Connection to the db
 	 * @param cardList list of cards that need images
 	 */
+	
+	
 	private void addImagePaths(Connection swdb, ResultSet cardList)
 	{
 		//Get the list of cards to get the images	

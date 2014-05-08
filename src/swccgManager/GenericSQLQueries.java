@@ -7,7 +7,7 @@ package swccgManager;
 
 /**
  * Generic Queries handles basic query writing and result sets.
- * The queries stored here are fixed, they take no arguments and simply return the results.
+ * The queries stored here are information finding queries and simply return the results.
  * Used for basic and repeatable information
  * 
  * @author Mark
@@ -19,7 +19,7 @@ import java.sql.*;
 public class GenericSQLQueries {
 	/**
 	 * Get the most important card vitals information:
-	 * id, Name, Side(Grouping), Cardtype, Subtype, Expansion, and Rarity
+	 * id, Name, Side(Grouping), Cardtype, Subtype, Expansion, and Rarity, Uniqueness
 	 * 
 	 * @param swdb Connection to the DB
 	 * @return List all cards and their "vital" information
@@ -31,7 +31,7 @@ public class GenericSQLQueries {
 			Statement statement = swdb.createStatement();
 			//write query
 			String cardVitalQuery = 
-					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
+					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
 					+ "ORDER BY Expansion, Grouping"
 					//+ "WHERE id < 100"//Current limit, only want 20 at first
@@ -46,6 +46,23 @@ public class GenericSQLQueries {
 		
 		//return results
 		return cardVitals;
+	}
+	
+	
+	/**
+	 * Retrieves important card information from the database for a single card
+	 * @param swdb Connection to the database
+	 * @param cardId id of the card
+	 * @return ResultSet containing all the global important card information
+	 */
+	public static ResultSet getCardVitals(Connection swdb, int cardId)
+	{
+		String cardVitalsQuery = 
+				"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
+					+ "FROM SWD "
+					+ "ORDER BY Expansion, Grouping"
+					+ "WHERE id = " + cardId;
+		return getQueryResults(swdb, cardVitalsQuery);
 	}
 	/**
 	 * Provides a simple list of every Collection in the db by name and description
@@ -120,7 +137,7 @@ public class GenericSQLQueries {
 	 * @param query SQL query for the desired results
 	 * @return Results of the query
 	 */
-	private static ResultSet getQueryResults(Connection swdb, String query)
+	public static ResultSet getQueryResults(Connection swdb, String query)
 	{
 		ResultSet queryResults = null;
 		try{

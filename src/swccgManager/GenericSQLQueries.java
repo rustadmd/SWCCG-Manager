@@ -107,7 +107,7 @@ public class GenericSQLQueries {
 	public static ResultSet allLargeImagePaths(Connection swdb)
 	{
 		String allImagePathsQuery = 
-				"SELECT cardID, large"
+				"SELECT * "
 				+ "FROM ImagePaths";
 		
 		ResultSet imagePaths = getQueryResults(swdb, allImagePathsQuery);

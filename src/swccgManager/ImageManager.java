@@ -10,6 +10,7 @@ package swccgManager;
  *
  */
 
+import java.net.URL;
 import java.sql.*;
 import java.awt.*;
 import java.io.File;
@@ -18,38 +19,125 @@ import javax.imageio.ImageIO;
 
 public class ImageManager {
 	
+	Connection m_swdb;
+	
 	public void getImageFileLocation(Connection swdb)
 	{
+		m_swdb = swdb;
+		
 		//Check that each card has at least one image
-		ResultSet cardsWOImages = GenericSQLQueries.getCardsWithoutImages(swdb);
+		testEachCardHasImage(swdb);		
 		
 		//Check that objective cards have 2 images
-		ResultSet objectivesNeedingImages = GenericSQLQueries.objectivesWithWrongNumberofImages(swdb);
+		testObjectiveImages(swdb);
 		
 		//check that all image paths lead to an image
+		testImagePathsValid(swdb);
+	}
+	
+	/**
+	 * Tests each card to make sure it has an image
+	 * @param swdb
+	 */
+	private void testEachCardHasImage(Connection swdb)
+	{
+		ResultSet cardsWOImages = GenericSQLQueries.getCardsWithoutImages(swdb);
+		
+		int numCardsWOImages = 0;
+		try {
+			while (cardsWOImages.next())
+			{
+				//Give debugging info if there are no images
+				String cardName = cardsWOImages.getString("cardName");
+				String expansion = cardsWOImages.getString("Expansion");
+				
+				System.out.println("Objective Card Type image problem: " + cardName + " " + expansion);
+				numCardsWOImages++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//Display appropriate message
+		if (numCardsWOImages == 0)
+		{
+			System.out.println("All cards have images.");
+		}
+		else
+		{
+			System.out.println("Number cards without images: " + numCardsWOImages);
+		}
+	}
+	/**
+	 * Tests each objective to guarantee there are exactly 2 images
+	 * @param swdb
+	 */
+	private void testObjectiveImages(Connection swdb)
+	{
+		ResultSet objectivesNeedingImages = GenericSQLQueries.objectivesWithWrongNumberofImages(swdb);
+		int numIncorrectObjectiveImages = 0;
+		try {
+			while (objectivesNeedingImages.next())
+			{
+				//Give debugging info if there are the wrong number of images
+				String cardName = objectivesNeedingImages.getString("cardName");
+				String expansion = objectivesNeedingImages.getString("Expansion");
+				int numImages = objectivesNeedingImages.getInt("Num_Images");
+				
+				System.out.println("Objective Card Type image problem: " + cardName + " " + expansion + " " + numImages);
+				numIncorrectObjectiveImages++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//Display appropriate message
+		if (numIncorrectObjectiveImages == 0)
+		{
+			System.out.println("All Objectives have the correct number of images.");
+		}
+		else
+		{
+			System.out.println("Number of objectives with !2 Images: " + numIncorrectObjectiveImages);
+		}
+		
+	}
+	/**
+	 * Tests each image path to make sure there is a file at the end
+	 * @param swdb
+	 */
+	private void testImagePathsValid(Connection swdb)
+	{
 		ResultSet imagePaths = GenericSQLQueries.allLargeImagePaths(swdb);
 		try{
 			int numSuccesses = 0;
 			int numFailures = 0;
+			
 			while(imagePaths.next())
 			{
-				String imagePath = imagePaths.getString("large");
-				File imageFile = new File(imagePath);
 				
-				if (imageFile.exists())
-				{
+				String imagePath = imagePaths.getString("large");
+				//If you are able to create a file object, the file exists
+				try {
+					
+					URL fullImagePath = getClass().getResource(imagePath);
+					String fullImagePath_s = fullImagePath.toString();
+					File imageFile = new File(fullImagePath_s);
 					numSuccesses ++;
 				}
-				else
+				
+				catch (NullPointerException e)
 				{
+					//File does not exist
 					numFailures++;
 					int cardId = imagePaths.getInt("cardID");
 					System.out.println("Image not found on path: " + cardId + "|" + imagePath);
 				}
 				
+			}
+			
 			System.out.println("Number of images successfully found: " + numSuccesses);
 			System.out.println("Number of images NOT found: " + numFailures);
-			}
 		}
 		catch (SQLException e)
 		{

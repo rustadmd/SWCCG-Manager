@@ -34,7 +34,7 @@ public class DatabaseConnector {
 			String driverName = "org.sqlite.JDBC";
 			
 			URL u = new URL(jarPrefix + programPath + connectorName + "!/");
-			System.out.println(u);
+			//System.out.println(u);
 			URLClassLoader ucl = new URLClassLoader(new URL[] { u });
 			Driver d = (Driver)Class.forName(driverName, true, ucl).newInstance();
 			DriverManager.registerDriver(new DriverShim(d));

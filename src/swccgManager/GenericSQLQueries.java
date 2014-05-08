@@ -87,7 +87,7 @@ public class GenericSQLQueries {
 	{
 		String objectiveImageIssueList =
 				"SELECT "
-				+ "id, cardName, COUNT(ip.large) AS Num_Images, CardType, Expansion, Rarity, Destiny, ObjectiveFront, ObjectiveBack, "
+				+ "id, cardName, Grouping, COUNT(ip.large) AS Num_Images, CardType, Expansion, Rarity, Destiny, ObjectiveFront, ObjectiveBack, "
 				+ "ObjectiveFrontName, ObjectiveBackName, Gametext, Icons, Episode1 "
 				+"FROM SWD s "
 				+"JOIN ImagePaths ip ON s.id = ip.cardID "
@@ -97,6 +97,21 @@ public class GenericSQLQueries {
 				+"HAVING Num_Images != 2";
 		ResultSet cardList = getQueryResults(swdb, objectiveImageIssueList);
 		return cardList;
+	}
+	
+	/**
+	 * Gets a list of all the image paths
+	 * @param swdb connection to the db
+	 * @return List of all the image paths, matched to the cardId
+	 */
+	public static ResultSet allLargeImagePaths(Connection swdb)
+	{
+		String allImagePathsQuery = 
+				"SELECT cardID, large"
+				+ "FROM ImagePaths";
+		
+		ResultSet imagePaths = getQueryResults(swdb, allImagePathsQuery);
+		return imagePaths;
 	}
 	
 	/**

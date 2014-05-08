@@ -18,11 +18,94 @@ import javax.imageio.ImageIO;
 
 public class ImageManager {
 	
-	public void getImageFileLocation(Connection dbc)
+	public void getImageFileLocation(Connection swdb)
 	{
-		//Get the list of cards to get the images
-		ResultSet cardList = GenericSQLQueries.getCardsWithoutImages(dbc);
+		//Check that each card has at least one image
+		ResultSet cardsWOImages = GenericSQLQueries.getCardsWithoutImages(swdb);
 		
+		//Check that objective cards have 2 images
+		ResultSet objectivesNeedingImages = GenericSQLQueries.objectivesWithWrongNumberofImages(swdb);
+		
+		//check that all image paths lead to an image
+		ResultSet imagePaths = GenericSQLQueries.allLargeImagePaths(swdb);
+		try{
+			int numSuccesses = 0;
+			int numFailures = 0;
+			while(imagePaths.next())
+			{
+				String imagePath = imagePaths.getString("large");
+				File imageFile = new File(imagePath);
+				
+				if (imageFile.exists())
+				{
+					numSuccesses ++;
+				}
+				else
+				{
+					numFailures++;
+					int cardId = imagePaths.getInt("cardID");
+					System.out.println("Image not found on path: " + cardId + "|" + imagePath);
+				}
+				
+			System.out.println("Number of images successfully found: " + numSuccesses);
+			System.out.println("Number of images NOT found: " + numFailures);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private String removeNonLetterCharacters(String s)
+	{
+		//Remove whitespace and convert all uppercase
+		String trimmedString = s.trim();
+		String upperString = trimmedString.toUpperCase();
+		StringBuilder workingString = new StringBuilder(upperString);
+		
+		
+		//test each character, remove non letters
+		int i = 0;
+		while(i<workingString.length())
+		{
+			char testChar = workingString.charAt(i);
+			int asciiTestChar = testChar;
+			//get the grave-E first
+			if (asciiTestChar == 201)
+			{
+				workingString.replace(i, i+1, "E");
+				//System.out.println("Replace grave-E executed:" + workingString);//debugging
+				asciiTestChar = 69;
+			}
+			//character and numbers are ok
+			//System.out.println(workingString);//debugging
+			boolean charIsLetter = asciiTestChar >= 65 && asciiTestChar <= 132;
+			boolean charIsNumber = asciiTestChar >= 48 && asciiTestChar <= 57;
+			if (!charIsLetter && !charIsNumber && asciiTestChar != '&')
+			{
+				workingString.deleteCharAt(i);
+				//System.out.println("Char deleted at position: " + i);//debugging
+			}
+			else //only increment if we did not delete
+			{
+				i++;
+			}
+			
+		}
+		String parsedString = workingString.toString();
+		
+		return parsedString;
+	}
+	
+	/**
+	 * Attempts to automatically add an image with a file path. Will print failed paths to the console
+	 * @param swdb Connection to the db
+	 * @param cardList list of cards that need images
+	 */
+	private void addImagePaths(Connection swdb, ResultSet cardList)
+	{
+		//Get the list of cards to get the images	
 		int numSuccesses = 0;
 		int numFailures = 0;
 		try {
@@ -31,13 +114,13 @@ public class ImageManager {
 			while (cardList.next())
 			{
 				//Retrieve information for file path
-				String cardName = cardList.getString("cardName");
+				String cardName = cardList.getString("ObjectiveBackName");
 				String side = cardList.getString("Grouping");
 				String expansion = cardList.getString("Expansion");
 				int cardId = cardList.getInt("id");
 				
 				//Extract items in parentheses
-				/*
+				
 				if (cardName.contains(")"))
 				{
 					int indexOfOpenParens = cardName.indexOf('(');
@@ -48,7 +131,7 @@ public class ImageManager {
 					
 					cardName = firstHalf +secondHalf;
 				}
-				*/
+				
 				//Delete the second half of objectives/double cards
 				 if (cardName.contains("/"))
 				 {
@@ -118,7 +201,7 @@ public class ImageManager {
 				try{
 					Image img = ImageIO.read(getClass().getResource(totalPath));
 					//System.out.println("Success, file exists: " + totalPath);
-					addLargeImageFileLocation(dbc, cardId, totalPath);
+					addLargeImageFileLocation(swdb, cardId, totalPath);
 					numSuccesses++;
 				}
 				catch(Exception e)
@@ -142,50 +225,14 @@ public class ImageManager {
 			System.out.println("Card List result set did not close");
 			e.printStackTrace();
 		}
-		
 	}
 	
-	private String removeNonLetterCharacters(String s)
-	{
-		//Remove whitespace and convert all uppercase
-		String trimmedString = s.trim();
-		String upperString = trimmedString.toUpperCase();
-		StringBuilder workingString = new StringBuilder(upperString);
-		
-		
-		//test each character, remove non letters
-		int i = 0;
-		while(i<workingString.length())
-		{
-			char testChar = workingString.charAt(i);
-			int asciiTestChar = testChar;
-			//get the grave-E first
-			if (asciiTestChar == 201)
-			{
-				workingString.replace(i, i+1, "E");
-				//System.out.println("Replace grave-E executed:" + workingString);//debugging
-				asciiTestChar = 69;
-			}
-			//character and numbers are ok
-			//System.out.println(workingString);//debugging
-			boolean charIsLetter = asciiTestChar >= 65 && asciiTestChar <= 132;
-			boolean charIsNumber = asciiTestChar >= 48 && asciiTestChar <= 57;
-			if (!charIsLetter && !charIsNumber && asciiTestChar != '&')
-			{
-				workingString.deleteCharAt(i);
-				//System.out.println("Char deleted at position: " + i);//debugging
-			}
-			else //only increment if we did not delete
-			{
-				i++;
-			}
-			
-		}
-		String parsedString = workingString.toString();
-		
-		return parsedString;
-	}
-	
+	/**
+	 * Adds an image path for a card to the database
+	 * @param connection Connection to the swdb
+	 * @param cardId Card id of the card image
+	 * @param fileLocation Location where the image file is, including name and type 
+	 */
 	private void addLargeImageFileLocation(Connection connection, int cardId, String fileLocation)
 	{
 		try{
@@ -199,8 +246,8 @@ public class ImageManager {
 			insertQuery.setInt(1, cardId);
 			insertQuery.setString(2, fileLocation);
 			//Execute query
-			int rowsAffected = 0;
-			rowsAffected = insertQuery.executeUpdate();
+			//int rowsAffected = 0;
+			//rowsAffected = insertQuery.executeUpdate();
 			//System.out.println(rowsAffected + " Rows Affected");
 		}
 		catch (SQLException e)
@@ -209,5 +256,5 @@ public class ImageManager {
 		}
 	}
 	
-
+	
 }

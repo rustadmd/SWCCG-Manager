@@ -7,6 +7,9 @@ import java.awt.*;
 import java.sql.*;
 
 /**
+ * Contains all of the generic attributes of a card. Can create a card based on the id.
+ * Only attributes applicable to ALL cards are stored here.
+ * 
  * @author mdrustad Rustad
  * @version .01
  * @date May 8, 2014
@@ -24,6 +27,11 @@ public class Card {
 	private String uniqueness;
 	private Image frontSideImage;
 	
+	/**
+	 * Creates a card by pulling from the database all the important information
+	 * @param swdb Connection to the db
+	 * @param cardId ID number of the card to create
+	 */
 	public Card(Connection swdb, int cardId)
 	{
 		//Set all the information
@@ -44,6 +52,15 @@ public class Card {
 		frontSideImage = im.getCardImage(cardId, 1);//1 is always the front side
 	}
 	
+	/**
+	 * Returns the full name as it would be printed on the card
+	 */
+	@Override
+	public String toString()
+	{
+		String fullName = uniqueness + cardName;
+		return fullName;
+	}
 	/**
 	 * @return the cardId
 	 */

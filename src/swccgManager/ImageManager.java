@@ -55,9 +55,11 @@ public class ImageManager {
 		try {
 			imageLocation_s = imageLocation.getString("large");
 			cardImage = ImageIO.read(getClass().getResource(imageLocation_s));
+			imageLocation.close();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		
 		return cardImage;
 	}
 	
@@ -80,6 +82,7 @@ public class ImageManager {
 				System.out.println("Objective Card Type image problem: " + cardName + " " + expansion);
 				numCardsWOImages++;
 			}
+			cardsWOImages.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -113,6 +116,7 @@ public class ImageManager {
 				System.out.println("Objective Card Type image problem: " + cardName + " " + expansion + " " + numImages);
 				numIncorrectObjectiveImages++;
 			}
+			objectivesNeedingImages.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

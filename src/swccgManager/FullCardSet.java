@@ -20,12 +20,12 @@ public class FullCardSet {
 	
 	public FullCardSet(Connection swdb)
 	{
-		numCards = 3512; //Number of cards
+		numCards = 3503; //Number of cards
 		cardSet = new Hashtable<Integer, Card>(numCards);
 		int numSuccessfullyAddedCards = 0;
 		
 		ResultSet fullCardList = GenericSQLQueries.getCardVitals(swdb);
-		 
+		
 		//create cards and add it to the hash table
 		try {
 			while(fullCardList.next())
@@ -35,6 +35,7 @@ public class FullCardSet {
 				Card newCard = new Card (swdb, cardID);
 				cardSet.put(cardID, newCard);
 				numSuccessfullyAddedCards++;
+				//System.out.println("Created " + numSuccessfullyAddedCards + " cards, Card ID: " + cardID);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

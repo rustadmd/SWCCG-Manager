@@ -26,14 +26,15 @@ public class ImageManager {
 		m_swdb = swdb;
 		
 		//Check that each card has at least one image
-		testEachCardHasImage(swdb);		
+		//testEachCardHasImage(swdb);		
 		
 		//Check that objective cards have 2 images
-		testObjectiveImages(swdb);
+		//testObjectiveImages(swdb);
 		
 		//check that all image paths lead to an image
-		testImagePathsValid(swdb);
+		//testImagePathsValid(swdb);
 	}
+	
 	/**
 	 * Returns a card image for a particular card
 	 * @param cardId ID for the card
@@ -46,7 +47,7 @@ public class ImageManager {
 		String getCardImageQuery =
 			"SELECT large "
 			+ "FROM ImagePaths "
-			+ "WHERE cardId = " + cardId + "AND side = " + side;
+			+ "WHERE cardId = " + cardId + " AND side = " + side;
 		ResultSet imageLocation = GenericSQLQueries.getQueryResults(m_swdb, getCardImageQuery);
 		String imageLocation_s;
 		

@@ -48,6 +48,7 @@ public class Card {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		ImageManager im = new ImageManager(swdb);
 		frontSideImage = im.getCardImage(cardId, 1);//1 is always the front side
 	}

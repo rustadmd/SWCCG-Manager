@@ -57,12 +57,15 @@ public class GenericSQLQueries {
 	 */
 	public static ResultSet getCardVitals(Connection swdb, int cardId)
 	{
+
 		String cardVitalsQuery = 
 				"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
-					+ "ORDER BY Expansion, Grouping"
 					+ "WHERE id = " + cardId;
-		return getQueryResults(swdb, cardVitalsQuery);
+	
+		ResultSet cardInfo = getQueryResults(swdb, cardVitalsQuery);
+		//System.out.println("one card getCardVitals() Executed.");
+		return cardInfo;
 	}
 	/**
 	 * Provides a simple list of every Collection in the db by name and description

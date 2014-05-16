@@ -24,8 +24,8 @@ public class GenericDBLoadsUpdates {
 		
 		ImageManager im = new ImageManager(db);
 		GenericSQLQueries.getCardVitals(db);
-		Card cardTest = new Card(db, 0);
-		//FullCardSet fcs = new FullCardSet(db);
+		//Card cardTest = new Card(db, 0);
+		FullCardSet fcs = new FullCardSet(db);
 		
 		//GenericSQLQueries.getCollectionList(db);
 		

@@ -35,7 +35,8 @@ public class Card {
 	public Card(Connection swdb, int cardId)
 	{
 		//Set all the information
-		ResultSet cardInfo = GenericSQLQueries.getCardVitals(swdb, cardId);
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet cardInfo = gsq.getCardVitals(swdb, cardId);
 		this.m_cardId = cardId;
 		try {
 			m_cardName = cardInfo.getString("cardName");

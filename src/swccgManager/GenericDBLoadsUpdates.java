@@ -12,35 +12,21 @@ package swccgManager;
 
 import java.sql.*;
 public class GenericDBLoadsUpdates {
-	
-	Connection db;
+
+	private SqlUtilities sqlUtil;
 	
 	public GenericDBLoadsUpdates()
 	{
-		DatabaseConnector dbc = new DatabaseConnector();
-		db = dbc.getConnection();
-		
+		sqlUtil = new SqlUtilities();
 		//Test image loader
 		
-		ImageManager im = new ImageManager(db);
-		GenericSQLQueries.getCardVitals(db);
+		Connection swdb = sqlUtil.getDbConnection();
 		//Card cardTest = new Card(db, 0);
-		FullCardSet fcs = new FullCardSet(db);
+		FullCardSet fcs = new FullCardSet(swdb);
 		
 		//GenericSQLQueries.getCollectionList(db);
 		
-		dbc.closeDB();
-		
-		closeDBLoadsUpdates();
+		sqlUtil.closeDB(swdb);
 	}
 	
-	/**
-	 * Closes the open connection
-	 */
-	public void closeDBLoadsUpdates()
-	{
-		DatabaseConnector.closeDB(db);
-	}
-	
-
 }

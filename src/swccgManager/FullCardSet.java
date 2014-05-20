@@ -25,7 +25,8 @@ public class FullCardSet {
 		cardSet = new Hashtable<Integer, Card>(numCards);
 		int numSuccessfullyAddedCards = 0;
 		
-		ResultSet fullCardList = GenericSQLQueries.getCardVitals(swdb);
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet fullCardList = gsq.getCardVitals(swdb);
 		
 		//create cards and add it to the hash table
 		try {

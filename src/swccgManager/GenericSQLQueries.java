@@ -17,6 +17,13 @@ package swccgManager;
 import java.sql.*;
 
 public class GenericSQLQueries {
+	private SqlUtilities sqlUtil;
+	
+	public GenericSQLQueries()
+	{
+		sqlUtil = new SqlUtilities();
+	}
+	
 	/**
 	 * Get the most important card vitals information:
 	 * id, Name, Side(Grouping), Cardtype, Subtype, Expansion, and Rarity, Uniqueness
@@ -24,7 +31,7 @@ public class GenericSQLQueries {
 	 * @param swdb Connection to the DB
 	 * @return List all cards and their "vital" information
 	 */
-	public static ResultSet getCardVitals(Connection swdb)
+	public ResultSet getCardVitals(Connection swdb)
 	{
 		ResultSet cardVitals = null;
 		try{
@@ -55,7 +62,7 @@ public class GenericSQLQueries {
 	 * @param cardId id of the card
 	 * @return ResultSet containing all the global important card information
 	 */
-	public static ResultSet getCardVitals(Connection swdb, int cardId)
+	public ResultSet getCardVitals(Connection swdb, int cardId)
 	{
 
 		String cardVitalsQuery = 
@@ -63,7 +70,7 @@ public class GenericSQLQueries {
 					+ "FROM SWD "
 					+ "WHERE id = " + cardId;
 	
-		ResultSet cardInfo = getQueryResults(swdb, cardVitalsQuery);
+		ResultSet cardInfo = sqlUtil.getQueryResults(swdb, cardVitalsQuery);
 		//System.out.println("one card getCardVitals() Executed.");
 		return cardInfo;
 	}
@@ -72,17 +79,17 @@ public class GenericSQLQueries {
 	 * @param swdb
 	 * @return List of the collections
 	 */
-	public static ResultSet getCollectionList(Connection swdb)
+	public ResultSet getCollectionList(Connection swdb)
 	{
 		String collectionListQuery = "SELECT * FROM CollectionList";
-		return getQueryResults(swdb, collectionListQuery);
+		return sqlUtil.getQueryResults(swdb, collectionListQuery);
 	}
 	/**
 	 * Gets a query that checks for cards that don't have a matched image
 	 * @param swdb Connection to the SW database
 	 * @return ResultSet list of cards that don't have matched images
 	 */
-	public static ResultSet getCardsWithoutImages (Connection swdb)
+	public ResultSet getCardsWithoutImages (Connection swdb)
 	{
 		String cardsWOImages = "SELECT "
 				+ "id, cardName, Grouping, CardType, SubType, Expansion, Rarity "
@@ -91,7 +98,7 @@ public class GenericSQLQueries {
 				+ "	(SELECT * "
 				+ "FROM ImagePaths ip "
 				+ "WHERE ip.cardID = s.id);";
-		ResultSet cardList = getQueryResults(swdb, cardsWOImages);
+		ResultSet cardList = sqlUtil.getQueryResults(swdb, cardsWOImages);
 		return cardList;
 		
 	}
@@ -103,7 +110,7 @@ public class GenericSQLQueries {
 	 * @param swdb Connection to the SW database
 	 * @return ResultSet list of the Objective cards with the wrong number of images
 	 */
-	public static ResultSet objectivesWithWrongNumberofImages(Connection swdb)
+	public  ResultSet objectivesWithWrongNumberofImages(Connection swdb)
 	{
 		String objectiveImageIssueList =
 				"SELECT "
@@ -115,7 +122,7 @@ public class GenericSQLQueries {
 				+"GROUP BY id, cardName,CardType, Expansion, Rarity, Destiny, ObjectiveFront, ObjectiveBack, "
 				+" ObjectiveFrontName, ObjectiveBackName, Gametext, Icons, Episode1 "
 				+"HAVING Num_Images != 2";
-		ResultSet cardList = getQueryResults(swdb, objectiveImageIssueList);
+		ResultSet cardList = sqlUtil.getQueryResults(swdb, objectiveImageIssueList);
 		return cardList;
 	}
 	
@@ -124,40 +131,15 @@ public class GenericSQLQueries {
 	 * @param swdb connection to the db
 	 * @return List of all the image paths, matched to the cardId
 	 */
-	public static ResultSet allLargeImagePaths(Connection swdb)
+	public ResultSet allLargeImagePaths(Connection swdb)
 	{
 		String allImagePathsQuery = 
 				"SELECT * "
 				+ "FROM ImagePaths";
 		
-		ResultSet imagePaths = getQueryResults(swdb, allImagePathsQuery);
+		ResultSet imagePaths = sqlUtil.getQueryResults(swdb, allImagePathsQuery);
 		return imagePaths;
 	}
-	
-	/**
-	 * Generic query creator. Handles all the SQL transactions for the query and returns a ResultSet of that query
-	 * @param swdb Connection to the SW db
-	 * @param query SQL query for the desired results
-	 * @return Results of the query
-	 */
-	public static ResultSet getQueryResults(Connection swdb, String query)
-	{
-		ResultSet queryResults = null;
-		try{
-			Statement statement = swdb.createStatement();
-			//write query
-			queryResults = statement.executeQuery(query);
-			//System.out.println("Current row: " + queryResults.getRow());//debugging
-		}
-		
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		
-		//return results
-		return queryResults;
-	}		
 	
 	
 }

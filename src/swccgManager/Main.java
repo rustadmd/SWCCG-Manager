@@ -1,4 +1,6 @@
 package swccgManager;
+
+
 /**
  * @author Mark Rustad
  * @version .01
@@ -7,15 +9,21 @@ package swccgManager;
 
 public class Main {
 
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DatabaseConnector dbc = new DatabaseConnector();
+
+		initialSetup();
 		GenericDBLoadsUpdates test = new GenericDBLoadsUpdates();
-		dbc.closeDB();
 
 	}
-
+	
+	private static void initialSetup()
+	{
+		Settings s = new Settings();
+	}
+	
+	
 }

@@ -48,7 +48,8 @@ public class ImageManager {
 			"SELECT large "
 			+ "FROM ImagePaths "
 			+ "WHERE cardId = " + cardId + " AND side = " + side;
-		ResultSet imageLocation = GenericSQLQueries.getQueryResults(m_swdb, getCardImageQuery);
+		SqlUtilities sqlUtil = new SqlUtilities();
+		ResultSet imageLocation = sqlUtil.getQueryResults(m_swdb, getCardImageQuery);
 		String imageLocation_s;
 		
 		//access the image and load it
@@ -68,9 +69,11 @@ public class ImageManager {
 	 * Tests each card to make sure it has an image
 	 * @param swdb
 	 */
+	@SuppressWarnings("unused")
 	private void testEachCardHasImage(Connection swdb)
 	{
-		ResultSet cardsWOImages = GenericSQLQueries.getCardsWithoutImages(swdb);
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet cardsWOImages = gsq.getCardsWithoutImages(swdb);
 		
 		int numCardsWOImages = 0;
 		try {
@@ -102,9 +105,12 @@ public class ImageManager {
 	 * Tests each objective to guarantee there are exactly 2 images
 	 * @param swdb
 	 */
+	
+	@SuppressWarnings("unused")
 	private void testObjectiveImages(Connection swdb)
 	{
-		ResultSet objectivesNeedingImages = GenericSQLQueries.objectivesWithWrongNumberofImages(swdb);
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet objectivesNeedingImages = gsq.objectivesWithWrongNumberofImages(swdb);
 		int numIncorrectObjectiveImages = 0;
 		try {
 			while (objectivesNeedingImages.next())
@@ -137,9 +143,12 @@ public class ImageManager {
 	 * Tests each image path to make sure there is a file at the end
 	 * @param swdb
 	 */
+	
+	@SuppressWarnings("unused")
 	private void testImagePathsValid(Connection swdb)
 	{
-		ResultSet imagePaths = GenericSQLQueries.allLargeImagePaths(swdb);
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet imagePaths = gsq.allLargeImagePaths(swdb);
 		try{
 			int numSuccesses = 0;
 			int numFailures = 0;
@@ -219,11 +228,12 @@ public class ImageManager {
 	
 	/**
 	 * Attempts to automatically add an image with a file path. Will print failed paths to the console
+	 * Used only for initial loading of the database
+	 * 
 	 * @param swdb Connection to the db
 	 * @param cardList list of cards that need images
 	 */
-	
-	
+	@SuppressWarnings("unused")
 	private void addImagePaths(Connection swdb, ResultSet cardList)
 	{
 		//Get the list of cards to get the images	

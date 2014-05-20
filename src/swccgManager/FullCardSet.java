@@ -41,10 +41,11 @@ public class FullCardSet {
 				String expansion = fullCardList.getString("Expansion");
 				String rarity = fullCardList.getString("Rarity");
 				String uniqueness = fullCardList.getString("Uniqueness");
-				
+				/*Temporarily disabled for speed
 				ImageManager im = new ImageManager(swdb);
 				Image img = im.getCardImage(cardID, 1);//1 is always the front side
-				
+				*/
+				Image img = null; //for speed
 				Card newCard = new Card (cardID, cardName, side, cardType, subType, expansion, rarity, uniqueness, img);
 				cardSet.put(cardID, newCard);
 				numSuccessfullyAddedCards++;

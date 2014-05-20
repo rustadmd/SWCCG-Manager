@@ -9,6 +9,7 @@ package swccgManager;
 
 public class Main {
 
+	private static Settings s;
 	
 	/**
 	 * @param args
@@ -16,13 +17,17 @@ public class Main {
 	public static void main(String[] args) {
 
 		initialSetup();
-		GenericDBLoadsUpdates test = new GenericDBLoadsUpdates();
-
 	}
 	
 	private static void initialSetup()
 	{
-		Settings s = new Settings();
+		//Initiallize all settings
+		s = new Settings();
+		FullCardSet fcs = s.fcs;
+		
+		
+		//Setup intial GUI
+		MainWindow mw = new MainWindow(fcs);
 	}
 	
 	

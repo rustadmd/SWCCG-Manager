@@ -5,6 +5,7 @@ package swccgManager;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 
@@ -17,6 +18,7 @@ import java.sql.DriverManager;
 public class Settings {
 	
 	private static String m_programPath;
+	public static FullCardSet fcs; //there is only one master list of cards
 	
 	/**
 	 * Creates initial settings, sets up file path and SQLlite connector
@@ -25,7 +27,15 @@ public class Settings {
 	{
 		m_programPath = setProgramPath();
 		setupSqlLiteConnector();
+		
+		//Create full card list
+		SqlUtilities sqlUtil = new SqlUtilities();
+		Connection swdb = sqlUtil.getDbConnection();
+		@SuppressWarnings("unused")
+		FullCardSet fcs = new FullCardSet(swdb);
+		sqlUtil.closeDB(swdb);
 	}
+	
 	/**
 	 * Gets the current program file location
 	 * @return

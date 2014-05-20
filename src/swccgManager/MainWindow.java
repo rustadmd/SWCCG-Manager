@@ -22,6 +22,7 @@ public class MainWindow extends JFrame {
 		super("SWCCG Manager");
 		//Set the layout
 		setLayout(new BorderLayout());
+		setVisible(true);
 		
 		//Add the card list
 		SqlUtilities sqlUtil = new SqlUtilities();

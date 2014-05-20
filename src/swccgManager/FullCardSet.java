@@ -98,7 +98,15 @@ public class FullCardSet {
 	public Card[] getFullCardSet()
 	{
 		Card[] fullCardList;
-		fullCardList = (Card[])cardSet.values().toArray();
+		fullCardList = new Card[getNumCards()];
+		
+		//Copy the table
+		int i = 0;
+		for (Card card : cardSet.values())
+		{
+			fullCardList[i] = card;
+			i++;
+		}
 		
 		return fullCardList;
 	}

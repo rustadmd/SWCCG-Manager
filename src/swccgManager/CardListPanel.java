@@ -31,8 +31,12 @@ public class CardListPanel extends JPanel{
 		
 		cardSelector = new JList<Card>();
 		cardSelector.setListData(cardList);
+		JScrollPane listScroller = new JScrollPane();
+		listScroller.setViewportView(cardSelector);
 		
-		add(cardSelector);
+		int numCardsListed = 15;
+		cardSelector.setVisibleRowCount(numCardsListed);
+		add(listScroller);
 		
 		//Add the listener action
 		cardSelector.addListSelectionListener(new ListSelectionListener()

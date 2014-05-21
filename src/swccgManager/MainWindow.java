@@ -34,6 +34,10 @@ public class MainWindow extends JFrame {
 		= test.getFullCardSet();
 		CardListPanel listDisplay = new CardListPanel(cardList);
 		add(listDisplay, BorderLayout.WEST);
+		
+		//Add Collection Panel
+		CollectionDisplay cd = new CollectionDisplay();
+		add(cd, BorderLayout.NORTH);
 		pack();
 	}
 

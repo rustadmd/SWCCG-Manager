@@ -15,6 +15,7 @@ package swccgManager;
  */
 
 import java.sql.*;
+import java.util.*;
 
 public class GenericSQLQueries {
 	private SqlUtilities sqlUtil;
@@ -79,10 +80,35 @@ public class GenericSQLQueries {
 	 * @param swdb
 	 * @return List of the collections
 	 */
-	public ResultSet getCollectionList(Connection swdb)
+	public Collection[] getCollectionList()
 	{
+		
+		SqlUtilities su = new SqlUtilities();
+		Connection swdb = su.getDbConnection();
 		String collectionListQuery = "SELECT * FROM CollectionList";
-		return sqlUtil.getQueryResults(swdb, collectionListQuery);
+		ResultSet collectionList = sqlUtil.getQueryResults(swdb, collectionListQuery);
+		su.closeDB(swdb);
+		
+		//Create an arraylist to turn into a collection array
+		ArrayList<Collection> collectionList_al = new ArrayList<Collection>();
+		try {
+			while (collectionList.next())
+			{
+				String name = collectionList.getString("CollectionName");
+				String description = collectionList.getString("CollectionDescription");
+				Collection newCollection = new Collection(name, description);
+				collectionList_al.add(newCollection);
+			}
+			collectionList.close();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		int numCollections = collectionList_al.size();
+		Collection[] collectionList_ar = new Collection[numCollections];
+		collectionList_al.toArray(collectionList_ar);
+		return collectionList_ar;
+				
 	}
 	/**
 	 * Gets a query that checks for cards that don't have a matched image

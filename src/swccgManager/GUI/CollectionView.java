@@ -11,7 +11,11 @@ import javax.swing.*;
 import swccgManager.Card;
 import swccgManager.FullCardSet;
 import swccgManager.SqlUtilities;
-/**
+/**Main display for viewing a collection. This interface allows the user to browse
+ * all cards, and see what cards they own. 
+ * 
+ * View class, controlled by 
+ * 
  * @author Mark Rustad
  * @version .01
  * @date May 21, 2014

@@ -8,7 +8,7 @@ import javax.swing.*;
 import swccgManager.Collection;
 import swccgManager.GenericSQLQueries;
 
-/**
+/**Panel for viewing important information about a collection and selecting different collections
  * @author Mark Rustad
  * @version .01
  * @date May 20, 2014
@@ -16,8 +16,8 @@ import swccgManager.GenericSQLQueries;
  */
 public class CollectionDisplay extends JPanel{
 	
-	private JComboBox collectionSelector;
-	private Collection activeCollection;
+	private static final long serialVersionUID = -2080540917727826932L;
+	private JComboBox<Collection> collectionSelector;
 	
 	public CollectionDisplay()
 	{

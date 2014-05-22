@@ -49,7 +49,7 @@ public class FullCardSet {
 				Card newCard = new Card (cardID, cardName, side, cardType, subType, expansion, rarity, uniqueness, img);
 				cardSet.put(cardID, newCard);
 				numSuccessfullyAddedCards++;
-				System.out.println("Created " + numSuccessfullyAddedCards + " cards, Card ID: " + cardID);
+				//System.out.println("Created " + numSuccessfullyAddedCards + " cards, Card ID: " + cardID);//Testing
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

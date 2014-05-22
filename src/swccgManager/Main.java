@@ -1,5 +1,7 @@
 package swccgManager;
 
+import swccgManager.GUI.MainWindow;
+
 
 /**
  * @author Mark Rustad

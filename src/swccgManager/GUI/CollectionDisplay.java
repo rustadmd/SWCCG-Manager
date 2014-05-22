@@ -1,9 +1,12 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.GUI;
 
 import javax.swing.*;
+
+import swccgManager.Collection;
+import swccgManager.GenericSQLQueries;
 
 /**
  * @author Mark Rustad

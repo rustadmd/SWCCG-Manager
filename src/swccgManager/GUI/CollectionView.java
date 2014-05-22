@@ -1,30 +1,30 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.GUI;
+
+import java.awt.BorderLayout;
+import java.sql.Connection;
 
 import javax.swing.*;
 
-import java.awt.*;
-import java.sql.Connection;
+import swccgManager.Card;
+import swccgManager.FullCardSet;
+import swccgManager.SqlUtilities;
 /**
  * @author Mark Rustad
  * @version .01
- * @date May 19, 2014
+ * @date May 21, 2014
  *
  */
-public class MainWindow extends JFrame {
+public class CollectionView extends JPanel{
 	
-	private static final long serialVersionUID = 1L;
-	
-	public MainWindow(FullCardSet fcs)
+	public CollectionView()
 	{
-		super("SWCCG Manager");
+
 		//Set the layout
 		setLayout(new BorderLayout());
-		setVisible(true);
 		
-		//Add the card list
 		SqlUtilities sqlUtil = new SqlUtilities();
 		Connection swdb = sqlUtil.getDbConnection();
 		FullCardSet test = new FullCardSet(swdb);
@@ -38,7 +38,6 @@ public class MainWindow extends JFrame {
 		//Add Collection Panel
 		CollectionDisplay cd = new CollectionDisplay();
 		add(cd, BorderLayout.NORTH);
-		pack();
 	}
 
 }

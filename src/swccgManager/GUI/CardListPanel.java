@@ -1,10 +1,12 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.GUI;
 
 import javax.swing.*;
 import javax.swing.event.*;
+
+import swccgManager.Card;
 
 /**
  * @author Mark Rustad

@@ -47,5 +47,11 @@ public class Collection {
 	public String getCollectionDescription() {
 		return collectionDescription;
 	}
+	
+	public void saveCollection()
+	{
+		InsertQueries iq = new InsertQueries();
+		iq.addCollection(collectionName, collectionDescription);
+	}
 
 }

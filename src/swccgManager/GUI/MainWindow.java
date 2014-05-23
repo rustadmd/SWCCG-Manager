@@ -5,6 +5,7 @@ package swccgManager.GUI;
 
 import javax.swing.*;
 
+import swccgManager.Collection;
 import swccgManager.FullCardSet;
 
 import java.awt.*;
@@ -79,6 +80,8 @@ public class MainWindow extends JFrame {
 		//Collecton view, for viewing various collections of cards
 		JMenuItem collectionView = new JMenuItem("New Collection");
 		collectionMenu.add(collectionView);
+		Collection test = new Collection("Mark", "My Collection");
+		test.saveCollection();
 
 		
 		//Deck view, for viewing particular decks

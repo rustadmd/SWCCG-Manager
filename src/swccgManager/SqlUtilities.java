@@ -11,6 +11,16 @@ import java.sql.*;
  */
 public class SqlUtilities {
 
+	private Connection m_swdb;
+	
+	/**
+	 * Sets up an initial connection to be used with SqlUtilites
+	 */
+	public SqlUtilities()
+	{
+		m_swdb = getDbConnection();
+	}
+	
 	/**
 	 * Establishes a connection with the database
 	 * @return Connection to the Star Wars Database
@@ -60,6 +70,16 @@ public class SqlUtilities {
 		}
 	}
 	
+	
+	/**
+	 * Closes an open connection. For closing a connection from getConnection().
+	 * Available at any point in time
+	 *
+	 */
+	public void closeDB ()
+	{
+		closeDB(m_swdb);
+	}
 	/**
 	 * Gets the number of rows in the ResultSet
 	 * @param results ResultSet to count the rows
@@ -106,6 +126,51 @@ public class SqlUtilities {
 		
 		//return results
 		return queryResults;
-	}		
+	}
+	
+
+	/**
+	 * Generic query creator. Handles all the SQL transactions for the query and returns a ResultSet of that query
+	 * @param query SQL query for the desired results
+	 * @return Results of the query
+	 */
+	public ResultSet getQueryResults(String query)
+	{
+		ResultSet queryResults = null;
+		try{
+			Statement statement = m_swdb.createStatement();
+			//write query
+			queryResults = statement.executeQuery(query);
+			//System.out.println("Current row: " + queryResults.getRow());//debugging
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		//return results
+		return queryResults;
+	}
+	
+	/**
+	 * Executes a query. Use for UPDATE, INSERT, etc queries that return no results.
+	 * @param query Query to execute
+	 */
+	public void executeQuery(String query)
+	{
+		try{
+			Statement statement = m_swdb.createStatement();
+			//write query
+			statement.executeQuery(query);
+			//System.out.println("Current row: " + queryResults.getRow());//debugging
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 	
 }

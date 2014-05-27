@@ -7,6 +7,8 @@ import javax.swing.*;
 
 import swccgManager.Collection;
 import swccgManager.FullCardSet;
+import swccgManager.InsertQueries;
+import swccgManager.SqlUtilities;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -90,6 +92,7 @@ public class MainWindow extends JFrame {
 			{
 				//System.out.println("View > Collection Selected");//testing
 				NewCollectionWindow ncw = new NewCollectionWindow();
+				AddCollection al = new AddCollection(ncw);
 			}
 		};
 		collectionView.addActionListener(collectionView_al);
@@ -106,6 +109,37 @@ public class MainWindow extends JFrame {
 		m_activePanel = activePanel;
 		add(m_activePanel);
 		pack();
+	}
+	
+	//Create action listeners
+	private class AddCollection implements ActionListener
+	{
+		NewCollectionWindow m_ncw;
+		
+		public AddCollection(NewCollectionWindow ncw)
+		{
+			m_ncw = ncw;
+			m_ncw.addSubmitButtonListener(this);
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String name = m_ncw.getName();
+			String description = m_ncw.getDescription();
+			
+			//You must adjust for blank names
+			if(name.equals(null) || name.equals(""))
+			{
+				JOptionPane.showMessageDialog(m_ncw, "You must enter a name.");
+			}
+			else {
+				InsertQueries iq = new InsertQueries();
+				iq.addCollection(name, description);
+				m_ncw.setVisible(false);
+			}
+			
+		}
+		
 	}
 
 }

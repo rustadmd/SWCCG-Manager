@@ -162,7 +162,7 @@ public class SqlUtilities {
 		try{
 			Statement statement = m_swdb.createStatement();
 			//write query
-			statement.executeQuery(query);
+			statement.executeUpdate(query);
 			//System.out.println("Current row: " + queryResults.getRow());//debugging
 		}
 		

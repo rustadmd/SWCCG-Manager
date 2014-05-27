@@ -80,9 +80,19 @@ public class MainWindow extends JFrame {
 		//Collecton view, for viewing various collections of cards
 		JMenuItem collectionView = new JMenuItem("New Collection");
 		collectionMenu.add(collectionView);
-		Collection test = new Collection("Mark", "My Collection");
-		test.saveCollection();
-
+		//Collection test = new Collection("Mark", "My Collection");
+		//test.saveCollection();
+		
+		//Add the action action to add a new item
+		ActionListener collectionView_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				//System.out.println("View > Collection Selected");//testing
+				NewCollectionWindow ncw = new NewCollectionWindow();
+			}
+		};
+		collectionView.addActionListener(collectionView_al);
 		
 		//Deck view, for viewing particular decks
 		JMenuItem deckView = new JMenuItem("Export Collection");

@@ -87,7 +87,6 @@ public class GenericSQLQueries {
 		Connection swdb = su.getDbConnection();
 		String collectionListQuery = "SELECT * FROM CollectionList";
 		ResultSet collectionList = sqlUtil.getQueryResults(swdb, collectionListQuery);
-		su.closeDB(swdb);
 		
 		//Create an arraylist to turn into a collection array
 		ArrayList<Collection> collectionList_al = new ArrayList<Collection>();
@@ -107,6 +106,8 @@ public class GenericSQLQueries {
 		int numCollections = collectionList_al.size();
 		Collection[] collectionList_ar = new Collection[numCollections];
 		collectionList_al.toArray(collectionList_ar);
+		
+		su.closeDB(swdb); 
 		return collectionList_ar;
 				
 	}

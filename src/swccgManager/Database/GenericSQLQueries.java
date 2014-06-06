@@ -28,6 +28,38 @@ public class GenericSQLQueries {
 	}
 	
 	/**
+	 * Returns a list of values from any column in the database
+	 * Uses SELECT DISTINCT to gather a list of unique values
+	 * 
+	 * @param table Table the column can be found
+	 * @param column Field to search
+	 * @return All unique fields in that column.
+	 */
+	public ResultSet getList(String table, String column)
+	{
+		ResultSet list = null;
+		
+		//Write sql using preparedStatement
+		Connection swdb = sqlUtil.getDbConnection();
+		PreparedStatement getList;
+		try {
+			getList = swdb.prepareStatement(
+					"SELECT DISTINCT ? "
+					+ "FROM ? ");
+			getList.setString(1, column);
+			getList.setString(2, table);
+			
+			list = getList.executeQuery();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sqlUtil.closeDB(swdb);
+		//Get results and return them
+		return list;
+	}
+	
+	/**
 	 * Get the most important card vitals information:
 	 * id, Name, Side(Grouping), Cardtype, Subtype, Expansion, and Rarity, Uniqueness
 	 * 
@@ -65,9 +97,9 @@ public class GenericSQLQueries {
 	 * @param cardId id of the card
 	 * @return ResultSet containing all the global important card information
 	 */
-	public ResultSet getCardVitals(Connection swdb, int cardId)
+	public ResultSet getCardVitals( int cardId)
 	{
-
+		Connection swdb = sqlUtil.getDbConnection();
 		String cardVitalsQuery = 
 				"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
@@ -75,6 +107,7 @@ public class GenericSQLQueries {
 	
 		ResultSet cardInfo = sqlUtil.getQueryResults(swdb, cardVitalsQuery);
 		//System.out.println("one card getCardVitals() Executed.");
+		sqlUtil.closeDB(swdb);
 		return cardInfo;
 	}
 	/**

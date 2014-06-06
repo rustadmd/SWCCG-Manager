@@ -43,21 +43,14 @@ public class ImageManager {
 	 */
 	public Image getCardImage(int cardId, int side)
 	{
-		//Retrieve card path from db
-		String getCardImageQuery =
-			"SELECT large "
-			+ "FROM ImagePaths "
-			+ "WHERE cardId = " + cardId + " AND side = " + side;
-		SqlUtilities sqlUtil = new SqlUtilities();
-		ResultSet imageLocation = sqlUtil.getQueryResults(m_swdb, getCardImageQuery);
-		String imageLocation_s;
+		String imageLocation = getImagePath (cardId, side);
 		
 		//access the image and load it
 		Image cardImage = null;
 		try {
-			imageLocation_s = imageLocation.getString("large");
-			cardImage = ImageIO.read(getClass().getResource(imageLocation_s));
-			imageLocation.close();
+			
+			cardImage = ImageIO.read(getClass().getResource(imageLocation));
+		
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -65,6 +58,27 @@ public class ImageManager {
 		return cardImage;
 	}
 	
+	public String getImagePath(int cardId, int side)
+	{
+		//Retrieve card path from db
+		String getCardImageQuery =
+			"SELECT large "
+			+ "FROM ImagePaths "
+			+ "WHERE cardId = " + cardId + " AND side = " + side;
+		SqlUtilities sqlUtil = new SqlUtilities();
+		ResultSet imageLocation = sqlUtil.getQueryResults(m_swdb, getCardImageQuery);
+		String imageLocation_s = "";
+		
+		
+		try {
+			imageLocation_s = imageLocation.getString("large");
+			imageLocation.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return imageLocation_s;
+	}
 	/**
 	 * Tests each card to make sure it has an image
 	 * @param swdb

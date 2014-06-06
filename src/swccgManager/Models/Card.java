@@ -8,6 +8,7 @@ import java.sql.*;
 
 import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Database.ImageManager;
+import swccgManager.Database.SqlUtilities;
 
 /**
  * Contains all of the generic attributes of a card. Can create a card based on the id.
@@ -28,6 +29,7 @@ public class Card {
 	private String m_expansion;
 	private String m_rarity;
 	private String m_uniqueness;
+	private String m_frontSideImagePath;
 	private Image m_frontSideImage;
 	
 	/**
@@ -35,11 +37,11 @@ public class Card {
 	 * @param swdb Connection to the db
 	 * @param cardId ID number of the card to create
 	 */
-	public Card(Connection swdb, int cardId)
-	{
+	public Card(int cardId)
+	{	
 		//Set all the information
 		GenericSQLQueries gsq = new GenericSQLQueries();
-		ResultSet cardInfo = gsq.getCardVitals(swdb, cardId);
+		ResultSet cardInfo = gsq.getCardVitals(cardId);
 		this.m_cardId = cardId;
 		try {
 			m_cardName = cardInfo.getString("cardName");
@@ -53,8 +55,13 @@ public class Card {
 			e.printStackTrace();
 		}
 		
+		//Set the image path, but don't actually load the image
+		SqlUtilities su = new SqlUtilities();
+		Connection swdb = su.getDbConnection();
 		ImageManager im = new ImageManager(swdb);
-		m_frontSideImage = im.getCardImage(cardId, 1);//1 is always the front side
+		m_frontSideImagePath = im.getImagePath(cardId, 1);
+		
+		su.closeDB(swdb);
 	}
 	/**
 	 * Creates a card, with full paramaters (this should aid in speed of retrieval, instead of calling a new query every time)
@@ -149,6 +156,17 @@ public class Card {
 	 * @return the frontSideImage
 	 */
 	public Image getFrontSideImage() {
+		
+		//Load the card if it is not present
+		if (m_frontSideImage == null)
+		{
+			SqlUtilities su = new SqlUtilities();
+			Connection swdb = su.getDbConnection();
+			ImageManager im = new ImageManager(swdb);
+			m_frontSideImage = im.getCardImage(m_cardId, 1);
+			su.closeDB(swdb);
+		}
+		//1 is always the front side
 		return m_frontSideImage;
 	}
 

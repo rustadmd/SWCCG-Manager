@@ -130,7 +130,6 @@ public class SqlUtilities {
 		return queryResults;
 	}
 	
-
 	/**
 	 * Generic query creator. Handles all the SQL transactions for the query and returns a ResultSet of that query
 	 * @param query SQL query for the desired results

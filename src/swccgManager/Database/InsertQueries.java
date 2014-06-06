@@ -1,7 +1,8 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.Database;
+
 
 /**
  * @author mdrustad Rustad

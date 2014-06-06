@@ -1,8 +1,10 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.Database;
 import java.sql.*;
+
+import swccgManager.Settings;
 /**
  * @author Mark Rustad
  * @version .01

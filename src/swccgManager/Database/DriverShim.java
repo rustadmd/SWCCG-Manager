@@ -1,4 +1,4 @@
-package swccgManager;
+package swccgManager.Database;
 /**
  * Code taken from http://www.kfu.com/~nsayer/Java/dyn-jdbc.html
  * 
@@ -10,9 +10,9 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-class DriverShim implements Driver {
+public class DriverShim implements Driver {
 	private Driver driver;
-	DriverShim(Driver d) {
+	public DriverShim(Driver d) {
 		this.driver = d;
 	}
 	public boolean acceptsURL(String u) throws SQLException {

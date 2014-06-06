@@ -1,6 +1,7 @@
 package swccgManager;
 
 import swccgManager.GUI.MainWindow;
+import swccgManager.Models.FullCardSet;
 
 
 /**

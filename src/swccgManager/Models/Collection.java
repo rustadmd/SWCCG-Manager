@@ -1,7 +1,9 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.Models;
+
+import swccgManager.Database.InsertQueries;
 
 /**
  * @author Mark Rustad

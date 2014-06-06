@@ -1,11 +1,13 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.Models;
 
 import java.awt.*;
 import java.sql.*;
 import java.util.*;
+
+import swccgManager.Database.GenericSQLQueries;
 
 /**
  * Manages all Star Wars cards. Maintains a full list of the cards

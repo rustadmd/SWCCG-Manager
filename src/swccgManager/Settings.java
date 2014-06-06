@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 
+import swccgManager.Database.DriverShim;
+import swccgManager.Database.SqlUtilities;
+import swccgManager.Models.FullCardSet;
+
 /**
  * @author Mark Rustad
  * @version .01

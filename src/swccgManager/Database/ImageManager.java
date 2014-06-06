@@ -3,7 +3,7 @@
  * @version .01
  * @date May 3, 2014
  */
-package swccgManager;
+package swccgManager.Database;
 
 /**
  * @author Mark

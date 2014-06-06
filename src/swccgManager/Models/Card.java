@@ -1,10 +1,13 @@
 /**
  * 
  */
-package swccgManager;
+package swccgManager.Models;
 
 import java.awt.*;
 import java.sql.*;
+
+import swccgManager.Database.GenericSQLQueries;
+import swccgManager.Database.ImageManager;
 
 /**
  * Contains all of the generic attributes of a card. Can create a card based on the id.

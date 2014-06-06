@@ -5,8 +5,8 @@ package swccgManager.GUI;
 
 import javax.swing.*;
 
-import swccgManager.Collection;
-import swccgManager.FullCardSet;
+import swccgManager.Models.Collection;
+import swccgManager.Models.FullCardSet;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -5,8 +5,8 @@ package swccgManager.GUI;
 
 import javax.swing.*;
 
-import swccgManager.Collection;
-import swccgManager.GenericSQLQueries;
+import swccgManager.Database.GenericSQLQueries;
+import swccgManager.Models.Collection;
 
 /**Panel for viewing important information about a collection and selecting different collections
  * @author Mark Rustad

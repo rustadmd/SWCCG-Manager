@@ -3,7 +3,7 @@
  * @version .01
  * @date May 3, 2014
  */
-package swccgManager;
+package swccgManager.Database;
 
 /**
  * Generic Queries handles basic query writing and result sets.
@@ -16,6 +16,8 @@ package swccgManager;
 
 import java.sql.*;
 import java.util.*;
+
+import swccgManager.Models.Collection;
 
 public class GenericSQLQueries {
 	private SqlUtilities sqlUtil;

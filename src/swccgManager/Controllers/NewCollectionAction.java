@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
+import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Database.InsertQueries;
 import swccgManager.GUI.NewCollectionWindow;
 import swccgManager.Models.CollectionList;
@@ -44,12 +45,20 @@ public class NewCollectionAction extends AbstractAction {
 		String name = m_ncw.getName();
 		String description = m_ncw.getDescription();
 		
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		boolean alreadyExists = gsq.entryExists("CollectionName", "CollectionList", name);
+		
 		//You must adjust for blank names
 		if(name.equals(null) || name.equals(""))
 		{
 			JOptionPane.showMessageDialog(m_ncw, "You must enter a name.");
 		}
-		else {
+		else if (alreadyExists)
+		{
+			JOptionPane.showMessageDialog(m_ncw, "This collection already exists.");
+		}
+		
+		else{
 			InsertQueries iq = new InsertQueries();
 			iq.addCollection(name, description);
 			m_ncw.setVisible(false);

@@ -30,6 +30,44 @@ public class GenericSQLQueries {
 	}
 	
 	/**
+	 * Tests the database to see if there is an entry in the system already
+	 * helps test against duplicated entries
+	 * @param column Column (usually a primary key) where the entry exists
+	 * @param table The table the entry can be found on
+	 * @param entry The exact entry
+	 * @return True if there is an entry 
+	 */
+	public boolean entryExists(String column, String table, String entry)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		
+		int numRows = -1;
+		try {
+			PreparedStatement entryExistsQuery = swdb.prepareStatement(
+					"SELECT DISTINCT " + column + " " 
+					+ "FROM " + table + " "
+					+ "WHERE " + column + " = ? ");
+			
+			entryExistsQuery.setString(1, entry);
+			
+			ResultSet list = entryExistsQuery.executeQuery();
+			numRows = sqlUtil.getNumRows(list);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//System.out.println("Number of rows: " + numRows);//debugging
+		
+		if (numRows != 0)
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+	/**
 	 * Returns a list of values from any column in the database
 	 * Uses SELECT DISTINCT to gather a list of unique values
 	 * 

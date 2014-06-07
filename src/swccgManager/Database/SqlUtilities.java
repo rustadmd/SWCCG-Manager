@@ -42,7 +42,7 @@ public class SqlUtilities {
 			
 			
 			db = DriverManager.getConnection(totalPath);
-			System.out.println("Successfully connected to db.");
+			//System.out.println("Successfully connected to db.");
 
 		}
 
@@ -63,7 +63,7 @@ public class SqlUtilities {
 	{
 		try{
 			dbConnect.close();
-			System.out.println("Connection successfully closed.");
+			//System.out.println("Connection successfully closed.");
 		}
 		
 		catch (SQLException e)

@@ -4,15 +4,9 @@
 package swccgManager.GUI;
 
 import javax.swing.*;
-
-import swccgManager.Collection;
-import swccgManager.FullCardSet;
-import swccgManager.InsertQueries;
-import swccgManager.SqlUtilities;
-
+import swccgManager.Database.InsertQueries;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
 /**
  * @author Mark Rustad
  * @version .01

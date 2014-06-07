@@ -5,13 +5,10 @@ package swccgManager;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 
 import swccgManager.Database.DriverShim;
-import swccgManager.Database.SqlUtilities;
-import swccgManager.Models.FullCardSet;
 
 /**
  * @author Mark Rustad

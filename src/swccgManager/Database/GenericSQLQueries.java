@@ -17,6 +17,8 @@ package swccgManager.Database;
 import java.sql.*;
 import java.util.*;
 
+import swccgManager.Database.CardQueryCriteria.Attribute;
+import swccgManager.Models.Card;
 import swccgManager.Models.Collection;
 
 public class GenericSQLQueries {
@@ -40,23 +42,12 @@ public class GenericSQLQueries {
 		ResultSet list = null;
 		
 		//Write sql using preparedStatement
-		Connection swdb = sqlUtil.getDbConnection();
-		PreparedStatement getList;
-		try {
-			getList = swdb.prepareStatement(
-					"SELECT DISTINCT ? "
-					+ "FROM ? "
-					+ "ORDER BY ? ");
-			getList.setString(1, column);
-			getList.setString(2, table);
-			getList.setString(3, column);//Order by the same column
-			
-			list = getList.executeQuery();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		sqlUtil.closeDB(swdb);
+		String getListQuery = "SELECT DISTINCT " + column + " " 
+				+ "FROM " + table + " "
+				+ "ORDER BY " + column;
+		
+		list = sqlUtil.getQueryResults(getListQuery);
+		
 		//Get results and return them
 		return list;
 	}
@@ -68,29 +59,67 @@ public class GenericSQLQueries {
 	 * @param swdb Connection to the DB
 	 * @return List all cards and their "vital" information
 	 */
-	public ResultSet getCardVitals()
+	public List<Card> getCardList(CardQueryCriteria cardCriteria)
 	{
 		Connection swdb = sqlUtil.getDbConnection();
-		ResultSet cardVitals = null;
+		ResultSet cardListResultSet = null;
+		PreparedStatement cardList = null;
+		List<Card> list = new ArrayList<Card>();
 		try{
-			Statement statement = swdb.createStatement();
-			//write query
-			String cardVitalQuery = 
-					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
+			 cardList = swdb.prepareStatement(
+					 "SELECT id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
-					+ "ORDER BY cardName"
-					//+ "WHERE id < 100"//Current limit, only want 20 at first
-					;
-			cardVitals = statement.executeQuery(cardVitalQuery);
+					+ "WHERE cardName LIKE ? "
+					+ "	AND Grouping LIKE ? "
+					+ " AND CardType LIKE ? "
+					+ " AND Subtype LIKE ? "
+					+ " AND Expansion LIKE ? "
+					+ " AND Rarity LIKE ? "
+					+ " AND Characteristics LIKE ? "
+					+ " AND Lore LIKE ? "
+					+ " AND Gametext LIKE ? "
+					+ "ORDER BY cardName "
+					);
+			
+			//Add all the sorting criteria
+			cardList.setString(1, cardCriteria.getCriteria(Attribute.NAME));
+			cardList.setString(2, cardCriteria.getCriteria(Attribute.SIDE));
+			cardList.setString(3, cardCriteria.getCriteria(Attribute.TYPE));
+			cardList.setString(4, cardCriteria.getCriteria(Attribute.SUBTYPE));
+			cardList.setString(5, cardCriteria.getCriteria(Attribute.EXPANSION));
+			cardList.setString(6, cardCriteria.getCriteria(Attribute.RARITY));
+			cardList.setString(7, cardCriteria.getCriteria(Attribute.CHARACTERISTICS));
+			cardList.setString(8, cardCriteria.getCriteria(Attribute.LORE));
+			cardList.setString(9, cardCriteria.getCriteria(Attribute.GAMETEXT));
+			//System.out.println(cardList.toString());//debugging
+			cardListResultSet = cardList.executeQuery();
+			
+			//Add cards to the list to return
+			while (cardListResultSet.next())
+			{
+				//It is quickest use a query and fill a list from the query
+				//creating a new connection for each card takes too long
+				int cardID = cardListResultSet.getInt("id");
+				String cardName = cardListResultSet.getString("cardName");
+				String side = cardListResultSet.getString("Grouping");
+				String cardType = cardListResultSet.getString("CardType");
+				String subType = cardListResultSet.getString("SubType");
+				String expansion = cardListResultSet.getString("Expansion");
+				String rarity = cardListResultSet.getString("Rarity");
+				String uniqueness = cardListResultSet.getString("Uniqueness");
+				Card newCard = new Card (cardID, cardName, side, cardType, subType, expansion, rarity, uniqueness);
+				list.add(newCard);
+			}
 		}
 		
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			System.out.println(cardList.toString());
 		}
 		sqlUtil.closeDB(swdb);
 		//return results
-		return cardVitals;
+		return list;
 	}
 	
 	
@@ -113,6 +142,33 @@ public class GenericSQLQueries {
 		sqlUtil.closeDB(swdb);
 		return cardInfo;
 	}
+	
+	/**
+	 * Gets all the important information for a particular collection
+	 * @param collectionName
+	 * @return
+	 */
+	public ResultSet getCollectionVitals(String collectionName)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		PreparedStatement collectionVitalsQuery;
+		ResultSet collectionInfo = null;
+		try {
+			collectionVitalsQuery = swdb.prepareStatement(
+					"SELECT CollectionName, CollectionDescription FROM CollectionList "
+							+ "WHERE CollectionName = ?"
+					);
+		collectionVitalsQuery.setString(1, collectionName);		
+		collectionInfo = collectionVitalsQuery.executeQuery();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sqlUtil.closeDB(swdb);
+		return collectionInfo;
+		
+	}
+	
 	/**
 	 * Provides a simple list of every Collection in the db by name and description
 	 * @param swdb
@@ -123,7 +179,7 @@ public class GenericSQLQueries {
 		
 		SqlUtilities su = new SqlUtilities();
 		Connection swdb = su.getDbConnection();
-		String collectionListQuery = "SELECT * FROM CollectionList OrderBy CollectionName";
+		String collectionListQuery = "SELECT * FROM CollectionList Order By CollectionName";
 		ResultSet collectionList = sqlUtil.getQueryResults(swdb, collectionListQuery);
 		
 		//Create an arraylist to turn into a collection array

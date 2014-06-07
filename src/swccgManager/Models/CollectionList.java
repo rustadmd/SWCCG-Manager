@@ -71,10 +71,8 @@ public class CollectionList extends AbstractListModel<Collection> {
 			while (collectionList.next())
 			{
 				String collectionName = collectionList.getString(listColumn);
-				String collectionDescription = collectionList.getString("CollectionDescription");
-				Collection newCollection = new Collection(collectionName, collectionDescription);
-				//This next line could get dicey if not implemented correctly
-				//Theoretically safe due to ObjectName enumeration
+				//System.out.println(collectionName);//Debugging
+				Collection newCollection = new Collection(collectionName);
 				list.add(newCollection);
 			}
 		} catch (SQLException e) {

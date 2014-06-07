@@ -3,6 +3,10 @@
  */
 package swccgManager.Models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Database.InsertQueries;
 
 /**
@@ -25,6 +29,19 @@ public class Collection {
 	{
 		collectionName = name;
 		collectionDescription = description;
+	}
+	
+	public Collection (String name)
+	{
+		collectionName = name;
+		
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet collectionInfo = gsq.getCollectionVitals(name);
+		try {
+			collectionDescription = collectionInfo.getString("CollectionDescription");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

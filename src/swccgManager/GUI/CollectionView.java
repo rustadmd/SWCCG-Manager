@@ -4,13 +4,10 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
-import java.sql.Connection;
-
 import javax.swing.*;
 
-import swccgManager.Database.SqlUtilities;
-import swccgManager.Models.Card;
-import swccgManager.Models.FullCardSet;
+import swccgManager.Models.CardCollectionInfoModel;
+import swccgManager.Models.CardList;
 /**Main display for viewing a collection. This interface allows the user to browse
  * all cards, and see what cards they own. 
  * 
@@ -23,19 +20,31 @@ import swccgManager.Models.FullCardSet;
  */
 public class CollectionView extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -192220976455137236L;
+
 	public CollectionView()
 	{
 
 		//Set the layout
 		setLayout(new BorderLayout());
 		
+		/**Trying to eliminate FullCardSet from use
+		 * 
 		SqlUtilities sqlUtil = new SqlUtilities();
 		Connection swdb = sqlUtil.getDbConnection();
 		FullCardSet test = new FullCardSet(swdb);
-		sqlUtil.closeDB(swdb);
+		sqlUtil.closeDB(swdb);**/
 		
-		Card[] cardList 
-		= test.getFullCardSet();
+		//Test for db connection, works fine
+		//GenericSQLQueries gsq = new GenericSQLQueries();
+		//gsq.getCollectionList();
+		
+		//Set up models
+		CardCollectionInfoModel model = new CardCollectionInfoModel();
+		CardList cardList = model.getCardList();
 		CardListPanel listDisplay = new CardListPanel(cardList);
 		add(listDisplay, BorderLayout.WEST);
 		

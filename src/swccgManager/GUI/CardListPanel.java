@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import swccgManager.Models.Card;
+import swccgManager.Models.CardList;
 
 /**
  * @author Mark Rustad
@@ -27,12 +28,12 @@ public class CardListPanel extends JPanel{
 	 * Establishes a list of cards
 	 * @param cardList List of the cards to be displayed
 	 */
-	public CardListPanel(Card[] cardList)
+	public CardListPanel(CardList cardList)
 	{
 		//Add the card selector
 		
 		cardSelector = new JList<Card>();
-		cardSelector.setListData(cardList);
+		cardSelector.setModel(cardList);
 		JScrollPane listScroller = new JScrollPane();
 		listScroller.setViewportView(cardSelector);
 		

@@ -3,14 +3,13 @@
  */
 package swccgManager.Models;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.AbstractListModel;
 
+import swccgManager.Database.CardQueryCriteria;
 import swccgManager.Database.GenericSQLQueries;
+
 
 /**
  * @author Mark Rustad
@@ -26,9 +25,16 @@ public class CardList extends AbstractListModel<Card> {
 	 */
 	private static final long serialVersionUID = -8523269623472803052L;
 	private List<Card> list = new ArrayList<Card>();
+	private CardQueryCriteria m_criteria;
 	
 	public CardList()
 	{
+		this(new CardQueryCriteria());
+	}
+	
+	public CardList(CardQueryCriteria cardCriteria)
+	{
+		m_criteria = cardCriteria;
 		refreshList();
 	}
 
@@ -45,7 +51,6 @@ public class CardList extends AbstractListModel<Card> {
 	
 	public void refreshList()
 	{
-		list.clear(); 
 		fillListWithCards();
 		fireListDataChanged();
 	}
@@ -65,25 +70,9 @@ public class CardList extends AbstractListModel<Card> {
 	 */
 	private void fillListWithCards()
 	{
-		String listTable = "SWD";
-		String listColumn = "id";
-		
 		GenericSQLQueries gsq = new GenericSQLQueries();
-		ResultSet cardIdList = gsq.getCardVitals();
-		//iterate through the list and add them to the list
-		try {
-			while (cardIdList.next())
-			{
-				int cardID = cardIdList.getInt("id");
-				Card newCard = new Card(cardID);
-				//This next line could get dicey if not implemented correctly
-				//Theoretically safe due to ObjectName enumeration
-				list.add(newCard);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
+		List<Card> newCardList = gsq.getCardList(m_criteria);
+		setCardList(newCardList);
 	}
 	
 	private void fireListDataChanged() {

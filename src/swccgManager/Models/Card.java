@@ -29,7 +29,7 @@ public class Card {
 	private String m_expansion;
 	private String m_rarity;
 	private String m_uniqueness;
-	private String m_frontSideImagePath;
+	//private String m_frontSideImagePath;//currently unused, loads the image if there is none.
 	private Image m_frontSideImage;
 	
 	/**
@@ -54,14 +54,17 @@ public class Card {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		m_frontSideImage = null;//safety to ensure no image is there
 		
+		/*Unneeded at this time, get image will load the image if applicable
 		//Set the image path, but don't actually load the image
 		SqlUtilities su = new SqlUtilities();
 		Connection swdb = su.getDbConnection();
 		ImageManager im = new ImageManager(swdb);
 		m_frontSideImagePath = im.getImagePath(cardId, 1);
+		su.closeDB(swdb);*/
+		System.out.println("Card created: " + m_cardId);
 		
-		su.closeDB(swdb);
 	}
 	/**
 	 * Creates a card, with full paramaters (this should aid in speed of retrieval, instead of calling a new query every time)
@@ -75,7 +78,7 @@ public class Card {
 	 * @param uniqueness
 	 * @param img Front side image of the card
 	 */
-	public Card (int cardId, String cardName, String side, String cardType, String subType, String expansion, String rarity, String uniqueness, Image img)
+	public Card (int cardId, String cardName, String side, String cardType, String subType, String expansion, String rarity, String uniqueness)
 	{
 		m_cardId = cardId;
 		m_cardName = cardName;
@@ -85,7 +88,6 @@ public class Card {
 		m_expansion = expansion;
 		m_rarity = rarity;
 		m_uniqueness = uniqueness;
-		m_frontSideImage = img;
 	}
 	/**
 	 * Returns the full name as it would be printed on the card

@@ -37,5 +37,10 @@ public class CollectionDisplay extends JPanel{
 		collectionSelector = new JComboBox<Collection>(collectionList);
 		add(collectionSelector);
 	}
+	
+	public void refreshDisplay()
+	{
+		addCollectionSelector();
+	}
 
 }

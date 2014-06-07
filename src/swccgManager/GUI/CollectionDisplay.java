@@ -5,8 +5,9 @@ package swccgManager.GUI;
 
 import javax.swing.*;
 
-import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Models.Collection;
+import swccgManager.Models.CollectionList;
+import swccgManager.Models.CollectionListComboBoxModel;
 
 /**Panel for viewing important information about a collection and selecting different collections
  * @author Mark Rustad
@@ -18,9 +19,13 @@ public class CollectionDisplay extends JPanel{
 	
 	private static final long serialVersionUID = -2080540917727826932L;
 	private JComboBox<Collection> collectionSelector;
+	private CollectionList listModel;
+	private CollectionListComboBoxModel comboListModel;
 	
-	public CollectionDisplay()
+	public CollectionDisplay(CollectionList collectionListModel)
 	{
+		listModel = collectionListModel;
+		comboListModel = new CollectionListComboBoxModel(listModel);
 		addCollectionSelector();
 	}
 	
@@ -29,12 +34,8 @@ public class CollectionDisplay extends JPanel{
 	 */
 	private void addCollectionSelector()
 	{
-		//get the list
-		GenericSQLQueries gsq = new GenericSQLQueries();
-		Collection[] collectionList = gsq.getCollectionList();
-		
 		//create the combo box
-		collectionSelector = new JComboBox<Collection>(collectionList);
+		collectionSelector = new JComboBox<Collection>(comboListModel);
 		add(collectionSelector);
 	}
 	

@@ -4,7 +4,9 @@
 package swccgManager.GUI;
 
 import javax.swing.*;
-import swccgManager.Database.InsertQueries;
+
+import swccgManager.Models.CollectionList;
+
 import java.awt.*;
 import java.awt.event.*;
 /**
@@ -85,8 +87,25 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			{
 				//System.out.println("View > Collection Selected");//testing
-				NewCollectionWindow ncw = new NewCollectionWindow();
-				AddCollection al = new AddCollection(ncw);
+				
+				//will need to see if there is a collection display
+				//May need to add more if other panels have a collection display
+				if(m_activePanel.getClass().getSimpleName().equals("CollectionView"))
+				{
+					CollectionView currentView = (CollectionView)m_activePanel;
+					CollectionList collection = currentView.getCollectionList();
+					
+					@SuppressWarnings("unused")
+					NewCollectionWindow ncw = new NewCollectionWindow(collection);
+				}
+				else
+				{
+					@SuppressWarnings("unused")
+					NewCollectionWindow ncw = new NewCollectionWindow();
+				}
+				
+				
+				
 			}
 		};
 		collectionView.addActionListener(collectionView_al);
@@ -100,40 +119,13 @@ public class MainWindow extends JFrame {
 	
 	private void setActivePanel(JPanel activePanel)
 	{
+		if(m_activePanel != null)
+		{
+			remove(m_activePanel);
+		}
 		m_activePanel = activePanel;
 		add(m_activePanel);
 		pack();
-	}
-	
-	//Create action listeners
-	private class AddCollection implements ActionListener
-	{
-		NewCollectionWindow m_ncw;
-		
-		public AddCollection(NewCollectionWindow ncw)
-		{
-			m_ncw = ncw;
-			m_ncw.addSubmitButtonListener(this);
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			String name = m_ncw.getName();
-			String description = m_ncw.getDescription();
-			
-			//You must adjust for blank names
-			if(name.equals(null) || name.equals(""))
-			{
-				JOptionPane.showMessageDialog(m_ncw, "You must enter a name.");
-			}
-			else {
-				InsertQueries iq = new InsertQueries();
-				iq.addCollection(name, description);
-				m_ncw.setVisible(false);
-			}
-			
-		}
-		
 	}
 
 }

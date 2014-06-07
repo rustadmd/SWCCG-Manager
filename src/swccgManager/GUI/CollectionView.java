@@ -4,10 +4,12 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 import swccgManager.Models.CardCollectionInfoModel;
 import swccgManager.Models.CardList;
+import swccgManager.Models.CollectionList;
 /**Main display for viewing a collection. This interface allows the user to browse
  * all cards, and see what cards they own. 
  * 
@@ -24,6 +26,10 @@ public class CollectionView extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = -192220976455137236L;
+	
+	//These are for menubar-level items. this way models can be called and act on the models
+	private CardList cardList;
+	private CollectionList collectionList;
 
 	public CollectionView()
 	{
@@ -44,13 +50,42 @@ public class CollectionView extends JPanel{
 		
 		//Set up models
 		CardCollectionInfoModel model = new CardCollectionInfoModel();
-		CardList cardList = model.getCardList();
+		setCardList(model.getCardList());
 		CardListPanel listDisplay = new CardListPanel(cardList);
 		add(listDisplay, BorderLayout.WEST);
 		
 		//Add Collection Panel
-		CollectionDisplay cd = new CollectionDisplay();
+		setCollectionList(model.getCollectionList());
+		CollectionDisplay cd = new CollectionDisplay(collectionList);
 		add(cd, BorderLayout.NORTH);
+	}
+
+	/**
+	 * @return the cardList
+	 */
+	public CardList getCardList() {
+		return cardList;
+	}
+
+	/**
+	 * @param cardList the cardList to set
+	 */
+	public void setCardList(CardList cardList) {
+		this.cardList = cardList;
+	}
+
+	/**
+	 * @return the collectionList
+	 */
+	public CollectionList getCollectionList() {
+		return collectionList;
+	}
+
+	/**
+	 * @param collectionList the collectionList to set
+	 */
+	public void setCollectionList(CollectionList collectionList) {
+		this.collectionList = collectionList;
 	}
 
 }

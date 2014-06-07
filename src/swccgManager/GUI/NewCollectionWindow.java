@@ -4,8 +4,11 @@
 package swccgManager.GUI;
 import javax.swing.*;
 
+import swccgManager.Controllers.NewCollectionAction;
+import swccgManager.Models.CollectionList;
+
 import java.awt.*;
-import java.awt.event.ActionListener;
+
 /**
  * @author Mark Rustad
  * @version .01
@@ -18,12 +21,20 @@ public class NewCollectionWindow extends JFrame{
 	private JTextField name;
 	private JTextArea description;
 	private JButton submitButton;
+	private CollectionList m_list;
 	
 	public NewCollectionWindow()
+	{
+		this(null);
+	}
+	
+	public NewCollectionWindow(CollectionList list)
 	{
 		super("Add New Collection");
 		setLayout(new BorderLayout());
 		setVisible(true);
+		
+		m_list=list;
 		
 		//Add the various components
 		addNameSection();
@@ -33,16 +44,6 @@ public class NewCollectionWindow extends JFrame{
 		pack();
 		this.setResizable(false);
 	}
-	
-	/**
-	 * Adds an action listener to the button
-	 * @param al
-	 */
-	public void addSubmitButtonListener(ActionListener al)
-	{
-		submitButton.addActionListener(al);
-	}
-	
 	/**
 	 * Returns the name of the collection in a string format
 	 */
@@ -104,8 +105,10 @@ public class NewCollectionWindow extends JFrame{
 	
 	private void addSubmitButton()
 	{
+		NewCollectionAction addCollection = new NewCollectionAction(this, m_list);
 		
-		submitButton = new JButton("Add Collection");
+		submitButton = new JButton(addCollection);
+		submitButton.setText("Add Collection");
 		this.add(submitButton, BorderLayout.SOUTH);
 	}
 	

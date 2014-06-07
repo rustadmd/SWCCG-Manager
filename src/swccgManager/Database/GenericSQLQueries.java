@@ -45,9 +45,11 @@ public class GenericSQLQueries {
 		try {
 			getList = swdb.prepareStatement(
 					"SELECT DISTINCT ? "
-					+ "FROM ? ");
+					+ "FROM ? "
+					+ "ORDER BY ? ");
 			getList.setString(1, column);
 			getList.setString(2, table);
+			getList.setString(3, column);//Order by the same column
 			
 			list = getList.executeQuery();
 			
@@ -66,8 +68,9 @@ public class GenericSQLQueries {
 	 * @param swdb Connection to the DB
 	 * @return List all cards and their "vital" information
 	 */
-	public ResultSet getCardVitals(Connection swdb)
+	public ResultSet getCardVitals()
 	{
+		Connection swdb = sqlUtil.getDbConnection();
 		ResultSet cardVitals = null;
 		try{
 			Statement statement = swdb.createStatement();
@@ -75,7 +78,7 @@ public class GenericSQLQueries {
 			String cardVitalQuery = 
 					"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
-					+ "ORDER BY Expansion, Grouping"
+					+ "ORDER BY cardName"
 					//+ "WHERE id < 100"//Current limit, only want 20 at first
 					;
 			cardVitals = statement.executeQuery(cardVitalQuery);
@@ -85,7 +88,7 @@ public class GenericSQLQueries {
 		{
 			e.printStackTrace();
 		}
-		
+		sqlUtil.closeDB(swdb);
 		//return results
 		return cardVitals;
 	}
@@ -97,7 +100,7 @@ public class GenericSQLQueries {
 	 * @param cardId id of the card
 	 * @return ResultSet containing all the global important card information
 	 */
-	public ResultSet getCardVitals( int cardId)
+	public ResultSet getCardVitals(int cardId)
 	{
 		Connection swdb = sqlUtil.getDbConnection();
 		String cardVitalsQuery = 
@@ -120,7 +123,7 @@ public class GenericSQLQueries {
 		
 		SqlUtilities su = new SqlUtilities();
 		Connection swdb = su.getDbConnection();
-		String collectionListQuery = "SELECT * FROM CollectionList";
+		String collectionListQuery = "SELECT * FROM CollectionList OrderBy CollectionName";
 		ResultSet collectionList = sqlUtil.getQueryResults(swdb, collectionListQuery);
 		
 		//Create an arraylist to turn into a collection array
@@ -146,11 +149,16 @@ public class GenericSQLQueries {
 		return collectionList_ar;
 				
 	}
+	
+	/****Obsolete code
+	 *  testing code that does not need to be used in an active program
+	 */
+	
 	/**
 	 * Gets a query that checks for cards that don't have a matched image
 	 * @param swdb Connection to the SW database
 	 * @return ResultSet list of cards that don't have matched images
-	 */
+	 
 	public ResultSet getCardsWithoutImages (Connection swdb)
 	{
 		String cardsWOImages = "SELECT "
@@ -171,7 +179,7 @@ public class GenericSQLQueries {
 	 * 
 	 * @param swdb Connection to the SW database
 	 * @return ResultSet list of the Objective cards with the wrong number of images
-	 */
+	 
 	public  ResultSet objectivesWithWrongNumberofImages(Connection swdb)
 	{
 		String objectiveImageIssueList =
@@ -192,7 +200,7 @@ public class GenericSQLQueries {
 	 * Gets a list of all the image paths
 	 * @param swdb connection to the db
 	 * @return List of all the image paths, matched to the cardId
-	 */
+	 
 	public ResultSet allLargeImagePaths(Connection swdb)
 	{
 		String allImagePathsQuery = 
@@ -203,5 +211,5 @@ public class GenericSQLQueries {
 		return imagePaths;
 	}
 	
-	
+	****/
 }

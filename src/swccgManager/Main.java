@@ -26,11 +26,11 @@ public class Main {
 	{
 		//Initiallize all settings
 		s = new Settings();
-		FullCardSet fcs = s.fcs;
+		//FullCardSet fcs = s.fcs;
 		
 		
 		//Setup intial GUI
-		MainWindow mw = new MainWindow(fcs);
+		MainWindow mw = new MainWindow();
 	}
 	
 	

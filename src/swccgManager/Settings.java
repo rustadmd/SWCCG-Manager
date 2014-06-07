@@ -22,7 +22,7 @@ import swccgManager.Models.FullCardSet;
 public class Settings {
 	
 	private static String m_programPath;
-	public static FullCardSet fcs; //there is only one master list of cards
+	//public static FullCardSet fcs; //there is only one master list of cards
 	
 	/**
 	 * Creates initial settings, sets up file path and SQLlite connector
@@ -33,11 +33,13 @@ public class Settings {
 		setupSqlLiteConnector();
 		
 		//Create full card list
+		/**This is now obsolete, using individual card lists pulled from db
 		SqlUtilities sqlUtil = new SqlUtilities();
 		Connection swdb = sqlUtil.getDbConnection();
 		@SuppressWarnings("unused")
 		FullCardSet fcs = new FullCardSet(swdb);
 		sqlUtil.closeDB(swdb);
+		**/
 	}
 	
 	/**

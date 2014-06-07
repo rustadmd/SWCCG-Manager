@@ -23,7 +23,7 @@ public class MainWindow extends JFrame {
 	private JPanel m_activePanel;
 	private JMenuBar mainMenu;
 	
-	public MainWindow(FullCardSet fcs)
+	public MainWindow()
 	{
 		
 		super("SWCCG Manager");

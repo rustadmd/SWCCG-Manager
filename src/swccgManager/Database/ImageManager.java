@@ -10,12 +10,14 @@ package swccgManager.Database;
  *
  */
 
-import java.net.URL;
+
 import java.sql.*;
 import java.awt.*;
-import java.io.File;
-
 import javax.imageio.ImageIO;
+
+//Not currently used in active program
+//import java.io.File;
+//import java.net.URL;
 
 public class ImageManager {
 	
@@ -79,10 +81,15 @@ public class ImageManager {
 		
 		return imageLocation_s;
 	}
+	
+	/****Obsolete code
+	 * Not currently used during an active program
+	 */
+	
 	/**
 	 * Tests each card to make sure it has an image
 	 * @param swdb
-	 */
+	 
 	@SuppressWarnings("unused")
 	private void testEachCardHasImage(Connection swdb)
 	{
@@ -118,7 +125,7 @@ public class ImageManager {
 	/**
 	 * Tests each objective to guarantee there are exactly 2 images
 	 * @param swdb
-	 */
+	 
 	
 	@SuppressWarnings("unused")
 	private void testObjectiveImages(Connection swdb)
@@ -156,7 +163,7 @@ public class ImageManager {
 	/**
 	 * Tests each image path to make sure there is a file at the end
 	 * @param swdb
-	 */
+	 
 	
 	@SuppressWarnings("unused")
 	private void testImagePathsValid(Connection swdb)
@@ -246,7 +253,7 @@ public class ImageManager {
 	 * 
 	 * @param swdb Connection to the db
 	 * @param cardList list of cards that need images
-	 */
+	 
 	@SuppressWarnings("unused")
 	private void addImagePaths(Connection swdb, ResultSet cardList)
 	{
@@ -377,7 +384,7 @@ public class ImageManager {
 	 * @param connection Connection to the swdb
 	 * @param cardId Card id of the card image
 	 * @param fileLocation Location where the image file is, including name and type 
-	 */
+	 
 	private void addLargeImageFileLocation(Connection connection, int cardId, String fileLocation)
 	{
 		try{
@@ -401,5 +408,5 @@ public class ImageManager {
 		}
 	}
 	
-	
+	***/
 }

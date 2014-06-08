@@ -31,11 +31,14 @@ ComboBoxModel<Collection>  {
 	private CollectionList list;
 	private ListSelectionModel listSelectionModel;
 	
+	@SuppressWarnings("static-access")
 	public CollectionListComboBoxModel(CollectionList listModel)
 	{
 		//initialize basics
 		list = listModel;
 		listSelectionModel = new DefaultListSelectionModel();
+		listSelectionModel.setSelectionMode(listSelectionModel.SINGLE_SELECTION);
+		listSelectionModel.setSelectionInterval(0, 0);
 		
 		//These classes are listeners for data changes
 		@SuppressWarnings("unused")

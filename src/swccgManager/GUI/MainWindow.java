@@ -76,13 +76,13 @@ public class MainWindow extends JFrame {
 		JMenu collectionMenu = new JMenu("Collection");
 		
 		//Collecton view, for viewing various collections of cards
-		JMenuItem collectionView = new JMenuItem("New Collection");
-		collectionMenu.add(collectionView);
+		JMenuItem addCollection = new JMenuItem("New Collection");
+		collectionMenu.add(addCollection);
 		//Collection test = new Collection("Mark", "My Collection");
 		//test.saveCollection();
 		
 		//Add the action action to add a new item
-		ActionListener collectionView_al = new ActionListener()
+		ActionListener addCollection_al = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -103,17 +103,23 @@ public class MainWindow extends JFrame {
 					@SuppressWarnings("unused")
 					NewCollectionWindow ncw = new NewCollectionWindow();
 				}
-				
-				
-				
 			}
 		};
-		collectionView.addActionListener(collectionView_al);
+		addCollection.addActionListener(addCollection_al);
 		
 		//Deck view, for viewing particular decks
-		JMenuItem deckView = new JMenuItem("Export Collection");
-		collectionMenu.add(deckView);
+		JMenuItem exportCollection = new JMenuItem("Export Collection");
+		collectionMenu.add(exportCollection);
 		
+		ActionListener exportCollection_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				@SuppressWarnings("unused")
+				ExportCollectionWindow ecw = new ExportCollectionWindow();
+			}
+		};
+		exportCollection.addActionListener(exportCollection_al);
 		mainMenu.add(collectionMenu);
 	}
 	

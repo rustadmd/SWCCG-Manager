@@ -24,24 +24,19 @@ public class CollectionDisplay extends JPanel{
 	
 	public CollectionDisplay(CollectionList collectionListModel)
 	{
-		listModel = collectionListModel;
-		comboListModel = new CollectionListComboBoxModel(listModel);
-		addCollectionSelector();
+		addCollectionSelector(collectionListModel);
 	}
 	
 	/**
 	 * adds the collection selector to the box
 	 */
-	private void addCollectionSelector()
+	private void addCollectionSelector(CollectionList collectionListModel)
 	{
 		//create the combo box
+		listModel = collectionListModel;
+		comboListModel = new CollectionListComboBoxModel(listModel);
 		collectionSelector = new JComboBox<Collection>(comboListModel);
 		add(collectionSelector);
-	}
-	
-	public void refreshDisplay()
-	{
-		addCollectionSelector();
 	}
 
 }

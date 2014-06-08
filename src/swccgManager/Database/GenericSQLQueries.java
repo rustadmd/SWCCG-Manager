@@ -14,6 +14,9 @@ package swccgManager.Database;
  *
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
 
@@ -27,6 +30,51 @@ public class GenericSQLQueries {
 	public GenericSQLQueries()
 	{
 		sqlUtil = new SqlUtilities();
+	}
+	
+	
+	public void writeCollectionExportFile(File exportFile, String collectionName)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		try {
+			//Establish print writer
+			PrintWriter pw = new PrintWriter(exportFile);
+			//build query
+			PreparedStatement exportQuery = swdb.prepareStatement(
+					"SELECT cardId, SortLocation, Inventory, "
+					+ "Desired, Extra, Rating, Comment "
+					+ "FROM Collection "
+					+ "WHERE CollectionName = ? ");
+			exportQuery.setString(1, collectionName);
+			ResultSet exportResults = exportQuery.executeQuery();
+			
+			while (exportResults.next())
+			{
+				//get information from query
+				int cardId = exportResults.getInt("cardId");
+				String sortLocation = exportResults.getString("SortLocation");
+				int inventory = exportResults.getInt("Inventory");
+				int desired = exportResults.getInt("Desired");
+				int extra = exportResults.getInt("Extra");
+				int rating = exportResults.getInt("Rating");
+				String comment = exportResults.getString("Comment");
+						
+				//write the output file
+				String sep = "|";
+				String cardEntry = cardId + sep + sortLocation + sep + inventory
+						+ sep + desired + sep + extra + sep + rating + sep + comment;
+				String fullLine = String.format("%s\n", cardEntry);
+				//System.out.println(fullLine);//testing
+				
+				pw.write(fullLine);
+				
+			}
+			pw.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

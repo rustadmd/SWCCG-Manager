@@ -3,6 +3,8 @@
  */
 package swccgManager.GUI;
 
+import java.awt.*;
+
 import javax.swing.*;
 
 import swccgManager.Models.Collection;
@@ -22,9 +24,15 @@ public class CollectionDisplay extends JPanel{
 	private CollectionList listModel;
 	private CollectionListComboBoxModel comboListModel;
 	
+	//display fields
+	private JTextArea description;
+	
 	public CollectionDisplay(CollectionList collectionListModel)
 	{
+		setLayout(new FlowLayout());
+		
 		addCollectionSelector(collectionListModel);
+		addCollectionDescription();
 	}
 	
 	/**
@@ -37,6 +45,18 @@ public class CollectionDisplay extends JPanel{
 		comboListModel = new CollectionListComboBoxModel(listModel);
 		collectionSelector = new JComboBox<Collection>(comboListModel);
 		add(collectionSelector);
+	}
+	
+	private void addCollectionDescription()
+	{
+		description = new JTextArea(3, 20);
+		description.setText("test description");
+		description.setEditable(false);
+		
+		TitledBorderPanel descriptionPanel = new TitledBorderPanel("Description");
+		add(descriptionPanel);
+		
+		descriptionPanel.add(description);
 	}
 
 }

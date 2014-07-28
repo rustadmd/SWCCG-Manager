@@ -12,14 +12,18 @@ package swccgManager.Models;
 public class CardCollectionInfoModel {
 	
 	private CardList cardList;
-	private CollectionList collectionList;
-	private Card activeCard;
-	private Collection activeCollection;
+	private CollectionList m_collectionList;
+	private CardCollectionStatsModel activeCardCollectionStatsModel;
 	
 	public CardCollectionInfoModel()
 	{
 		cardList = new CardList();
-		collectionList = new CollectionList();
+		m_collectionList = new CollectionList();
+		
+		//Display initial information
+		Card firstCard = cardList.getElementAt(0);
+		Collection firstCollection = m_collectionList.getElementAt(0);
+		activeCardCollectionStatsModel = new CardCollectionStatsModel(firstCard, firstCollection);
 	}
 
 	/**
@@ -33,21 +37,36 @@ public class CardCollectionInfoModel {
 	 * @return the collectionList
 	 */
 	public CollectionList getCollectionList() {
-		return collectionList;
+		return m_collectionList;
 	}
 
 	/**
 	 * @return the activeCard
 	 */
 	public Card getActiveCard() {
-		return activeCard;
+		return activeCardCollectionStatsModel.getCard();
+	}
+
+	/**
+	 * @return the activeCardCollectionStatsModel
+	 */
+	public CardCollectionStatsModel getActiveCardCollectionStatsModel() {
+		return activeCardCollectionStatsModel;
+	}
+
+	/**
+	 * @param activeCardCollectionStatsModel the activeCardCollectionStatsModel to set
+	 */
+	public void setActiveCardCollectionStatsModel(Card card, Collection collection) {
+		
+		activeCardCollectionStatsModel = new CardCollectionStatsModel(card, collection);
 	}
 
 	/**
 	 * @return the activeCollection
 	 */
 	public Collection getActiveCollection() {
-		return activeCollection;
+		return activeCardCollectionStatsModel.getCollection();
 	}
 
 }

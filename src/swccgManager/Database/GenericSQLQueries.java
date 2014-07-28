@@ -78,6 +78,36 @@ public class GenericSQLQueries {
 	}
 	
 	/**
+	 * Gets the information concerning a card in a particular collection
+	 * @param cardID
+	 * @param collectionName
+	 * @return 
+	 */
+	public ResultSet getCardCollectionStats(int cardID, String collectionName)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		PreparedStatement cardCollectionStatsQuery;
+		ResultSet cardCollectionStatsResults = null;
+		try {
+			cardCollectionStatsQuery = swdb.prepareStatement(
+					"SELECT collectionName, cardID, sortLocation, inventory, desired, extra, rating, comment"
+							+ " FROM Collection "
+							+ "WHERE collectionName =  ? "//AND CardID = ?"
+					);
+			cardCollectionStatsQuery.setString(1, collectionName);	
+			//cardCollectionStatsQuery.setInt(2, cardID);
+			cardCollectionStatsResults = cardCollectionStatsQuery.executeQuery();
+			//System.out.println("Collection Name from GSQ: " + cardCollectionStatsResults.getString(1));
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//sqlUtil.closeDB(swdb);
+		return cardCollectionStatsResults;
+	}
+	
+	/**
 	 * Tests the database to see if there is an entry in the system already
 	 * helps test against duplicated entries
 	 * @param column Column (usually a primary key) where the entry exists

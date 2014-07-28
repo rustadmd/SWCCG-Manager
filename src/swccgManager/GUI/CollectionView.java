@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import javax.swing.*;
 
 import swccgManager.Models.CardCollectionInfoModel;
+import swccgManager.Models.CardCollectionStatsModel;
 import swccgManager.Models.CardList;
 import swccgManager.Models.CollectionList;
 /**Main display for viewing a collection. This interface allows the user to browse

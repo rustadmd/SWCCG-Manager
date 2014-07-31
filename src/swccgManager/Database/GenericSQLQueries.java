@@ -280,7 +280,7 @@ public class GenericSQLQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		sqlUtil.closeDB(swdb);
+		//sqlUtil.closeDB(swdb);
 		return collectionInfo;
 		
 	}

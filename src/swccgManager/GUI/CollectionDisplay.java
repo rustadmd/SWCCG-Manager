@@ -7,6 +7,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import swccgManager.Controllers.CollectionChangedAction_CV;
 import swccgManager.Models.Collection;
 import swccgManager.Models.CollectionList;
 import swccgManager.Models.CollectionListComboBoxModel;
@@ -25,7 +26,7 @@ public class CollectionDisplay extends JPanel{
 	private CollectionListComboBoxModel comboListModel;
 	
 	//display fields
-	private JTextArea description;
+	private JTextArea description_ta;
 	
 	public CollectionDisplay(CollectionList collectionListModel)
 	{
@@ -35,6 +36,17 @@ public class CollectionDisplay extends JPanel{
 		addCollectionDescription();
 	}
 	
+	public Collection getSelectedCollection()
+	{
+		Collection selectedCollection = (Collection) collectionSelector.getSelectedItem();
+		return selectedCollection;
+	}
+	
+	public void setCollectionDescriptionDisplay(String description)
+	{
+		//System.out.println("Description: " + description);
+		description_ta.setText(description);
+	}
 	/**
 	 * adds the collection selector to the box
 	 */
@@ -44,19 +56,22 @@ public class CollectionDisplay extends JPanel{
 		listModel = collectionListModel;
 		comboListModel = new CollectionListComboBoxModel(listModel);
 		collectionSelector = new JComboBox<Collection>(comboListModel);
+		collectionSelector.setAction(new CollectionChangedAction_CV(this));
 		add(collectionSelector);
 	}
 	
 	private void addCollectionDescription()
 	{
-		description = new JTextArea(3, 20);
-		description.setText("test description");
-		description.setEditable(false);
+		description_ta = new JTextArea(3, 20);
+		Collection initialCollection = getSelectedCollection();
+		String initialDescription = initialCollection.getCollectionDescription();
+		setCollectionDescriptionDisplay(initialDescription);
+		description_ta.setEditable(false);
 		
 		TitledBorderPanel descriptionPanel = new TitledBorderPanel("Description");
 		add(descriptionPanel);
 		
-		descriptionPanel.add(description);
+		descriptionPanel.add(description_ta);
 	}
 
 }

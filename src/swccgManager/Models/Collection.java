@@ -29,6 +29,7 @@ public class Collection {
 	{
 		collectionName = name;
 		collectionDescription = description;
+		System.out.println("Collection Created: " + collectionName + collectionDescription);
 	}
 	
 	public Collection (String name)
@@ -39,9 +40,11 @@ public class Collection {
 		ResultSet collectionInfo = gsq.getCollectionVitals(name);
 		try {
 			collectionDescription = collectionInfo.getString("CollectionDescription");
+			collectionInfo.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		//System.out.println("Collection Created: " + collectionName + collectionDescription);//debugging
 	}
 	
 	/**

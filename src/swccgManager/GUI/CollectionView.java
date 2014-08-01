@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.*;
 
+import swccgManager.Controllers.CardChangedAction_CV;
+import swccgManager.Models.Card;
 import swccgManager.Models.CardCollectionInfoModel;
 import swccgManager.Models.CardCollectionStatsModel;
 import swccgManager.Models.CardList;
@@ -31,6 +33,11 @@ public class CollectionView extends JPanel{
 	//These are for menubar-level items. this way models can be called and act on the models
 	private CardList cardList;
 	private CollectionList collectionList;
+	
+	//list of the panels
+	CollectionDisplay collectionDisplay;
+	CardDisplay cardDisplay;
+	CardListPanel listDisplay;
 
 	public CollectionView()
 	{
@@ -49,18 +56,40 @@ public class CollectionView extends JPanel{
 		//GenericSQLQueries gsq = new GenericSQLQueries();
 		//gsq.getCollectionList();
 		
-		//Set up models
+		//Add card selection list
 		CardCollectionInfoModel model = new CardCollectionInfoModel();
 		setCardList(model.getCardList());
-		CardListPanel listDisplay = new CardListPanel(cardList);
+		listDisplay = new CardListPanel(cardList);
+		//add listener for changes
+		CardChangedAction_CV cca = new CardChangedAction_CV(this);
+		listDisplay.addCardChangedAction(cca);
 		add(listDisplay, BorderLayout.WEST);
 		
 		//Add Collection Panel
 		setCollectionList(model.getCollectionList());
-		CollectionDisplay cd = new CollectionDisplay(collectionList);
-		add(cd, BorderLayout.NORTH);
+		collectionDisplay = new CollectionDisplay(collectionList);
+		add(collectionDisplay, BorderLayout.NORTH);
+		
+		//Add the basic card information
+		Card selectedCard = listDisplay.getSelectedCard();
+		cardDisplay = new CardDisplay(selectedCard);
+		add(cardDisplay, BorderLayout.CENTER);
 	}
 
+	
+	public Card getSelectedCard()
+	{
+		Card selectedCard = listDisplay.getSelectedCard();
+		return selectedCard;
+	}
+	/**
+	 * Feeds a new card to the card display. Simply an access issue
+	 * @param newCard
+	 */
+	public void updateCardDisplay(Card newCard)
+	{
+		cardDisplay.refreshDisplay(newCard);
+	}
 	/**
 	 * @return the cardList
 	 */

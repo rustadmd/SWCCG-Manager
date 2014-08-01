@@ -372,7 +372,7 @@ public class GenericSQLQueries {
 	 * Gets a list of all the image paths
 	 * @param swdb connection to the db
 	 * @return List of all the image paths, matched to the cardId
-	 
+	 */
 	public ResultSet allLargeImagePaths(Connection swdb)
 	{
 		String allImagePathsQuery = 
@@ -383,5 +383,5 @@ public class GenericSQLQueries {
 		return imagePaths;
 	}
 	
-	****/
+	//****/
 }

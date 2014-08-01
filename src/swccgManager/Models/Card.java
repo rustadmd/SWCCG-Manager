@@ -17,6 +17,9 @@ import swccgManager.Database.SqlUtilities;
  * @author mdrustad Rustad
  * @version .01
  * @date May 8, 2014
+ * 
+ * ChangeLog:
+ * 		-2014-07-30: Changed from Image to ImageIcon
  *
  */
 public class Card {
@@ -159,15 +162,22 @@ public class Card {
 	 */
 	public Image getFrontSideImage() {
 		
+		//m_frontSideImage = null;
 		//Load the card if it is not present
 		if (m_frontSideImage == null)
 		{
+			//System.out.println("Front Side Image is null");
+			
 			SqlUtilities su = new SqlUtilities();
 			Connection swdb = su.getDbConnection();
 			ImageManager im = new ImageManager(swdb);
-			m_frontSideImage = im.getCardImage(m_cardId, 1);
+			Image image = im.getCardImage(m_cardId, 1);
+			//m_frontSideImage.setImage(image);
+			m_frontSideImage = image;
+			
 			su.closeDB(swdb);
 		}
+		
 		//1 is always the front side
 		return m_frontSideImage;
 	}

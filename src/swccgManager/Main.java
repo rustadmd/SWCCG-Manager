@@ -1,9 +1,12 @@
 package swccgManager;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import swccgManager.Database.GenericSQLQueries;
+import swccgManager.Database.ImageManager;
+import swccgManager.Database.SqlUtilities;
 import swccgManager.GUI.MainWindow;
 import swccgManager.Models.Card;
 
@@ -30,38 +33,21 @@ public class Main {
 	{
 		//Initiallize all settings
 		s = new Settings();
-		//FullCardSet fcs = s.fcs;
-		
-		
+		//FullCardSet fcs = s.fcs;	
+		//testing();
 		//Setup intial GUI
 		MainWindow mw = new MainWindow();
 		
-		//testing();
+		
 		
 	}
 	
 	private static void testing()
 	{
-		//Card testCard = new Card(81);
-		//System.out.println(testCard.getCardName() );
+		SqlUtilities su = new SqlUtilities();
+		Connection swdb = su.getDbConnection();
+		ImageManager im = new ImageManager(swdb);
+		im.testImagePathsValid();
 		
-		GenericSQLQueries gsq = new GenericSQLQueries();
-		ResultSet testResults = gsq.getCardCollectionStats(115, "Mark");
-		ResultSet testCardResults = gsq.getCardVitals(81);
-		try {
-			//while(testResults.next())
-			{
-				String collectionName = testResults.getString(1);
-				System.out.println("Collection Name: " + collectionName);
-			}
-			testResults.close();
-			
-			String cardName = testCardResults.getString("CardName");
-			System.out.println("CardName: " + cardName);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

@@ -13,7 +13,11 @@ package swccgManager.Database;
 
 import java.sql.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
 
 //Not currently used in active program
 //import java.io.File;
@@ -46,15 +50,46 @@ public class ImageManager {
 	public Image getCardImage(int cardId, int side)
 	{
 		String imageLocation = getImagePath (cardId, side);
-		
 		//access the image and load it
-		Image cardImage = null;
+		BufferedImage cardImage = null;
+		try {
+			//retrieve card
+			cardImage = ImageIO.read(getClass().getResource(imageLocation));
+			//System.out.println("ImageLocation within the getCardImage (image retrieved?): " + imageLocation);
+		}
+		
+		catch (Exception e)
+		{
+			//File does not exist
+			//int cardId = imagePaths.getInt("cardID");
+			System.out.println("Image not found on path: " + cardId + "|" + imageLocation);
+		}
+		
+		/***broken code
+		BufferedImage cardImage = null;
 		try {
 			
+			//cardImage = ImageIO.read(getClass().getResource(imageLocation));
+			
+			//java.net.URL fullImagePath = getClass().getResource(imageLocation);
+			//String fullImagePath_s = fullImagePath.toString();
+			//File imageFile = new File(fullImagePath_s);
+			//
+			//File imageFile = new File(imageLocation);
+			
 			cardImage = ImageIO.read(getClass().getResource(imageLocation));
+			//if(imageFile.exists())
+			{
+				System.out.println("image exists: " + imageLocation);
+			}
+			//cardImage = ImageIO.read(imageFile);
 		
 		} catch (Exception e1) {
 			e1.printStackTrace();
+		}***/
+		if(cardImage == null)
+		{
+			System.out.println("Image not loaded (ImageManager)");
 		}
 		
 		return cardImage;
@@ -78,7 +113,7 @@ public class ImageManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		//System.out.println(imageLocation_s);//debugging
 		return imageLocation_s;
 	}
 	
@@ -163,13 +198,13 @@ public class ImageManager {
 	/**
 	 * Tests each image path to make sure there is a file at the end
 	 * @param swdb
-	 
+	 */
 	
 	@SuppressWarnings("unused")
-	private void testImagePathsValid(Connection swdb)
+	public void testImagePathsValid()
 	{
 		GenericSQLQueries gsq = new GenericSQLQueries();
-		ResultSet imagePaths = gsq.allLargeImagePaths(swdb);
+		ResultSet imagePaths = gsq.allLargeImagePaths(m_swdb);
 		try{
 			int numSuccesses = 0;
 			int numFailures = 0;
@@ -178,16 +213,18 @@ public class ImageManager {
 			{
 				
 				String imagePath = imagePaths.getString("large");
+				BufferedImage cardImage = null;
 				//If you are able to create a file object, the file exists
 				try {
 					
-					URL fullImagePath = getClass().getResource(imagePath);
+					java.net.URL fullImagePath = getClass().getResource(imagePath);
 					String fullImagePath_s = fullImagePath.toString();
 					File imageFile = new File(fullImagePath_s);
+					cardImage = ImageIO.read(getClass().getResource(imagePath));
 					numSuccesses ++;
 				}
 				
-				catch (NullPointerException e)
+				catch (Exception e)
 				{
 					//File does not exist
 					numFailures++;

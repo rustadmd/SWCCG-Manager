@@ -33,6 +33,7 @@ public class CollectionView extends JPanel{
 	//These are for menubar-level items. this way models can be called and act on the models
 	private CardList cardList;
 	private CollectionList collectionList;
+	private 
 	
 	//list of the panels
 	CollectionDisplay collectionDisplay;
@@ -74,6 +75,8 @@ public class CollectionView extends JPanel{
 		Card selectedCard = listDisplay.getSelectedCard();
 		cardDisplay = new CardDisplay(selectedCard);
 		add(cardDisplay, BorderLayout.CENTER);
+		
+		
 	}
 
 	

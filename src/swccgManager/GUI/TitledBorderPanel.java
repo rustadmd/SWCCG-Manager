@@ -11,9 +11,11 @@ import javax.swing.border.TitledBorder;
 
 /**
  * @author Mark Rustad
- * @version .01
+ * @version .02
  * @date Jul 27, 2014
  *
+ * Changelog:
+ * 		2014-08-02: Added functionality to change title. Default constructor added.
  */
 public class TitledBorderPanel extends JPanel {
 	
@@ -21,7 +23,9 @@ public class TitledBorderPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -6375520442784055949L;
-
+	
+	TitledBorder titledBorder;
+	
 	public TitledBorderPanel(String title)
 	{
 		super();
@@ -31,10 +35,20 @@ public class TitledBorderPanel extends JPanel {
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 		
 		//add the title
-		TitledBorder titledBorder;
+		
 		titledBorder = BorderFactory.createTitledBorder(loweredetched, title);
 		//titledBorder.setTitleJustification(TitledBorder.RIGHT);
 		setBorder(titledBorder);
+	}
+	
+	public TitledBorderPanel()
+	{
+		this("Default");
+	}
+	
+	public void setTitle(String newTitle)
+	{
+		titledBorder.setTitle(newTitle);
 	}
 
 }

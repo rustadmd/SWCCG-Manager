@@ -12,6 +12,7 @@ import swccgManager.Models.Card;
 import swccgManager.Models.CardCollectionInfoModel;
 import swccgManager.Models.CardCollectionStatsModel;
 import swccgManager.Models.CardList;
+import swccgManager.Models.Collection;
 import swccgManager.Models.CollectionList;
 /**Main display for viewing a collection. This interface allows the user to browse
  * all cards, and see what cards they own. 
@@ -33,12 +34,13 @@ public class CollectionView extends JPanel{
 	//These are for menubar-level items. this way models can be called and act on the models
 	private CardList cardList;
 	private CollectionList collectionList;
-	private 
+	private CardCollectionStatsModel statsModel;
 	
 	//list of the panels
 	CollectionDisplay collectionDisplay;
 	CardDisplay cardDisplay;
 	CardListPanel listDisplay;
+	CardCollectionStatsDisplay statsDisplay;
 
 	public CollectionView()
 	{
@@ -71,10 +73,18 @@ public class CollectionView extends JPanel{
 		collectionDisplay = new CollectionDisplay(collectionList);
 		add(collectionDisplay, BorderLayout.NORTH);
 		
-		//Add the basic card information
+		//create the stats information
 		Card selectedCard = listDisplay.getSelectedCard();
+		Collection selectedCollection = collectionDisplay.getSelectedCollection();
+		statsModel = new CardCollectionStatsModel(selectedCard, selectedCollection);
+		
+		//Add the basic card information
 		cardDisplay = new CardDisplay(selectedCard);
 		add(cardDisplay, BorderLayout.CENTER);
+		
+		//Add collection stats information
+		statsDisplay = new CardCollectionStatsDisplay(statsModel);
+		add(statsDisplay, BorderLayout.EAST);
 		
 		
 	}

@@ -92,7 +92,7 @@ public class GenericSQLQueries {
 			cardCollectionStatsQuery = swdb.prepareStatement(
 					"SELECT collectionName, cardID, sortLocation, inventory, desired, extra, rating, comment"
 							+ " FROM Collection "
-							+ "WHERE collectionName =  ? "//AND CardID = ?"
+							+ "WHERE collectionName =  ? AND CardID = ?"
 					);
 			cardCollectionStatsQuery.setString(1, collectionName);	
 			//cardCollectionStatsQuery.setInt(2, cardID);

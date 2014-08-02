@@ -21,7 +21,8 @@ public class CardCollectionStatsModel {
 	private Collection m_collection;
 	private Card m_card;
 	private String m_sortLocation;
-	private int m_inventory, m_desired, m_extra, m_rating;
+	private InventorySpinnerModel m_inventory = new InventorySpinnerModel();
+	private int m_desired, m_extra, m_rating;
 	private String m_comment;
 	private boolean isInDB;//for when db needs to be updated
 	
@@ -35,12 +36,16 @@ public class CardCollectionStatsModel {
 		int cardID = m_card.getCardId();
 		String collectionName = m_collection.getCollectionName();
 		
+		
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		
 		try{
 			ResultSet cardCollectionStats_rs = gsq.getCardCollectionStats(cardID, collectionName);
 			m_sortLocation = cardCollectionStats_rs.getString("sortLocation");
-			m_inventory = cardCollectionStats_rs.getInt("inventory");
+			
+			int inventory = cardCollectionStats_rs.getInt("inventory");
+			System.out.println(inventory);
+			m_inventory.setValue(inventory);
 			m_desired = cardCollectionStats_rs.getInt("desired");
 			m_extra = cardCollectionStats_rs.getInt("extra");
 			m_rating = cardCollectionStats_rs.getInt("rating");
@@ -53,7 +58,7 @@ public class CardCollectionStatsModel {
 			//set everything to blank, so it can be displayed
 			m_sortLocation = "";
 			m_comment = "";
-			m_inventory = 0;
+			m_inventory.setValue(0);
 			m_desired  = 0;
 			m_extra  = 0;
 			m_rating  = 0;
@@ -77,13 +82,13 @@ public class CardCollectionStatsModel {
 	/**
 	 * @return the inventory
 	 */
-	public int getInventory() {
+	public InventorySpinnerModel getInventoryModel() {
 		return m_inventory;
 	}
 	/**
 	 * @param inventory the inventory to set
 	 */
-	public void setInventory(int inventory) {
+	public void setInventory(InventorySpinnerModel inventory) {
 		this.m_inventory = inventory;
 	}
 	/**

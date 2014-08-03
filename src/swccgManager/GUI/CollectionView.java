@@ -49,16 +49,8 @@ public class CollectionView extends JPanel{
 		//Set the layout
 		setLayout(new BorderLayout());
 		
-		/**Trying to eliminate FullCardSet from use
-		 * 
-		SqlUtilities sqlUtil = new SqlUtilities();
-		Connection swdb = sqlUtil.getDbConnection();
-		FullCardSet test = new FullCardSet(swdb);
-		sqlUtil.closeDB(swdb);**/
-		
-		//Test for db connection, works fine
-		//GenericSQLQueries gsq = new GenericSQLQueries();
-		//gsq.getCollectionList();
+		JPanel searchAndListPanel = new JPanel();
+		searchAndListPanel.setLayout(new BorderLayout());
 		
 		//Add card selection list
 		//CardCollectionInfoModel model = new CardCollectionInfoModel();
@@ -67,8 +59,13 @@ public class CollectionView extends JPanel{
 		//add listener for changes
 		CardChangedAction_CV cca = new CardChangedAction_CV(this);
 		listDisplay.addCardChangedAction(cca);
-		
-		add(listDisplay, BorderLayout.WEST);
+		listDisplay.addListDataListener(cca);
+		searchAndListPanel.add(listDisplay, BorderLayout.SOUTH);
+
+		//add the search panel
+		SearchDisplay searchPanel = new SearchDisplay(cardList);
+		searchAndListPanel.add(searchPanel, BorderLayout.CENTER);
+		add(searchAndListPanel, BorderLayout.WEST);
 		
 		//Add Collection Panel
 		collectionList = new CollectionList();

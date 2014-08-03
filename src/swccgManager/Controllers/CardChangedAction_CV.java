@@ -3,6 +3,8 @@
  */
 package swccgManager.Controllers;
 
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -15,7 +17,7 @@ import swccgManager.Models.Card;
  * @date Jul 31, 2014
  *
  */
-public class CardChangedAction_CV implements ListSelectionListener{
+public class CardChangedAction_CV implements ListSelectionListener, ListDataListener{
 
 	private CollectionView m_collectionView;
 	
@@ -26,6 +28,17 @@ public class CardChangedAction_CV implements ListSelectionListener{
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		updateDisplays();	
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent arg0) {
+		updateDisplays();
+		m_collectionView.getListDisplay().setSelectedItem(0);
+	}
+	
+	private void updateDisplays()
+	{
 		//update the model
 		m_collectionView.updateStatsModel();
 		
@@ -35,7 +48,18 @@ public class CardChangedAction_CV implements ListSelectionListener{
 		//update the card display
 		Card selectedCard = m_collectionView.getSelectedCard();
 		m_collectionView.updateCardDisplay(selectedCard);
-		//m_collectionView.repaint();
+	}
+
+	@Override
+	public void intervalAdded(ListDataEvent arg0) {
+		// TODO Auto-generated method stub
+		//should do nothing, will not add a single card
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent arg0) {
+		// TODO Auto-generated method stub
+		//should do nothing, will not remove single card
 		
 	}
 	

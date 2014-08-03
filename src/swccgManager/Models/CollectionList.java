@@ -78,7 +78,7 @@ public class CollectionList extends AbstractListModel<Collection> {
 				//System.out.println(collectionName);//Debugging
 				Collection newCollection = new Collection(collectionName);
 				list.add(newCollection);
-				System.out.println("Collection Added: " + newCollection);
+				//System.out.println("Collection Added: " + newCollection);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

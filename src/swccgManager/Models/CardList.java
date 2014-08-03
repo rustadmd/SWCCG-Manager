@@ -37,6 +37,22 @@ public class CardList extends AbstractListModel<Card> {
 		m_criteria = cardCriteria;
 		refreshList();
 	}
+	/**
+	 * Refreshes the list based on new query criteria
+	 * @param cardCriteria
+	 */
+	public void newCardCriteria(CardQueryCriteria cardCriteria)
+	{
+		m_criteria = cardCriteria;
+		refreshList();
+	}
+
+	/**
+	 * @return the m_criteria
+	 */
+	public CardQueryCriteria getCriteria() {
+		return m_criteria;
+	}
 
 	@Override
 	public Card getElementAt(int index) {

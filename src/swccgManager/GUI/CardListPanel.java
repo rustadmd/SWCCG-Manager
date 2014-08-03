@@ -22,6 +22,7 @@ public class CardListPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JList<Card> cardSelector;
+	private CardList m_cardList;
 	
 	/**
 	 * Establishes a list of cards
@@ -30,9 +31,9 @@ public class CardListPanel extends JPanel{
 	public CardListPanel(CardList cardList)
 	{
 		//Add the card selector
-		
+		m_cardList = cardList;
 		cardSelector = new JList<Card>();
-		cardSelector.setModel(cardList);
+		cardSelector.setModel(m_cardList);
 		JScrollPane listScroller = new JScrollPane();
 		listScroller.setViewportView(cardSelector);
 		
@@ -41,15 +42,26 @@ public class CardListPanel extends JPanel{
 		add(listScroller);
 		
 		//Set default to the first item on the list
-		cardSelector.setSelectedIndex(0);
+		setSelectedItem(0);
 		
 		//Add the listener action
 		//cardSelector.addListSelectionListener();//End listener
 	}
 	
+	public void setSelectedItem(int index)
+	{
+		cardSelector.setSelectedIndex(index);
+	}
+	
 	public void addCardChangedAction(ListSelectionListener aa)
 	{
 		cardSelector.addListSelectionListener(aa);
+		
+	}
+	
+	public void addListDataListener(ListDataListener listener)
+	{
+		m_cardList.addListDataListener(listener);
 	}
 	
 	/**

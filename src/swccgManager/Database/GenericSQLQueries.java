@@ -95,7 +95,7 @@ public class GenericSQLQueries {
 							+ "WHERE collectionName =  ? AND CardID = ?"
 					);
 			cardCollectionStatsQuery.setString(1, collectionName);	
-			//cardCollectionStatsQuery.setInt(2, cardID);
+			cardCollectionStatsQuery.setInt(2, cardID);
 			cardCollectionStatsResults = cardCollectionStatsQuery.executeQuery();
 			//System.out.println("Collection Name from GSQ: " + cardCollectionStatsResults.getString(1));
 		

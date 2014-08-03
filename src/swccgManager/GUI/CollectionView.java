@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import javax.swing.*;
 
 import swccgManager.Controllers.CardChangedAction_CV;
+import swccgManager.Controllers.CollectionChangedAction_CV;
 import swccgManager.Models.Card;
 import swccgManager.Models.CardCollectionInfoModel;
 import swccgManager.Models.CardCollectionStatsModel;
@@ -66,16 +67,21 @@ public class CollectionView extends JPanel{
 		//add listener for changes
 		CardChangedAction_CV cca = new CardChangedAction_CV(this);
 		listDisplay.addCardChangedAction(cca);
+		
 		add(listDisplay, BorderLayout.WEST);
 		
 		//Add Collection Panel
 		setCollectionList(model.getCollectionList());
 		collectionDisplay = new CollectionDisplay(collectionList);
+		//add listener for changes
+		CollectionChangedAction_CV colca = new CollectionChangedAction_CV(this);
+		collectionDisplay.addCollectionSelectedAction(colca);
+		
 		add(collectionDisplay, BorderLayout.NORTH);
 		
 		//create the stats information
-		Card selectedCard = listDisplay.getSelectedCard();
-		Collection selectedCollection = collectionDisplay.getSelectedCollection();
+		Card selectedCard = getSelectedCard();
+		Collection selectedCollection = getSelectedCollection();
 		statsModel = new CardCollectionStatsModel(selectedCard, selectedCollection);
 		
 		//Add the basic card information
@@ -88,7 +94,29 @@ public class CollectionView extends JPanel{
 		
 		
 	}
-
+	
+	/**
+	 * method will create and update the stats model based on the current selections
+	 * @param newCollecion
+	 */
+	public void updateStatsModel()
+	{
+		Collection collection = getSelectedCollection();
+		Card card = getSelectedCard();
+		statsModel = new CardCollectionStatsModel(card, collection);
+	}
+	
+	
+	public Collection getSelectedCollection()
+	{
+		Collection selectedCollection = collectionDisplay.getSelectedCollection();
+		return selectedCollection;
+	}
+	
+	public CollectionDisplay getCollectionDisplay()
+	{
+		return collectionDisplay;
+	}
 	
 	public Card getSelectedCard()
 	{
@@ -109,7 +137,7 @@ public class CollectionView extends JPanel{
 	public CardList getCardList() {
 		return cardList;
 	}
-
+	
 	/**
 	 * @param cardList the cardList to set
 	 */
@@ -129,6 +157,32 @@ public class CollectionView extends JPanel{
 	 */
 	public void setCollectionList(CollectionList collectionList) {
 		this.collectionList = collectionList;
+	}
+	
+	public CardCollectionStatsModel getStatsModel()
+	{
+		return statsModel;
+	}
+
+	/**
+	 * @return the cardDisplay
+	 */
+	public CardDisplay getCardDisplay() {
+		return cardDisplay;
+	}
+
+	/**
+	 * @return the listDisplay
+	 */
+	public CardListPanel getListDisplay() {
+		return listDisplay;
+	}
+
+	/**
+	 * @return the statsDisplay
+	 */
+	public CardCollectionStatsDisplay getStatsDisplay() {
+		return statsDisplay;
 	}
 
 }

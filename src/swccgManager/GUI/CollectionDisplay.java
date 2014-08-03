@@ -36,6 +36,11 @@ public class CollectionDisplay extends JPanel{
 		addCollectionDescription();
 	}
 	
+	public void addCollectionSelectedAction(Action a)
+	{
+		collectionSelector.addActionListener(a);
+	}
+	
 	public Collection getSelectedCollection()
 	{
 		Collection selectedCollection = (Collection) collectionSelector.getSelectedItem();
@@ -56,7 +61,6 @@ public class CollectionDisplay extends JPanel{
 		listModel = collectionListModel;
 		comboListModel = new CollectionListComboBoxModel(listModel);
 		collectionSelector = new JComboBox<Collection>(comboListModel);
-		collectionSelector.setAction(new CollectionChangedAction_CV(this));
 		add(collectionSelector);
 	}
 	

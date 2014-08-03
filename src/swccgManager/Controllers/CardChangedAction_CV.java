@@ -35,6 +35,7 @@ public class CardChangedAction_CV implements ListSelectionListener, ListDataList
 	public void contentsChanged(ListDataEvent arg0) {
 		updateDisplays();
 		m_collectionView.getListDisplay().setSelectedItem(0);
+		m_collectionView.getCollectionDisplay().setSelectedCollection(0);
 	}
 	
 	private void updateDisplays()

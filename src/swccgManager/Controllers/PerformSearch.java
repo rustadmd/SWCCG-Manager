@@ -44,6 +44,10 @@ public class PerformSearch extends AbstractAction {
 		String sideSql = m_searchDisplay.getSelectedSide();
 		criteria.setCriteria(Attribute.SIDE, sideSql);
 		
+		//update cardType
+		String typeSql = m_searchDisplay.getSelectedCardType();
+		criteria.setCriteria(Attribute.TYPE, typeSql);
+		
 		//update list with new criteria
 		m_cardList.newCardCriteria(criteria);
 

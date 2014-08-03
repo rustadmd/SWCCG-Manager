@@ -68,11 +68,18 @@ public class InsertQueries {
 	
 	public void addCollection(String name, String description)
 	{
-		String insertCollection = 
+		PreparedStatement insertCollection;
+		Connection swdb = su.getDbConnection();
+		try {
+			insertCollection = swdb.prepareStatement(
 				"INSERT INTO CollectionList (CollectionName, CollectionDescription) "
-				+ "VALUES ('" + name + "' , '" + description + "');";
-		
-		su.executeQuery(insertCollection);
+				+ " VALUES (?, ?);");
+			insertCollection.setString(1, name);
+			insertCollection.setString(2, description);
+			insertCollection.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		su.closeDB();
 
 	}

@@ -36,6 +36,11 @@ public class CollectionDisplay extends JPanel{
 		addCollectionDescription();
 	}
 	
+	public void setSelectedCollection(int index)
+	{
+		collectionSelector.setSelectedIndex(index);
+	}
+	
 	public void addCollectionSelectedAction(Action a)
 	{
 		collectionSelector.addActionListener(a);
@@ -61,6 +66,8 @@ public class CollectionDisplay extends JPanel{
 		listModel = collectionListModel;
 		comboListModel = new CollectionListComboBoxModel(listModel);
 		collectionSelector = new JComboBox<Collection>(comboListModel);
+		//set default
+		setSelectedCollection(0);
 		add(collectionSelector);
 	}
 	

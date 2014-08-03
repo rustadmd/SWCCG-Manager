@@ -31,7 +31,7 @@ public class IntFieldSpinnerDisplay extends TitledBorderPanel{
 	public IntFieldSpinnerDisplay(Type type, SpinnerNumberModel model)
 	{
 		super();
-		
+		m_spinner = new JSpinner();
 		//add the correct title and labels
 		String title;
 		JLabel upLabel = new JLabel();
@@ -51,7 +51,6 @@ public class IntFieldSpinnerDisplay extends TitledBorderPanel{
 		
 		//add spinner
 		setModel(model);
-		m_spinner = new JSpinner(m_model);
 		add(m_spinner, BorderLayout.WEST);
 		
 		//add the Labels
@@ -65,6 +64,7 @@ public class IntFieldSpinnerDisplay extends TitledBorderPanel{
 	public void setModel(SpinnerNumberModel newModel)
 	{
 		m_model = newModel;
+		m_spinner.setModel(m_model);
 	}
 	
 	public SpinnerNumberModel getModel()

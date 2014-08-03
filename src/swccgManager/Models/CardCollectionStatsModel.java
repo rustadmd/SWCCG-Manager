@@ -3,8 +3,9 @@
  */
 package swccgManager.Models;
 
-import java.sql.ResultSet;
 import java.sql.*;
+
+import javax.swing.SpinnerNumberModel;
 
 import swccgManager.Database.GenericSQLQueries;
 
@@ -21,7 +22,7 @@ public class CardCollectionStatsModel {
 	private Collection m_collection;
 	private Card m_card;
 	private String m_sortLocation;
-	private InventorySpinnerModel m_inventory = new InventorySpinnerModel();
+	private SpinnerNumberModel m_inventory = new SpinnerNumberModel(0, -99, 99, 1);;
 	private int m_desired, m_extra, m_rating;
 	private String m_comment;
 	private boolean isInDB;//for when db needs to be updated
@@ -35,7 +36,7 @@ public class CardCollectionStatsModel {
 		//retrieve information from the database
 		int cardID = m_card.getCardId();
 		String collectionName = m_collection.getCollectionName();
-		
+		//System.out.println("CardId: " + cardID + " Collection Name: " + collectionName);//debugging
 		
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		
@@ -44,13 +45,14 @@ public class CardCollectionStatsModel {
 			m_sortLocation = cardCollectionStats_rs.getString("sortLocation");
 			
 			int inventory = cardCollectionStats_rs.getInt("inventory");
-			System.out.println(inventory);
+			//System.out.println(inventory);//debugging
 			m_inventory.setValue(inventory);
 			m_desired = cardCollectionStats_rs.getInt("desired");
 			m_extra = cardCollectionStats_rs.getInt("extra");
 			m_rating = cardCollectionStats_rs.getInt("rating");
 			m_comment = cardCollectionStats_rs.getString("comment");
 			isInDB = true;
+			//System.out.println("Name: " + m_card + " Inventory: " + inventory);//debugging
 		}
 		catch(SQLException e)//probably means there is nothing in the database
 		{
@@ -58,11 +60,12 @@ public class CardCollectionStatsModel {
 			//set everything to blank, so it can be displayed
 			m_sortLocation = "";
 			m_comment = "";
-			m_inventory.setValue(0);
+			//m_inventory.setValue(0);
 			m_desired  = 0;
 			m_extra  = 0;
 			m_rating  = 0;
 		}
+		
 		
 	}
 	
@@ -82,13 +85,13 @@ public class CardCollectionStatsModel {
 	/**
 	 * @return the inventory
 	 */
-	public InventorySpinnerModel getInventoryModel() {
+	public SpinnerNumberModel getInventoryModel() {
 		return m_inventory;
 	}
 	/**
 	 * @param inventory the inventory to set
 	 */
-	public void setInventory(InventorySpinnerModel inventory) {
+	public void setInventory(SpinnerNumberModel inventory) {
 		this.m_inventory = inventory;
 	}
 	/**

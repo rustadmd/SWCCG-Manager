@@ -61,8 +61,8 @@ public class CollectionView extends JPanel{
 		//gsq.getCollectionList();
 		
 		//Add card selection list
-		CardCollectionInfoModel model = new CardCollectionInfoModel();
-		setCardList(model.getCardList());
+		//CardCollectionInfoModel model = new CardCollectionInfoModel();
+		cardList = new CardList();
 		listDisplay = new CardListPanel(cardList);
 		//add listener for changes
 		CardChangedAction_CV cca = new CardChangedAction_CV(this);
@@ -71,7 +71,8 @@ public class CollectionView extends JPanel{
 		add(listDisplay, BorderLayout.WEST);
 		
 		//Add Collection Panel
-		setCollectionList(model.getCollectionList());
+		collectionList = new CollectionList();
+		//setCollectionList(model.getCollectionList());
 		collectionDisplay = new CollectionDisplay(collectionList);
 		//add listener for changes
 		CollectionChangedAction_CV colca = new CollectionChangedAction_CV(this);

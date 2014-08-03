@@ -66,6 +66,10 @@ public class CollectionList extends AbstractListModel<Collection> {
 		
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		ResultSet collectionList = gsq.getList(listTable, listColumn);
+		if(collectionList.equals(null))
+		{
+			System.out.println("CollectionList Result set is empty");
+		}
 		//iterate through the list and add them to the list
 		try {
 			while (collectionList.next())
@@ -74,6 +78,7 @@ public class CollectionList extends AbstractListModel<Collection> {
 				//System.out.println(collectionName);//Debugging
 				Collection newCollection = new Collection(collectionName);
 				list.add(newCollection);
+				System.out.println("Collection Added: " + newCollection);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

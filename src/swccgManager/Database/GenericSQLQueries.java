@@ -153,6 +153,7 @@ public class GenericSQLQueries {
 	 * @param column Field to search
 	 * @return All unique fields in that column.
 	 */
+	
 	public ResultSet getList(String table, String column)
 	{
 		ResultSet list = null;
@@ -161,9 +162,8 @@ public class GenericSQLQueries {
 		String getListQuery = "SELECT DISTINCT " + column + " " 
 				+ "FROM " + table + " "
 				+ "ORDER BY " + column;
-		
+		//System.out.println(getListQuery);//debugging
 		list = sqlUtil.getQueryResults(getListQuery);
-		
 		//Get results and return them
 		return list;
 	}
@@ -272,7 +272,7 @@ public class GenericSQLQueries {
 		try {
 			collectionVitalsQuery = swdb.prepareStatement(
 					"SELECT CollectionName, CollectionDescription FROM CollectionList "
-							+ "WHERE CollectionName = ?"
+							+ "WHERE CollectionName = ? "
 					);
 		collectionVitalsQuery.setString(1, collectionName);		
 		collectionInfo = collectionVitalsQuery.executeQuery();

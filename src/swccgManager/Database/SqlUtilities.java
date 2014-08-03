@@ -119,6 +119,7 @@ public class SqlUtilities {
 			//write query
 			queryResults = statement.executeQuery(query);
 			//System.out.println("Current row: " + queryResults.getRow());//debugging
+			//System.out.println(queryResults.getString(0));
 		}
 		
 		catch (SQLException e)

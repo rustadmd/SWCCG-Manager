@@ -7,6 +7,7 @@ import java.sql.*;
 
 import javax.swing.SpinnerNumberModel;
 
+import swccgManager.Controllers.UpdateInventory;
 import swccgManager.Database.GenericSQLQueries;
 
 /**
@@ -51,12 +52,12 @@ public class CardCollectionStatsModel {
 			m_extra = cardCollectionStats_rs.getInt("extra");
 			m_rating = cardCollectionStats_rs.getInt("rating");
 			m_comment = cardCollectionStats_rs.getString("comment");
-			isInDB = true;
+			setInDB(true);
 			//System.out.println("Name: " + m_card + " Inventory: " + inventory);//debugging
 		}
 		catch(SQLException e)//probably means there is nothing in the database
 		{
-			isInDB = false;
+			setInDB(false);
 			//set everything to blank, so it can be displayed
 			m_sortLocation = "";
 			m_comment = "";
@@ -66,6 +67,9 @@ public class CardCollectionStatsModel {
 			m_rating  = 0;
 		}
 		
+		//add change listeners
+		UpdateInventory updateInv = new UpdateInventory(this);
+		m_inventory.addChangeListener(updateInv);
 		
 	}
 	
@@ -153,6 +157,22 @@ public class CardCollectionStatsModel {
 	 */
 	public Card getCard() {
 		return m_card;
+	}
+
+
+	/**
+	 * @return the isInDB
+	 */
+	public boolean getIsInDB() {
+		return isInDB;
+	}
+
+
+	/**
+	 * @param isInDB the isInDB to set
+	 */
+	public void setInDB(boolean isInDB) {
+		this.isInDB = isInDB;
 	}
 
 }

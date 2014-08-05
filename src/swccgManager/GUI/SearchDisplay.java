@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 
@@ -34,6 +35,7 @@ public class SearchDisplay extends TitledBorderPanel {
 	
 	//options
 	private JRadioButton all, light, dark;
+	private JCheckBox trilogy, epiOne, virtual;
 	JComboBox<String> cardTypeSelector;
 
 	public SearchDisplay(CardList cardList)
@@ -46,6 +48,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		setLayout(new FlowLayout());
 		addSidePanel();
 		addTypePanel();
+		addRealmPanel();
 		
 	}
 	
@@ -142,5 +145,24 @@ public class SearchDisplay extends TitledBorderPanel {
 		sideSelection.add(dark);
 		
 		add(sideSelection);
+	}
+	
+	private void addRealmPanel()
+	{
+		TitledBorderPanel realmPanel = new TitledBorderPanel("Realm");
+		realmPanel.setLayout(new FlowLayout());
+		
+		trilogy = new JCheckBox("Original Trilogy");
+		trilogy.setSelected(true);
+		realmPanel.add(trilogy);
+		
+		epiOne = new JCheckBox("Episode I");
+		epiOne.setSelected(true);
+		realmPanel.add(epiOne);
+		
+		virtual = new JCheckBox("Virtual");
+		realmPanel.add(virtual);
+		
+		add(realmPanel);
 	}
 }

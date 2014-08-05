@@ -54,6 +54,7 @@ public class CardCollectionStatsModel {
 			m_comment = cardCollectionStats_rs.getString("comment");
 			setInDB(true);
 			//System.out.println("Name: " + m_card + " Inventory: " + inventory);//debugging
+			cardCollectionStats_rs.close();
 		}
 		catch(SQLException e)//probably means there is nothing in the database
 		{
@@ -66,7 +67,6 @@ public class CardCollectionStatsModel {
 			m_extra  = 0;
 			m_rating  = 0;
 		}
-		
 		//add change listeners
 		UpdateInventory updateInv = new UpdateInventory(this);
 		m_inventory.addChangeListener(updateInv);

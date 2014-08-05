@@ -15,14 +15,14 @@ import swccgManager.GUI.CollectionView;
  * @date Aug 3, 2014
  *
  */
-public class IncrementInventory extends AbstractAction {
+public class DecrementInventory extends AbstractAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4955338249578082229L;
 	private CollectionView m_cv;
-	public IncrementInventory(CollectionView cv)
+	public DecrementInventory(CollectionView cv)
 	{
 		m_cv = cv;
 	}
@@ -31,7 +31,7 @@ public class IncrementInventory extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent ke) {
 			SpinnerNumberModel invModel = m_cv.getStatsModel().getInventoryModel();
-			invModel.setValue(invModel.getNextValue());
+			invModel.setValue(invModel.getPreviousValue());
 	}
 
 }

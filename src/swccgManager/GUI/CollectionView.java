@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import swccgManager.Controllers.CardChangedAction_CV;
 import swccgManager.Controllers.CollectionChangedAction_CV;
+import swccgManager.Controllers.Shortcuts.DecrementInventory;
 import swccgManager.Controllers.Shortcuts.IncrementInventory;
 import swccgManager.Models.Card;
 import swccgManager.Models.CardCollectionStatsModel;
@@ -91,13 +92,8 @@ public class CollectionView extends JPanel{
 		statsDisplay = new CardCollectionStatsDisplay(statsModel);
 		add(statsDisplay, BorderLayout.EAST);
 		
-		//add key listeners
-		IncrementInventory shortCuts = new IncrementInventory(this);
-		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "pressed");
-		getActionMap().put("pressed", shortCuts);
 		
-		
-		
+		addKeyBindings();
 		
 	}
 	
@@ -112,6 +108,17 @@ public class CollectionView extends JPanel{
 		statsModel = new CardCollectionStatsModel(card, collection);
 	}
 	
+	private void addKeyBindings()
+	{
+		//add inventory incrementer
+		IncrementInventory invInc = new IncrementInventory(this);
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "pressedF1");
+		getActionMap().put("pressedF1", invInc);
+		
+		DecrementInventory invDec = new DecrementInventory(this);
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F2"), "pressedF2");
+		getActionMap().put("pressedF2", invDec);
+	}
 	
 	public Collection getSelectedCollection()
 	{

@@ -4,13 +4,14 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
 import swccgManager.Controllers.CardChangedAction_CV;
 import swccgManager.Controllers.CollectionChangedAction_CV;
+import swccgManager.Controllers.Shortcuts.IncrementInventory;
 import swccgManager.Models.Card;
-import swccgManager.Models.CardCollectionInfoModel;
 import swccgManager.Models.CardCollectionStatsModel;
 import swccgManager.Models.CardList;
 import swccgManager.Models.Collection;
@@ -89,6 +90,13 @@ public class CollectionView extends JPanel{
 		//Add collection stats information
 		statsDisplay = new CardCollectionStatsDisplay(statsModel);
 		add(statsDisplay, BorderLayout.EAST);
+		
+		//add key listeners
+		IncrementInventory shortCuts = new IncrementInventory(this);
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "pressed");
+		getActionMap().put("pressed", shortCuts);
+		
+		
 		
 		
 	}

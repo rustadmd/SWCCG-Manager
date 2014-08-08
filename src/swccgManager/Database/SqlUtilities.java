@@ -32,16 +32,24 @@ public class SqlUtilities {
 		Connection db = null;
 		
 		try{
+			
+			
 			String programPath = Settings.getProgramPath();
 			//Construct the file path from the current file location
-			String filePrefix = "jdbc:sqlite:";
+			String filePrefix = "jdbc:sqlite::resource:";
 			String dbName = "testing3.s3db";
-			String totalPath = filePrefix + programPath + dbName;
+			//String totalPath = filePrefix + programPath + dbName;
+			String totalPath = filePrefix + dbName;
 
 			//System.out.println(totalPath);//debugging
 			
 			
 			db = DriverManager.getConnection(totalPath);
+			
+			/*
+			Class.forName("org.sqlite.JDBC").newInstance();             
+			db = DriverManager.getConnection("jdbc:sqlite:src/DatabaseFile");
+			*/
 			//System.out.println("Successfully connected to db.");
 
 		}
@@ -49,6 +57,7 @@ public class SqlUtilities {
 		catch(SQLException e)
 		{
 			System.out.println("Database Not found");
+			e.printStackTrace();
 		}
 		return db;
 	}

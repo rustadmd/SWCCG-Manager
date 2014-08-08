@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import swccgManager.GUI.CollectionDisplay;
 import swccgManager.GUI.CollectionView;
 import swccgManager.Models.Collection;
 

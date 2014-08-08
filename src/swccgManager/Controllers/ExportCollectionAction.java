@@ -9,13 +9,9 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import swccgManager.Database.GenericSQLQueries;
-import swccgManager.Database.InsertQueries;
 import swccgManager.GUI.ExportCollectionWindow;
-import swccgManager.GUI.NewCollectionWindow;
-import swccgManager.Models.CollectionList;
 
 /**
  * This action exports a 

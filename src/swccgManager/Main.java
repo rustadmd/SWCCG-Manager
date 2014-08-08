@@ -1,14 +1,10 @@
 package swccgManager;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Database.ImageManager;
 import swccgManager.Database.SqlUtilities;
 import swccgManager.GUI.MainWindow;
-import swccgManager.Models.Card;
 
 
 /**
@@ -19,6 +15,7 @@ import swccgManager.Models.Card;
 
 public class Main {
 
+	@SuppressWarnings("unused")
 	private static Settings s;
 	
 	/**
@@ -36,12 +33,14 @@ public class Main {
 		//FullCardSet fcs = s.fcs;	
 		//testing();
 		//Setup intial GUI
+		@SuppressWarnings("unused")
 		MainWindow mw = new MainWindow();
 		
 		
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private static void testing()
 	{
 		SqlUtilities su = new SqlUtilities();

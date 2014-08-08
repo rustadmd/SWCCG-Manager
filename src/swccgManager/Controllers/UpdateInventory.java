@@ -6,7 +6,6 @@ package swccgManager.Controllers;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Database.InsertQueries;
 import swccgManager.Models.Card;
 import swccgManager.Models.CardCollectionStatsModel;

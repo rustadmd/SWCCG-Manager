@@ -7,7 +7,6 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import swccgManager.Controllers.CollectionChangedAction_CV;
 import swccgManager.Models.Collection;
 import swccgManager.Models.CollectionList;
 import swccgManager.Models.CollectionListComboBoxModel;

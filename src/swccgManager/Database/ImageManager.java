@@ -17,7 +17,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.print.DocFlavor.URL;
 
 //Not currently used in active program
 //import java.io.File;
@@ -243,6 +242,7 @@ public class ImageManager {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private String removeNonLetterCharacters(String s)
 	{
 		//Remove whitespace and convert all uppercase

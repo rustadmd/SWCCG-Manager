@@ -93,6 +93,34 @@ public class SearchDisplay extends TitledBorderPanel {
 		return sideSql;
 	}
 	
+	public String getSelectedRealms()
+	{
+		String realmSql = "";
+		if(trilogy.isSelected())
+		{
+			realmSql += "'A New Hope', 'Cloud City', 'Dagobah', 'Death Star II', 'Endor', 'Enhanced Cloud City', 'Enhanced Jabba''s Palace', 'Enhanced Premiere Pack', 'Hoth', 'Hoth 2 Player', 'Jabba''s Palace', 'Jabba''s Palace Sealed Deck', 'Premiere', 'Premiere 2 Player', 'Reflections II', 'Reflections III', 'Special Edition', 'Third Anthology', 'Jedi Pack', 'Official Tournament Sealed Deck', 'Rebel Leader Cards'";
+		}
+		if(epiOne.isSelected())
+		{
+			//add divider for continuing series
+			if(trilogy.isSelected())
+			{
+				realmSql +=" , ";
+			}
+			realmSql += "'Coruscant', 'Tatooine', 'Theed Palace'";
+		}
+		if(virtual.isSelected())
+		{
+			if(trilogy.isSelected() || epiOne.isSelected())
+			{
+				realmSql +=" , ";
+			}
+			realmSql +="'Virtual Card Set #1', 'Virtual Card Set #2', 'Virtual Card Set #3', 'Virtual Card Set #4', 'Virtual Card Set #5', 'Virtual Card Set #6', 'Virtual Card Set #7'";
+		}
+		
+		return realmSql;
+	}
+	
 	private void addTypePanel()
 	{
 		TitledBorderPanel cardTypePanel = new TitledBorderPanel("Type");
@@ -154,13 +182,16 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		trilogy = new JCheckBox("Original Trilogy");
 		trilogy.setSelected(true);
+		trilogy.addActionListener(performSearch);
 		realmPanel.add(trilogy);
 		
 		epiOne = new JCheckBox("Episode I");
 		epiOne.setSelected(true);
+		epiOne.addActionListener(performSearch);
 		realmPanel.add(epiOne);
 		
 		virtual = new JCheckBox("Virtual");
+		virtual.addActionListener(performSearch);
 		realmPanel.add(virtual);
 		
 		add(realmPanel);

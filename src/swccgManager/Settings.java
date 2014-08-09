@@ -19,6 +19,8 @@ import swccgManager.Database.DriverShim;
 public class Settings {
 	
 	private static String m_programPath;
+	private static String m_databasePath;
+	private static String m_imagePath;
 	//public static FullCardSet fcs; //there is only one master list of cards
 	
 	/**
@@ -48,6 +50,11 @@ public class Settings {
 		return m_programPath;
 	}
 	
+	public static String getImagePath()
+	{
+		return m_imagePath;
+	}
+	
 	/**
 	 * Sets the program file location
 	 * @return
@@ -56,11 +63,21 @@ public class Settings {
 	{
 		//Find the current class path
 		URL location = getClass().getProtectionDomain().getCodeSource().getLocation();
+		System.out.println(location);
 		String programPathWithFile = location.toString();
 		String programPath = programPathWithFile.substring(5);//delete "file:"
 		System.out.println(programPath);//debugging
+		
+		String resourceLocation = "resources/Database/";
+		m_databasePath = programPath +resourceLocation;
+		m_imagePath = programPath + "resources/Images/";
 		return programPath;
 		
+	}
+	
+	public static String getDatabasePath()
+	{
+		return m_databasePath;
 	}
 	
 	/**
@@ -73,11 +90,11 @@ public class Settings {
 		String jarPrefix = "jar:file:";
 		String connectorName = "sqlite-jdbc-3.7.2.jar";
 		String driverName = "org.sqlite.JDBC";
-		String resourceLocation = "resources/Database/";
+		
 		URL u = null;
 		
 		try {
-			u = new URL(jarPrefix + m_programPath + resourceLocation + connectorName + "!/");
+			u = new URL(jarPrefix + m_databasePath + connectorName + "!/");
 			System.out.println(u);
 			URLClassLoader ucl = new URLClassLoader(new URL[] { u });
 			Driver d = (Driver)Class.forName(driverName, true, ucl).newInstance();

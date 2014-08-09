@@ -34,14 +34,14 @@ public class SqlUtilities {
 		try{
 			
 			
-			String programPath = Settings.getProgramPath();
+			String programPath = Settings.getDatabasePath();
 			//Construct the file path from the current file location
-			String filePrefix = "jdbc:sqlite::resource:";
+			String filePrefix = "jdbc:sqlite:";
 			String dbName = "testing3.s3db";
-			//String totalPath = filePrefix + programPath + dbName;
-			String totalPath = filePrefix + dbName;
+			String totalPath = filePrefix + programPath + dbName;
+			//String totalPath = filePrefix + dbName;
 
-			//System.out.println(totalPath);//debugging
+			System.out.println("Path in Sql Utilities: " + totalPath);//debugging
 			
 			
 			db = DriverManager.getConnection(totalPath);

@@ -18,6 +18,8 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import swccgManager.Settings;
+
 //Not currently used in active program
 //import java.io.File;
 //import java.net.URL;
@@ -50,6 +52,7 @@ public class ImageManager {
 	{
 		String imageLocation = getImagePath (cardId, side);
 		//access the image and load it
+		System.out.println("ImagePath: " + imageLocation);
 		BufferedImage cardImage = null;
 		try {
 			//retrieve card
@@ -96,6 +99,7 @@ public class ImageManager {
 	
 	public String getImagePath(int cardId, int side)
 	{
+		System.out.println("getImagePath() executed ");
 		//Retrieve card path from db
 		String getCardImageQuery =
 			"SELECT large "
@@ -107,12 +111,12 @@ public class ImageManager {
 		
 		
 		try {
-			imageLocation_s = imageLocation.getString("large");
+			imageLocation_s = Settings.getImagePath() + imageLocation.getString("large");
 			imageLocation.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		//System.out.println(imageLocation_s);//debugging
+		System.out.println("Image Location: "+imageLocation_s);//debugging
 		return imageLocation_s;
 	}
 	
@@ -211,7 +215,7 @@ public class ImageManager {
 			while(imagePaths.next())
 			{
 				
-				String imagePath = imagePaths.getString("large");
+				String imagePath = Settings.getImagePath() + imagePaths.getString("large");
 				BufferedImage cardImage = null;
 				//If you are able to create a file object, the file exists
 				try {

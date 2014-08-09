@@ -82,6 +82,7 @@ public class Settings {
 			URLClassLoader ucl = new URLClassLoader(new URL[] { u });
 			Driver d = (Driver)Class.forName(driverName, true, ucl).newInstance();
 			DriverManager.registerDriver(new DriverShim(d));
+			System.out.println(u.toString());
 		} catch (Exception e) {
 			System.out.println(u);
 			e.printStackTrace();

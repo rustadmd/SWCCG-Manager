@@ -41,7 +41,7 @@ public class SqlUtilities {
 			String totalPath = filePrefix + programPath + dbName;
 			//String totalPath = filePrefix + dbName;
 
-			System.out.println("Path in Sql Utilities: " + totalPath);//debugging
+			//System.out.println("Path in Sql Utilities: " + totalPath);//debugging
 			
 			
 			db = DriverManager.getConnection(totalPath);

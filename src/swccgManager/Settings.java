@@ -63,14 +63,15 @@ public class Settings {
 	{
 		//Find the current class path
 		URL location = getClass().getProtectionDomain().getCodeSource().getLocation();
-		System.out.println(location);
+		//System.out.println(location);
 		String programPathWithFile = location.toString();
 		String programPath = programPathWithFile.substring(5);//delete "file:"
-		System.out.println(programPath);//debugging
+		//System.out.println(programPath);//debugging
 		
+		//set resource locations
 		String resourceLocation = "resources/Database/";
 		m_databasePath = programPath +resourceLocation;
-		m_imagePath = programPath + "resources/Images/";
+		m_imagePath = programPath + "resources/Images";
 		return programPath;
 		
 	}
@@ -95,13 +96,12 @@ public class Settings {
 		
 		try {
 			u = new URL(jarPrefix + m_databasePath + connectorName + "!/");
-			System.out.println(u);
 			URLClassLoader ucl = new URLClassLoader(new URL[] { u });
 			Driver d = (Driver)Class.forName(driverName, true, ucl).newInstance();
 			DriverManager.registerDriver(new DriverShim(d));
-			System.out.println(u.toString());
+			//System.out.println(u.toString());//debugging
 		} catch (Exception e) {
-			System.out.println(u);
+			System.out.println("Database connector could not be established: " + u);
 			e.printStackTrace();
 		} 
 		

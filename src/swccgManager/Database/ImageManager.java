@@ -52,11 +52,12 @@ public class ImageManager {
 	{
 		String imageLocation = getImagePath (cardId, side);
 		//access the image and load it
-		System.out.println("ImagePath: " + imageLocation);
+		//System.out.println("ImagePath: " + imageLocation);
 		BufferedImage cardImage = null;
-		try {
+		try {			
 			//retrieve card
-			cardImage = ImageIO.read(getClass().getResource(imageLocation));
+			File imageFile = new File(imageLocation);
+			cardImage = ImageIO.read(imageFile);
 			//System.out.println("ImageLocation within the getCardImage (image retrieved?): " + imageLocation);
 		}
 		
@@ -65,6 +66,7 @@ public class ImageManager {
 			//File does not exist
 			//int cardId = imagePaths.getInt("cardID");
 			System.out.println("Image not found on path: " + cardId + "|" + imageLocation);
+			e.printStackTrace();
 		}
 		
 		/***broken code
@@ -99,7 +101,7 @@ public class ImageManager {
 	
 	public String getImagePath(int cardId, int side)
 	{
-		System.out.println("getImagePath() executed ");
+		//System.out.println("getImagePath() executed ");
 		//Retrieve card path from db
 		String getCardImageQuery =
 			"SELECT large "
@@ -116,7 +118,7 @@ public class ImageManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Image Location: "+imageLocation_s);//debugging
+		//System.out.println("Image Location: "+imageLocation_s);//debugging
 		return imageLocation_s;
 	}
 	
@@ -200,6 +202,8 @@ public class ImageManager {
 	}
 	/**
 	 * Tests each image path to make sure there is a file at the end
+	 * 
+	 * WARNING, THIS CODE IS OBSOLETE.
 	 * @param swdb
 	 */
 	

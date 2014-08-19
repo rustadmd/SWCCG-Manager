@@ -36,7 +36,7 @@ public class SearchDisplay extends TitledBorderPanel {
 	//options
 	private JRadioButton all, light, dark;
 	private JCheckBox trilogy, epiOne, virtual;
-	JComboBox<String> cardTypeSelector;
+	JComboBox<String> cardTypeSelector, expansionSelector;
 
 	public SearchDisplay(CardList cardList)
 	{
@@ -44,10 +44,13 @@ public class SearchDisplay extends TitledBorderPanel {
 		listModel = cardList;
 		performSearch = new PerformSearch(listModel, this);
 		
+		
 		//add layouts
-		setLayout(new FlowLayout());
+		int numRows = 4;
+		setLayout(new GridLayout(numRows, 1));
 		addSidePanel();
 		addTypePanel();
+		addExpansionPanel();
 		addRealmPanel();
 		
 	}
@@ -70,6 +73,26 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		return cardType;
 	}
+	
+	/**
+	 * Gets the selected expansion in SQL formatting
+	 * @return SQL formatted expansion
+	 */
+	public String getSelectedExpansion()
+	{
+		String expansion;
+		if(expansionSelector.getSelectedItem() == "All")
+		{
+			expansion = "%";
+		}
+		else
+		{
+			expansion = (String) expansionSelector.getSelectedItem();
+		}
+		System.out.println(expansion);
+		return expansion;
+	}
+	
 	/**
 	 * Gets the sql statement that will return the selected resutls
 	 * @return SQL formatted string for WHERE clause
@@ -121,6 +144,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		return realmSql;
 	}
 	
+	
 	private void addTypePanel()
 	{
 		TitledBorderPanel cardTypePanel = new TitledBorderPanel("Type");
@@ -144,6 +168,34 @@ public class SearchDisplay extends TitledBorderPanel {
 		cardTypeSelector.addActionListener(performSearch);
 		cardTypePanel.add(cardTypeSelector);
 		add(cardTypePanel);
+	}
+	
+	/**
+	 * Adds a Dropdown menu to select the expansion
+	 */
+	private void addExpansionPanel()
+	{
+		TitledBorderPanel expansionPanel = new TitledBorderPanel("Expansion");
+		
+		expansionSelector = new JComboBox<String>();
+		expansionSelector.addItem("All");
+		
+		//fill the remainder of the list from the DB
+		GenericSQLQueries gsq = new GenericSQLQueries();
+		ResultSet cardTypeList = gsq.getList("SWD", "Expansion");
+		try {
+			while(cardTypeList.next())
+			{
+				String typeName = cardTypeList.getString("Expansion");
+				expansionSelector.addItem(typeName);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		expansionPanel.add(expansionSelector);
+		expansionSelector.addActionListener(performSearch);
+		add(expansionPanel);
 	}
 	/**
 	 * Adds a radio button selection to limit the card list

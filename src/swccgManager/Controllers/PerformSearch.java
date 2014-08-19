@@ -48,6 +48,10 @@ public class PerformSearch extends AbstractAction {
 		String typeSql = m_searchDisplay.getSelectedCardType();
 		criteria.setCriteria(Attribute.TYPE, typeSql);
 		
+		//get Expansion
+		String expansionSql = m_searchDisplay.getSelectedExpansion();
+		criteria.setCriteria(Attribute.EXPANSION, expansionSql);
+		
 		//update Card realms
 		String realmSql = m_searchDisplay.getSelectedRealms();
 		criteria.setCriteria(Attribute.REALM, realmSql);

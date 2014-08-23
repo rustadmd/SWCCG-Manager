@@ -64,7 +64,7 @@ public class CollectionView extends JPanel{
 		searchAndListPanel.add(listDisplay, BorderLayout.SOUTH);
 
 		//add the search panel
-		SearchDisplay searchPanel = new SearchDisplay(cardList);
+		SearchDisplay searchPanel = new SearchDisplay(listDisplay);
 		searchAndListPanel.add(searchPanel, BorderLayout.CENTER);
 		add(searchAndListPanel, BorderLayout.WEST);
 		

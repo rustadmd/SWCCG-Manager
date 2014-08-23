@@ -161,6 +161,7 @@ public class GenericSQLQueries {
 		//Write sql using preparedStatement
 		String getListQuery = "SELECT DISTINCT " + column + " " 
 				+ "FROM " + table + " "
+				+ " WHERE " + column + " != '' "//eliminate blanks
 				+ "ORDER BY " + column;
 		//System.out.println(getListQuery);//debugging
 		list = sqlUtil.getQueryResults(getListQuery);

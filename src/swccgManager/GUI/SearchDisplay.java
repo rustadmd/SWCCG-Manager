@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import swccgManager.Controllers.PerformSearch;
 import swccgManager.Database.GenericSQLQueries;
-import swccgManager.Models.CardList;
 
 /**
  * @author Mark Rustad
@@ -30,29 +30,28 @@ public class SearchDisplay extends TitledBorderPanel {
 	 */
 	private static final long serialVersionUID = 2839662535202758973L;
 	
-	private CardList listModel;
 	private PerformSearch performSearch;
 	
 	//options
 	private JRadioButton all, light, dark;
 	private JCheckBox trilogy, epiOne, virtual;
-	JComboBox<String> cardTypeSelector, expansionSelector;
+	JComboBox<String> raritySelector, cardTypeSelector, cardSubTypeSelector, expansionSelector;
+	private JPanel basicSearchPanel = new JPanel();
+	private JPanel advSearchPanel = new JPanel();
 
-	public SearchDisplay(CardList cardList)
+	public SearchDisplay(CardListPanel cardListDisplay)
 	{
 		super("Search");
-		listModel = cardList;
-		performSearch = new PerformSearch(listModel, this);
-		
+		performSearch = new PerformSearch(cardListDisplay, this);
 		
 		//add layouts
 		int numRows = 4;
-		setLayout(new GridLayout(numRows, 1));
-		addSidePanel();
+		basicSearchPanel.setLayout(new GridLayout(numRows, 1));
+		addSideAndRarityPanel();
 		addTypePanel();
 		addExpansionPanel();
 		addRealmPanel();
-		
+		add(basicSearchPanel);
 	}
 	
 	/**
@@ -74,6 +73,20 @@ public class SearchDisplay extends TitledBorderPanel {
 		return cardType;
 	}
 	
+	public String getSelectedSubType()
+	{
+		String subType;
+		if(cardSubTypeSelector.getSelectedItem() == "All")
+		{
+			subType = "%";
+		}
+		else
+		{
+			subType = (String) cardSubTypeSelector.getSelectedItem();
+		}
+		
+		return subType;
+	}
 	/**
 	 * Gets the selected expansion in SQL formatting
 	 * @return SQL formatted expansion
@@ -89,7 +102,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		{
 			expansion = (String) expansionSelector.getSelectedItem();
 		}
-		System.out.println(expansion);
+		//System.out.println(expansion);//debugging
 		return expansion;
 	}
 	
@@ -116,6 +129,21 @@ public class SearchDisplay extends TitledBorderPanel {
 		return sideSql;
 	}
 	
+	public String getSelectedRarity()
+	{
+		String rarity;
+		System.out.println("Selected Rarity" + raritySelector.getSelectedItem());
+		if(raritySelector.getSelectedItem() == "All")
+		{
+			rarity = "%";
+		}
+		else
+		{
+			rarity = "%"+ (String) raritySelector.getSelectedItem() +"%";
+		}
+		//System.out.println(rarity);//debugging
+		return rarity;
+	}
 	public String getSelectedRealms()
 	{
 		String realmSql = "";
@@ -143,10 +171,12 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		return realmSql;
 	}
-	
+
 	
 	private void addTypePanel()
 	{
+		
+		//***Add the super type panel*****//
 		TitledBorderPanel cardTypePanel = new TitledBorderPanel("Type");
 		
 		cardTypeSelector = new JComboBox<String>();
@@ -167,7 +197,34 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		cardTypeSelector.addActionListener(performSearch);
 		cardTypePanel.add(cardTypeSelector);
-		add(cardTypePanel);
+		
+		//******add the sub-type panel*****//
+		TitledBorderPanel cardSubTypePanel = new TitledBorderPanel("Subtype");
+		
+		cardSubTypeSelector = new JComboBox<String>();
+		cardSubTypeSelector.addItem("All");
+		
+		//fill the remainder of the list from the DB
+		ResultSet cardSubTypeList = gsq.getList("SWD", "Subtype");
+		try {
+			while(cardSubTypeList.next())
+			{
+				String typeName = cardSubTypeList.getString("Subtype");
+				cardSubTypeSelector.addItem(typeName);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		cardSubTypeSelector.addActionListener(performSearch);
+		cardSubTypePanel.add(cardSubTypeSelector);
+		
+		//****Add both selectors to panels to display****//
+		JPanel typePanel = new JPanel();
+		typePanel.setLayout(new FlowLayout());
+		typePanel.add(cardTypePanel);
+		typePanel.add(cardSubTypePanel);
+		basicSearchPanel.add(typePanel);
 	}
 	
 	/**
@@ -195,13 +252,14 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		expansionPanel.add(expansionSelector);
 		expansionSelector.addActionListener(performSearch);
-		add(expansionPanel);
+		basicSearchPanel.add(expansionPanel);
 	}
 	/**
 	 * Adds a radio button selection to limit the card list
 	 */
-	private void addSidePanel()
+	private void addSideAndRarityPanel()
 	{
+		//***Create Side Selector****//
 		TitledBorderPanel sideSelection = new TitledBorderPanel("Side");
 		int numRows = 1, numCols = 3;
 		sideSelection.setLayout(new GridLayout(numRows, numCols));
@@ -224,7 +282,26 @@ public class SearchDisplay extends TitledBorderPanel {
 		dark.addActionListener(performSearch);
 		sideSelection.add(dark);
 		
-		add(sideSelection);
+		
+		//*****Create Rarity Selector******//
+		TitledBorderPanel rarityPanel = new TitledBorderPanel("Rarity");
+		raritySelector = new JComboBox<String>();
+		raritySelector.addItem("All");
+		raritySelector.addItem("Common");
+		raritySelector.addItem("Uncommon");
+		raritySelector.addItem("Rare");
+		raritySelector.addItem("Premium");
+		raritySelector.addItem("Fixed");
+		raritySelector.addActionListener(performSearch);
+		rarityPanel.add(raritySelector);
+		
+		
+		//-----Add selectors to the display------//
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new FlowLayout());
+		topPanel.add(sideSelection);
+		topPanel.add(rarityPanel);
+		basicSearchPanel.add(topPanel);
 	}
 	
 	private void addRealmPanel()
@@ -246,6 +323,6 @@ public class SearchDisplay extends TitledBorderPanel {
 		virtual.addActionListener(performSearch);
 		realmPanel.add(virtual);
 		
-		add(realmPanel);
+		basicSearchPanel.add(realmPanel);
 	}
 }

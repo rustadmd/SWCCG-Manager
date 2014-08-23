@@ -9,6 +9,7 @@ import javax.swing.AbstractAction;
 
 import swccgManager.Database.CardQueryCriteria;
 import swccgManager.Database.CardQueryCriteria.Attribute;
+import swccgManager.GUI.CardListPanel;
 import swccgManager.GUI.SearchDisplay;
 import swccgManager.Models.CardList;
 
@@ -26,10 +27,12 @@ public class PerformSearch extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 	private CardList m_cardList;
 	private SearchDisplay m_searchDisplay;
+	private CardListPanel m_cardListDisplay;
 	
-	public PerformSearch(CardList cardList, SearchDisplay searchDisplay)
+	public PerformSearch(CardListPanel cardListPanel, SearchDisplay searchDisplay)
 	{
-		m_cardList = cardList;
+		m_cardListDisplay = cardListPanel;
+		m_cardList = cardListPanel.getCardList();
 		m_searchDisplay = searchDisplay;
 		
 	}
@@ -44,9 +47,17 @@ public class PerformSearch extends AbstractAction {
 		String sideSql = m_searchDisplay.getSelectedSide();
 		criteria.setCriteria(Attribute.SIDE, sideSql);
 		
+		//add the rarity
+		String raritySql = m_searchDisplay.getSelectedRarity();
+		criteria.setCriteria(Attribute.RARITY, raritySql);
+		
 		//update cardType
 		String typeSql = m_searchDisplay.getSelectedCardType();
 		criteria.setCriteria(Attribute.TYPE, typeSql);
+		
+		//Update Subtype
+		String subtypeSql = m_searchDisplay.getSelectedSubType();
+		criteria.setCriteria(Attribute.SUBTYPE, subtypeSql);
 		
 		//get Expansion
 		String expansionSql = m_searchDisplay.getSelectedExpansion();
@@ -56,8 +67,11 @@ public class PerformSearch extends AbstractAction {
 		String realmSql = m_searchDisplay.getSelectedRealms();
 		criteria.setCriteria(Attribute.REALM, realmSql);
 		
+		m_cardListDisplay.setSelectedItem(0);//reset selected Item to so there are no out of bounds errors
 		//update list with new criteria
 		m_cardList.newCardCriteria(criteria);
+		
+		
 
 	}
 

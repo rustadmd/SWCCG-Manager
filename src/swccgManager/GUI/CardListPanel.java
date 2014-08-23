@@ -48,6 +48,11 @@ public class CardListPanel extends JPanel{
 		//cardSelector.addListSelectionListener();//End listener
 	}
 	
+	public CardList getCardList()
+	{
+		return m_cardList;
+	}
+	
 	public void setSelectedItem(int index)
 	{
 		cardSelector.setSelectedIndex(index);

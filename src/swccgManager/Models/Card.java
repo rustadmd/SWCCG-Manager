@@ -54,19 +54,15 @@ public class Card {
 			m_expansion = cardInfo.getString("Expansion");
 			m_rarity = cardInfo.getString("Rarity");
 			m_uniqueness = cardInfo.getString("Uniqueness");
+			System.out.println("Card created: " + m_cardId);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//handle an empty card
+			m_cardName = "No Results Returned";
+			m_uniqueness = "";
+			//e.printStackTrace();
 		}
 		m_frontSideImage = null;//safety to ensure no image is there
 		
-		/*Unneeded at this time, get image will load the image if applicable
-		//Set the image path, but don't actually load the image
-		SqlUtilities su = new SqlUtilities();
-		Connection swdb = su.getDbConnection();
-		ImageManager im = new ImageManager(swdb);
-		m_frontSideImagePath = im.getImagePath(cardId, 1);
-		su.closeDB(swdb);*/
-		System.out.println("Card created: " + m_cardId);
 		
 	}
 	/**
@@ -171,14 +167,13 @@ public class Card {
 			SqlUtilities su = new SqlUtilities();
 			Connection swdb = su.getDbConnection();
 			ImageManager im = new ImageManager(swdb);
-			Image image = im.getCardImage(m_cardId, 1);
+			Image image = im.getCardImage(m_cardId, 1);//1 is always the front side
 			//m_frontSideImage.setImage(image);
 			m_frontSideImage = image;
 			
 			su.closeDB(swdb);
 		}
 		
-		//1 is always the front side
 		return m_frontSideImage;
 	}
 

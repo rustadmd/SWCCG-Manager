@@ -132,7 +132,7 @@ public class SearchDisplay extends TitledBorderPanel {
 	public String getSelectedRarity()
 	{
 		String rarity;
-		System.out.println("Selected Rarity" + raritySelector.getSelectedItem());
+		//System.out.println("Selected Rarity: " + raritySelector.getSelectedItem());
 		if(raritySelector.getSelectedItem() == "All")
 		{
 			rarity = "%";

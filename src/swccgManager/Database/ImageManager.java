@@ -61,12 +61,25 @@ public class ImageManager {
 			//System.out.println("ImageLocation within the getCardImage (image retrieved?): " + imageLocation);
 		}
 		
+		
 		catch (Exception e)
 		{
 			//File does not exist
 			//int cardId = imagePaths.getInt("cardID");
-			System.out.println("Image not found on path: " + cardId + "|" + imageLocation);
-			e.printStackTrace();
+			String errorImageLocation = "error";
+			try{
+			errorImageLocation = Settings.getImagePath() + "/error.gif";
+			File imageFile = new File(errorImageLocation);
+			cardImage = ImageIO.read(imageFile);
+			}
+			catch (Exception e2)
+			{
+				System.out.println("Image not found on path, finding error image: " + cardId + "|" + imageLocation);
+				System.out.println("Error image not found: " + errorImageLocation);
+				e2.printStackTrace();
+			}
+			
+			
 		}
 		
 		/***broken code
@@ -116,7 +129,8 @@ public class ImageManager {
 			imageLocation_s = Settings.getImagePath() + imageLocation.getString("large");
 			imageLocation.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//do nothing, lack of a image handled elsewhere
+			//e.printStackTrace();
 		}
 		//System.out.println("Image Location: "+imageLocation_s);//debugging
 		return imageLocation_s;

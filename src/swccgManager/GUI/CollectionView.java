@@ -102,9 +102,17 @@ public class CollectionView extends JPanel{
 	 */
 	public void updateStatsModel()
 	{
+		try{
 		Collection collection = getSelectedCollection();
 		Card card = getSelectedCard();
 		statsModel = new CardCollectionStatsModel(card, collection);
+		}
+		//if the search returns no results
+		catch (NullPointerException e)
+		{
+			
+			System.out.println("Search parameters returned no results");
+		}
 	}
 	
 	private void addKeyBindings()

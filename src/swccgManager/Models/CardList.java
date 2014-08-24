@@ -88,6 +88,11 @@ public class CardList extends AbstractListModel<Card> {
 	{
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		List<Card> newCardList = gsq.getCardList(m_criteria);
+		if(newCardList.isEmpty())
+		{
+			System.out.println("Query Returned no results");
+			newCardList.add(new Card(-1));//return an empty card
+		}
 		setCardList(newCardList);
 	}
 	

@@ -196,6 +196,7 @@ public class GenericSQLQueries {
 					+ " AND Characteristics LIKE ? "
 					+ " AND Lore LIKE ? "
 					+ " AND Gametext LIKE ? "
+					+ " AND Icons LIKE ? "
 					+ " AND Expansion IN ( " + realmSql + " )"//for realm
 					+ "ORDER BY cardName "
 					);
@@ -210,6 +211,7 @@ public class GenericSQLQueries {
 			cardList.setString(7, cardCriteria.getCriteria(Attribute.CHARACTERISTICS));
 			cardList.setString(8, cardCriteria.getCriteria(Attribute.LORE));
 			cardList.setString(9, cardCriteria.getCriteria(Attribute.GAMETEXT));
+			cardList.setString(10, cardCriteria.getCriteria(Attribute.ICON));
 			//System.out.println(cardList.toString());//debugging DOESN'T PRINT SQL
 			cardListResultSet = cardList.executeQuery();
 			

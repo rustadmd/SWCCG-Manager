@@ -35,13 +35,23 @@ public class SearchDisplay extends TitledBorderPanel {
 	
 	private PerformSearch performSearch;
 	
+	//list options
+	private String[] iconList = {"Astromech", "Creature", "Droid", "Exterior", "Grabber", 
+			"Independent", "Interior", "Mobile", "Permanent Weapon", 
+			"Pilot", "Planet", "Republic", "Scomp Link", 
+			"Selective", "Space", "Starship", "Trade Federation", "Underground",
+			"Underwater", "Vehicle", "Warrior"};
+	
 	//options
 	private JRadioButton all, light, dark;
 	private JCheckBox trilogy, epiOne, virtual;
-	JComboBox<String> raritySelector, cardTypeSelector, cardSubTypeSelector, expansionSelector;
-	JTextField nameFilter = new JTextField();
-	JTextField loreFilter = new JTextField();
-	JTextField gameTextFilter = new JTextField();
+	private JComboBox<String> raritySelector, cardTypeSelector, cardSubTypeSelector
+		, expansionSelector, iconSelector;
+	private JTextField nameFilter = new JTextField();
+	private JTextField loreFilter = new JTextField();
+	private JTextField gameTextFilter = new JTextField();
+	
+	//Panel groups
 	private JPanel basicSearchPanel = new JPanel();
 	private JPanel advSearchPanel = new JPanel();
 
@@ -200,12 +210,27 @@ public class SearchDisplay extends TitledBorderPanel {
 		String gameTextSql = "%" + gameTextFilter.getText() + "%";
 		return gameTextSql;
 	}
+	
+	public String getSelectedIcon()
+	{
+		String iconSql;
+		if(iconSelector.getSelectedItem() == "All")
+		{
+			iconSql = "%";
+		}
+		else
+		{
+			iconSql = "%" + (String) iconSelector.getSelectedItem()+ "%";
+		}
+		System.out.println(iconSql);//debugging
+		return iconSql;
+	}
 	/**
 	 * Adds all of the search options to the advSearchPanel. Does Not add the advPanel to the display
 	 */
 	private void setupAdvPanel()
 	{
-		int numRows = 4;
+		int numRows = 5;
 		advSearchPanel.setLayout(new GridLayout(numRows, 1));
 		
 		//----Add Card Name Filter----//
@@ -222,9 +247,20 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		//----- Add GameText Filter-----//
 		TitledBorderPanel gameTextPanel = new TitledBorderPanel("Game Text Contains");
-		gameTextPanel.add(gameTextFilter);
 		gameTextFilter.setColumns(15);
+		gameTextPanel.add(gameTextFilter);
 		advSearchPanel.add(gameTextPanel);
+		
+		//----- Add Icon Filter ------//
+		TitledBorderPanel iconPanel = new TitledBorderPanel("Icons");
+		iconSelector = new JComboBox<String>();
+		iconSelector.addItem("All");
+		for(String icon: iconList){
+			iconSelector.addItem(icon);
+		}
+		iconSelector.addActionListener(performSearch);
+		iconPanel.add(iconSelector);
+		advSearchPanel.add(iconPanel);
 		
 		//-----add search Button -----//
 		JPanel searchButtonPanel = new JPanel(new FlowLayout());

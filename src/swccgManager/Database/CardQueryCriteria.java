@@ -13,13 +13,13 @@ public class CardQueryCriteria {
 	
 	public enum Attribute
 	{
-		NAME, SIDE, TYPE, SUBTYPE, EXPANSION, RARITY, CHARACTERISTICS, LORE, GAMETEXT, REALM
+		NAME, SIDE, TYPE, SUBTYPE, EXPANSION, RARITY, CHARACTERISTICS, LORE, GAMETEXT, ICON, REALM
 	}
 	private String[] criteriaList;
 
 	public CardQueryCriteria()
 	{
-		int numCriteria = 10;
+		int numCriteria = 11;
 		criteriaList = new String[numCriteria];
 		
 		//criteria should be all blanks initially

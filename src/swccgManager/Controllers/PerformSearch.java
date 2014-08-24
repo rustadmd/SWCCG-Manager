@@ -79,6 +79,10 @@ public class PerformSearch extends AbstractAction {
 		String gameTextSql = m_searchDisplay.getGameTextFilter();
 		criteria.setCriteria(Attribute.GAMETEXT, gameTextSql);
 		
+		//add Icon filter
+		String iconSql = m_searchDisplay.getSelectedIcon();
+		criteria.setCriteria(Attribute.ICON, iconSql);
+		
 		m_cardListDisplay.setSelectedItem(0);//reset selected Item to so there are no out of bounds errors
 		//update list with new criteria
 		m_cardList.newCardCriteria(criteria);

@@ -3,16 +3,19 @@
  */
 package swccgManager.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import swccgManager.Controllers.PerformSearch;
 import swccgManager.Database.GenericSQLQueries;
@@ -36,6 +39,9 @@ public class SearchDisplay extends TitledBorderPanel {
 	private JRadioButton all, light, dark;
 	private JCheckBox trilogy, epiOne, virtual;
 	JComboBox<String> raritySelector, cardTypeSelector, cardSubTypeSelector, expansionSelector;
+	JTextField nameFilter = new JTextField();
+	JTextField loreFilter = new JTextField();
+	JTextField gameTextFilter = new JTextField();
 	private JPanel basicSearchPanel = new JPanel();
 	private JPanel advSearchPanel = new JPanel();
 
@@ -43,6 +49,7 @@ public class SearchDisplay extends TitledBorderPanel {
 	{
 		super("Search");
 		performSearch = new PerformSearch(cardListDisplay, this);
+		setLayout(new BorderLayout());
 		
 		//add layouts
 		int numRows = 4;
@@ -51,7 +58,11 @@ public class SearchDisplay extends TitledBorderPanel {
 		addTypePanel();
 		addExpansionPanel();
 		addRealmPanel();
-		add(basicSearchPanel);
+		add(basicSearchPanel, BorderLayout.CENTER);
+		
+		//setup advanced panel
+		setupAdvPanel();
+		add(advSearchPanel, BorderLayout.EAST);
 	}
 	
 	/**
@@ -171,7 +182,58 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		return realmSql;
 	}
-
+	
+	public String getNameFilter()
+	{
+		String nameSql = "%" + nameFilter.getText() + "%";
+		return nameSql;
+	}
+	
+	public String getLoreFilter()
+	{
+		String loreSql = "%" + loreFilter.getText() + "%";
+		return loreSql;
+	}
+	
+	public String getGameTextFilter()
+	{
+		String gameTextSql = "%" + gameTextFilter.getText() + "%";
+		return gameTextSql;
+	}
+	/**
+	 * Adds all of the search options to the advSearchPanel. Does Not add the advPanel to the display
+	 */
+	private void setupAdvPanel()
+	{
+		int numRows = 4;
+		advSearchPanel.setLayout(new GridLayout(numRows, 1));
+		
+		//----Add Card Name Filter----//
+		TitledBorderPanel namePanel = new TitledBorderPanel("Name Contains");
+		namePanel.add(nameFilter);
+		nameFilter.setColumns(10);
+		advSearchPanel.add(namePanel);
+		
+		//----- Add Lore Filter-----//
+		TitledBorderPanel lorePanel = new TitledBorderPanel("Lore Contains");
+		lorePanel.add(loreFilter);
+		loreFilter.setColumns(10);
+		advSearchPanel.add(lorePanel);
+		
+		//----- Add GameText Filter-----//
+		TitledBorderPanel gameTextPanel = new TitledBorderPanel("Game Text Contains");
+		gameTextPanel.add(gameTextFilter);
+		gameTextFilter.setColumns(15);
+		advSearchPanel.add(gameTextPanel);
+		
+		//-----add search Button -----//
+		JPanel searchButtonPanel = new JPanel(new FlowLayout());
+		JButton searchButton = new JButton("Search");
+		searchButton.addActionListener(performSearch);
+		searchButtonPanel.add(searchButton);
+		advSearchPanel.add(searchButtonPanel);
+		
+	}
 	
 	private void addTypePanel()
 	{

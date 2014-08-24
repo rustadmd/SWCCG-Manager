@@ -67,6 +67,18 @@ public class PerformSearch extends AbstractAction {
 		String realmSql = m_searchDisplay.getSelectedRealms();
 		criteria.setCriteria(Attribute.REALM, realmSql);
 		
+		//Add name filter
+		String nameSql = m_searchDisplay.getNameFilter();
+		criteria.setCriteria(Attribute.NAME, nameSql);
+		
+		//Add lore filter
+		String loreSql = m_searchDisplay.getLoreFilter();
+		criteria.setCriteria(Attribute.LORE, loreSql);
+		
+		//add Game Text filter
+		String gameTextSql = m_searchDisplay.getGameTextFilter();
+		criteria.setCriteria(Attribute.GAMETEXT, gameTextSql);
+		
 		m_cardListDisplay.setSelectedItem(0);//reset selected Item to so there are no out of bounds errors
 		//update list with new criteria
 		m_cardList.newCardCriteria(criteria);

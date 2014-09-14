@@ -181,13 +181,31 @@ public class GenericSQLQueries {
 		Connection swdb = sqlUtil.getDbConnection();
 		ResultSet cardListResultSet = null;
 		PreparedStatement cardList = null;
+		
 		List<Card> list = new ArrayList<Card>();
 		try{
-			String realmSql = cardCriteria.getCriteria(Attribute.REALM); 
+			String realmSql = cardCriteria.getCriteria(Attribute.REALM);
+			
+			//Collection filtering
+			String collectionJoin;
+			String collectionName = cardCriteria.getCriteria(Attribute.COL_NAME);
+			if(collectionName == null){
+				collectionJoin = "";
+			}
+			else {
+				collectionJoin = " LEFT JOIN Collection ON SWD.id = Collection.cardId AND Collection.CollectionName = '" + collectionName + "' ";
+			}
+			String collectionWhere = cardCriteria.getCriteria(Attribute.COL_CONTAINS);
+			if (collectionWhere == null){
+				collectionWhere = "";
+			}
+			System.out.println(collectionWhere);
+			
 			cardList = swdb.prepareStatement(
 					 "SELECT id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
 					+ "FROM SWD "
-					+ "WHERE cardName LIKE ? "
+					+ collectionJoin
+					+ " WHERE cardName LIKE ? "
 					+ "	AND Grouping LIKE ? "
 					+ " AND CardType LIKE ? "
 					+ " AND Subtype LIKE ? "
@@ -197,7 +215,8 @@ public class GenericSQLQueries {
 					+ " AND Lore LIKE ? "
 					+ " AND Gametext LIKE ? "
 					+ " AND Icons LIKE ? "
-					+ " AND Expansion IN ( " + realmSql + " )"//for realm
+					+ " AND Expansion IN ( " + realmSql + " )"
+					+ collectionWhere//for realm
 					+ "ORDER BY cardName "
 					);
 			

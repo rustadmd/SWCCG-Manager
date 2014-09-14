@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.*;
 
-import swccgManager.Controllers.CardChangedAction_CV;
 import swccgManager.Controllers.CollectionChangedAction_CV;
 import swccgManager.Controllers.Shortcuts.DecrementInventory;
 import swccgManager.Controllers.Shortcuts.IncrementInventory;
@@ -40,8 +39,9 @@ public class CollectionView extends JPanel{
 	
 	//list of the panels
 	CollectionDisplay collectionDisplay;
+	SearchAndListPanel searchAndListPanel;
 	CardDisplay cardDisplay;
-	CardListPanel listDisplay;
+	//CardListPanel listDisplay;
 	CardCollectionStatsDisplay statsDisplay;
 
 	public CollectionView()
@@ -50,7 +50,9 @@ public class CollectionView extends JPanel{
 		//Set the layout
 		setLayout(new BorderLayout());
 		
-		JPanel searchAndListPanel = new JPanel();
+		
+		
+		/**  replaced by search and List Panel
 		searchAndListPanel.setLayout(new BorderLayout());
 		
 		//Add card selection list
@@ -66,7 +68,8 @@ public class CollectionView extends JPanel{
 		//add the search panel
 		SearchDisplay searchPanel = new SearchDisplay(listDisplay);
 		searchAndListPanel.add(searchPanel, BorderLayout.CENTER);
-		add(searchAndListPanel, BorderLayout.WEST);
+		*/
+		
 		
 		//Add Collection Panel
 		collectionList = new CollectionList();
@@ -77,6 +80,9 @@ public class CollectionView extends JPanel{
 		collectionDisplay.addCollectionSelectedAction(colca);
 		
 		add(collectionDisplay, BorderLayout.NORTH);
+		
+		searchAndListPanel = new SearchAndListPanel(this, collectionDisplay);
+		add(searchAndListPanel, BorderLayout.WEST);
 		
 		//create the stats information
 		Card selectedCard = getSelectedCard();
@@ -140,7 +146,7 @@ public class CollectionView extends JPanel{
 	
 	public Card getSelectedCard()
 	{
-		Card selectedCard = listDisplay.getSelectedCard();
+		Card selectedCard = searchAndListPanel.getCardListPanel().getSelectedCard();
 		return selectedCard;
 	}
 	/**
@@ -195,7 +201,7 @@ public class CollectionView extends JPanel{
 	 * @return the listDisplay
 	 */
 	public CardListPanel getListDisplay() {
-		return listDisplay;
+		return searchAndListPanel.getCardListPanel();
 	}
 
 	/**

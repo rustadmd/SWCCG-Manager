@@ -10,6 +10,7 @@ import javax.swing.AbstractAction;
 import swccgManager.Database.CardQueryCriteria;
 import swccgManager.Database.CardQueryCriteria.Attribute;
 import swccgManager.GUI.CardListPanel;
+import swccgManager.GUI.CollectionDisplay;
 import swccgManager.GUI.SearchDisplay;
 import swccgManager.Models.CardList;
 
@@ -28,13 +29,19 @@ public class PerformSearch extends AbstractAction {
 	private CardList m_cardList;
 	private SearchDisplay m_searchDisplay;
 	private CardListPanel m_cardListDisplay;
+	private CollectionDisplay m_collectionDisplay;
 	
-	public PerformSearch(CardListPanel cardListPanel, SearchDisplay searchDisplay)
+	public PerformSearch(CardListPanel cardListPanel, SearchDisplay searchDisplay, CollectionDisplay cd)
 	{
 		m_cardListDisplay = cardListPanel;
 		m_cardList = cardListPanel.getCardList();
 		m_searchDisplay = searchDisplay;
-		
+		m_collectionDisplay = cd;
+	}
+	
+	public PerformSearch(CardListPanel cardListPanel, SearchDisplay searchDisplay)
+	{
+		this(cardListPanel, searchDisplay, null);
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -82,6 +89,25 @@ public class PerformSearch extends AbstractAction {
 		//add Icon filter
 		String iconSql = m_searchDisplay.getSelectedIcon();
 		criteria.setCriteria(Attribute.ICON, iconSql);
+		
+		//Add collection contains filter
+		//String any = "Any"; //unneeded, should result in null
+		String contains = "Contains"; String notContains = "Not Contains";
+		String whereClause = "";
+		String collectionName = null;
+		String containsFilter = m_searchDisplay.getCollectionContains();
+		if (containsFilter == contains){
+			whereClause = " AND Collection.Inventory > 0 ";
+			collectionName = m_collectionDisplay.getSelectedCollection().getCollectionName();
+		}
+		else if (containsFilter == notContains) {
+			whereClause = " AND (Collection.Inventory <= 0 OR Collection.Inventory LIKE '' OR Collection.Inventory IS NULL ) ";
+			collectionName = m_collectionDisplay.getSelectedCollection().getCollectionName();
+		}
+		criteria.setCriteria(Attribute.COL_CONTAINS, whereClause);
+		
+		criteria.setCriteria(Attribute.COL_NAME, collectionName);
+		System.out.println(collectionName);//debugging
 		
 		m_cardListDisplay.setSelectedItem(0);//reset selected Item to so there are no out of bounds errors
 		//update list with new criteria

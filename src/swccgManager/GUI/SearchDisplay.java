@@ -34,9 +34,10 @@ public class SearchDisplay extends TitledBorderPanel {
 	private static final long serialVersionUID = 2839662535202758973L;
 	
 	private PerformSearch performSearch;
+	private CollectionDisplay collectionDisplay;
 	
 	//list options
-	private String[] iconList = {"Astromech", "Creature", "Droid", "Exterior", "Grabber", 
+	private String[] iconList = {"Astromech", "Creature", "Droid", "Episode 1", "Exterior", "Grabber", 
 			"Independent", "Interior", "Mobile", "Permanent Weapon", 
 			"Pilot", "Planet", "Republic", "Scomp Link", 
 			"Selective", "Space", "Starship", "Trade Federation", "Underground",
@@ -50,15 +51,18 @@ public class SearchDisplay extends TitledBorderPanel {
 	private JTextField nameFilter = new JTextField();
 	private JTextField loreFilter = new JTextField();
 	private JTextField gameTextFilter = new JTextField();
+	private JRadioButton colContains, colNotContain, colAny;
 	
 	//Panel groups
 	private JPanel basicSearchPanel = new JPanel();
 	private JPanel advSearchPanel = new JPanel();
-
-	public SearchDisplay(CardListPanel cardListDisplay)
+	
+	public SearchDisplay(CardListPanel cardListDisplay, CollectionDisplay cd)
 	{
 		super("Search");
-		performSearch = new PerformSearch(cardListDisplay, this);
+		
+		collectionDisplay = cd;
+		performSearch = new PerformSearch(cardListDisplay, this, cd);
 		setLayout(new BorderLayout());
 		
 		//add layouts
@@ -73,6 +77,11 @@ public class SearchDisplay extends TitledBorderPanel {
 		//setup advanced panel
 		setupAdvPanel();
 		add(advSearchPanel, BorderLayout.EAST);
+	}
+	
+	public SearchDisplay(CardListPanel cardListDisplay)
+	{
+		this(cardListDisplay, null);
 	}
 	
 	/**
@@ -222,15 +231,66 @@ public class SearchDisplay extends TitledBorderPanel {
 		{
 			iconSql = "%" + (String) iconSelector.getSelectedItem()+ "%";
 		}
-		System.out.println(iconSql);//debugging
+		//System.out.println(iconSql);//debugging
 		return iconSql;
+	}
+	
+	/**
+	 * Retrieves the selected collection contains label, i.e. "Any", "Contains", "Not Contains"
+	 * Returns Null if the filter does not exist
+	 * 
+	 * @return Selected collection contains filter
+	 */
+	public String getCollectionContains()
+	{
+		if (colAny.isSelected()){
+			return colAny.getText();
+		}
+		else if (colContains.isSelected()){
+			return colContains.getText();
+		}
+		else if (colNotContain.isSelected()){
+			return colNotContain.getText();
+		}
+		else {
+			return null;
+		}
+		
 	}
 	/**
 	 * Adds all of the search options to the advSearchPanel. Does Not add the advPanel to the display
 	 */
 	private void setupAdvPanel()
 	{
-		int numRows = 5;
+		int numRows;
+		//------Add Collection filtering if applicable----//
+		if(collectionDisplay == null) {
+			numRows = 5;
+		}
+		else {
+			numRows = 6;
+			TitledBorderPanel collectionPanel = new TitledBorderPanel("Collection");
+			ButtonGroup collectionGroup = new ButtonGroup();
+			
+			colAny = new JRadioButton("Any");
+			collectionGroup.add(colAny);
+			colAny.setSelected(true);
+			colAny.addActionListener(performSearch);
+			collectionPanel.add(colAny);
+			//System.out.println(colAny.getText());
+			
+			colContains = new JRadioButton("Contains");
+			collectionGroup.add(colContains);
+			colContains.addActionListener(performSearch);
+			collectionPanel.add(colContains);
+			
+			colNotContain = new JRadioButton("Not Contains");
+			collectionGroup.add(colNotContain);
+			colNotContain.addActionListener(performSearch);
+			collectionPanel.add(colNotContain);
+			
+			advSearchPanel.add(collectionPanel);
+		}
 		advSearchPanel.setLayout(new GridLayout(numRows, 1));
 		
 		//----Add Card Name Filter----//

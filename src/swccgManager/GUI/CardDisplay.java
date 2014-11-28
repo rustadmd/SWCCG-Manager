@@ -4,6 +4,8 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -28,11 +30,22 @@ public class CardDisplay extends TitledBorderPanel{
 	Card m_card;
 	int frontSideImageHeight, frontSideImageWidth;
 	JLabel cardImageLabel;
+	FieldDisplay rarity;
 	
 	public CardDisplay (Card card)
 	{
 		super("Card");
 		setLayout(new BorderLayout());
+		
+		//Setup card info panel
+		TitledBorderPanel infoPanel = new TitledBorderPanel("Information");
+		infoPanel.setLayout(new GridBagLayout());
+		
+		rarity = new FieldDisplay ("Rarity", card.getRarity());
+		GridBagConstraints rarCon = new GridBagConstraints();
+		infoPanel.add(rarity, rarCon);
+		
+		add(infoPanel, BorderLayout.NORTH);
 		
 		//add card image padding
 		cardImageLabel = new JLabel();
@@ -43,16 +56,12 @@ public class CardDisplay extends TitledBorderPanel{
 		
 		refreshDisplay(card);
 	}
-	/*
-	public void paintComponent(Graphics g)
-	{
-		drawCardImage();
-	}
-	*/
+ 
 	public void refreshDisplay(Card newCard)
 	{
 		m_card = newCard;
 		drawCardImage();
+		addCardInfo();
 	}
 	/**
 	 * Adds a card image to the display
@@ -82,6 +91,11 @@ public class CardDisplay extends TitledBorderPanel{
 		
 		cardImageLabel.setIcon(resizedIcon);
 		//grph.drawImage(cardImage, horizontalSpacing, verticalSpacing,frontSideImageWidth, frontSideImageHeight, this);
+	}
+	
+	private void addCardInfo()
+	{
+		rarity.setValue(m_card.getRarity());
 	}
 
 }

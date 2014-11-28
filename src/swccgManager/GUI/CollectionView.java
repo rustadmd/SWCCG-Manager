@@ -4,6 +4,8 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.*;
 
@@ -48,8 +50,8 @@ public class CollectionView extends JPanel{
 	{
 
 		//Set the layout
-		setLayout(new BorderLayout());
-		
+		setLayout(new GridBagLayout());
+		int fullGbHeight = 3;
 		
 		
 		/**  replaced by search and List Panel
@@ -79,10 +81,16 @@ public class CollectionView extends JPanel{
 		CollectionChangedAction_CV colca = new CollectionChangedAction_CV(this);
 		collectionDisplay.addCollectionSelectedAction(colca);
 		
-		add(collectionDisplay, BorderLayout.NORTH);
+		GridBagConstraints colDisplay = new GridBagConstraints();
+		colDisplay.gridwidth = 2;
+		colDisplay.gridx = 1;
+		add(collectionDisplay, colDisplay);
 		
 		searchAndListPanel = new SearchAndListPanel(this, collectionDisplay);
-		add(searchAndListPanel, BorderLayout.WEST);
+		GridBagConstraints searchDisp = new GridBagConstraints();
+		searchDisp.gridheight = fullGbHeight;
+		searchDisp.gridx = 0;
+		add(searchAndListPanel, searchDisp);
 		
 		//create the stats information
 		Card selectedCard = getSelectedCard();
@@ -91,11 +99,17 @@ public class CollectionView extends JPanel{
 		
 		//Add the basic card information
 		cardDisplay = new CardDisplay(selectedCard);
-		add(cardDisplay, BorderLayout.CENTER);
+		GridBagConstraints cardDisp = new GridBagConstraints();
+		cardDisp.gridx = 1;
+		cardDisp.gridy = 1;
+		add(cardDisplay, cardDisp);
 		
 		//Add collection stats information
 		statsDisplay = new CardCollectionStatsDisplay(statsModel);
-		add(statsDisplay, BorderLayout.EAST);
+		GridBagConstraints statDisp = new GridBagConstraints();
+		statDisp.gridx = 2;
+		statDisp.gridy = 1;
+		add(statsDisplay, statDisp);
 		
 		
 		addKeyBindings();

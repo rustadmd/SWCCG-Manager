@@ -79,6 +79,7 @@ public class CollectionDisplay extends JPanel{
 		description_ta.setEditable(false);
 		
 		TitledBorderPanel descriptionPanel = new TitledBorderPanel("Description");
+		description_ta.setBackground(descriptionPanel.getBackground());
 		add(descriptionPanel);
 		
 		descriptionPanel.add(description_ta);

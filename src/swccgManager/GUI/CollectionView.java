@@ -3,7 +3,6 @@
  */
 package swccgManager.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -89,6 +88,7 @@ public class CollectionView extends JPanel{
 		searchAndListPanel = new SearchAndListPanel(this, collectionDisplay);
 		GridBagConstraints searchDisp = new GridBagConstraints();
 		searchDisp.gridheight = fullGbHeight;
+		searchDisp.fill = GridBagConstraints.VERTICAL;
 		searchDisp.gridx = 0;
 		add(searchAndListPanel, searchDisp);
 		

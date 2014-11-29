@@ -262,6 +262,23 @@ public class GenericSQLQueries {
 		return list;
 	}
 	
+	public String getCardField(Card c, String field)
+	{
+		String cardFieldQuery = 
+				"SELECT " + field
+				+ " FROM SWD WHERE id = " + c.getCardId();
+		
+		ResultSet cardField = sqlUtil.getQueryResults(cardFieldQuery);
+		String fieldVal = "ERROR";
+		try {
+			cardField.next();
+			fieldVal = cardField.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//System.out.println("Card field information: " + fieldVal);
+		return parseText(fieldVal);
+	}
 	
 	/**
 	 * Retrieves important card information from the database for a single card
@@ -407,5 +424,10 @@ public class GenericSQLQueries {
 		return imagePaths;
 	}
 	
+	private String parseText(String s)
+	{
+		String parsedString = s.replace("\\par ", "\n");
+		return parsedString;
+	}
 	//****/
 }

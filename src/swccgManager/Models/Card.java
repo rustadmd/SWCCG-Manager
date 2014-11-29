@@ -32,6 +32,8 @@ public class Card {
 	private String m_expansion;
 	private String m_rarity;
 	private String m_uniqueness;
+	
+	//private String m_isPulled, m_isCancelledBy, m_information;
 	//private String m_frontSideImagePath;//currently unused, loads the image if there is none.
 	private Image m_frontSideImage;
 	

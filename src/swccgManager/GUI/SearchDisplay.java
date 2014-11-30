@@ -66,7 +66,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		setLayout(new BorderLayout());
 		
 		//add layouts
-		int numRows = 4;
+		int numRows = 5;
 		basicSearchPanel.setLayout(new GridLayout(numRows, 1));
 		addSideAndRarityPanel();
 		addTypePanel();
@@ -378,11 +378,11 @@ public class SearchDisplay extends TitledBorderPanel {
 		cardSubTypePanel.add(cardSubTypeSelector);
 		
 		//****Add both selectors to panels to display****//
-		JPanel typePanel = new JPanel();
-		typePanel.setLayout(new FlowLayout());
-		typePanel.add(cardTypePanel);
-		typePanel.add(cardSubTypePanel);
-		basicSearchPanel.add(typePanel);
+		//JPanel typePanel = new JPanel();
+		//typePanel.setLayout(new FlowLayout());
+		basicSearchPanel.add(cardTypePanel);
+		basicSearchPanel.add(cardSubTypePanel);
+		//basicSearchPanel.add(typePanel);
 	}
 	
 	/**

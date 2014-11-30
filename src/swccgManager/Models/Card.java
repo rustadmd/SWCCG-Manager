@@ -35,7 +35,7 @@ public class Card {
 	
 	//private String m_isPulled, m_isCancelledBy, m_information;
 	//private String m_frontSideImagePath;//currently unused, loads the image if there is none.
-	private Image m_frontSideImage;
+	private Image m_frontSideImage, m_rearSideImage;
 	
 	/**
 	 * Creates a card by pulling from the database all the important information
@@ -179,7 +179,26 @@ public class Card {
 		return m_frontSideImage;
 	}
 
-	
+	public Image getRearSideImage() {
+		
+		//m_frontSideImage = null;
+		//Load the card if it is not present
+		if (m_rearSideImage == null)
+		{
+			//System.out.println("Front Side Image is null");
+			
+			SqlUtilities su = new SqlUtilities();
+			Connection swdb = su.getDbConnection();
+			ImageManager im = new ImageManager(swdb);
+			Image image = im.getCardImage(m_cardId, 2);//1 is always the front side
+			//m_frontSideImage.setImage(image);
+			m_rearSideImage = image;
+			
+			su.closeDB(swdb);
+		}
+		
+		return m_rearSideImage;
+	}
 	 
 
 }

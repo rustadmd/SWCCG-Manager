@@ -4,12 +4,14 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import swccgManager.Database.GenericSQLQueries;
@@ -29,8 +31,8 @@ public class CardDisplay extends TitledBorderPanel{
 	 */
 	private static final long serialVersionUID = -9161804104124972916L;
 	Card m_card;
-	int frontSideImageHeight, frontSideImageWidth;
-	JLabel cardImageLabel;
+	int imageHeight, imageWidth;
+	JLabel cardImageLabel, rearCardImageLabel;
 	FieldDisplay rarity;
 	LongDescription information, isPulled;
 	
@@ -48,14 +50,16 @@ public class CardDisplay extends TitledBorderPanel{
 		rarCon.gridwidth = 2;
 		infoPanel.add(rarity, rarCon);
 		
-		isPulled = new LongDescription("Pulled By");
+		isPulled = new LongDescription("Pulled/Cancelled By");
 		//isPulled.setWidth(15);
+		isPulled.setRows(6);
 		GridBagConstraints pullCon = new GridBagConstraints();
 		pullCon.gridy = 1;
 		infoPanel.add(isPulled, pullCon);
 		
 		information = new LongDescription("Information");
-		//information.setWidth(15);
+		information.setWidth(22);
+		information.setRows(6);
 		GridBagConstraints infoCon = new GridBagConstraints();
 		infoCon.gridx = 1;
 		infoCon.gridy = 1;
@@ -65,10 +69,18 @@ public class CardDisplay extends TitledBorderPanel{
 		
 		//add card image padding
 		cardImageLabel = new JLabel();
-		int verticalSpacing = 10;
-		int horizontalSpacing = 15;
-		cardImageLabel.setBorder(new EmptyBorder(verticalSpacing, horizontalSpacing, verticalSpacing, horizontalSpacing));
-		add(cardImageLabel, BorderLayout.WEST);
+		int verticalSpacing = 5;
+		int horizontalSpacing = 5;
+		cardImageLabel.setBorder(new EmptyBorder(verticalSpacing, horizontalSpacing, verticalSpacing, 0));
+		//rear image
+		rearCardImageLabel = new JLabel();
+		rearCardImageLabel.setBorder(new EmptyBorder(verticalSpacing, 0, verticalSpacing, horizontalSpacing));
+		
+		JPanel images = new JPanel();
+		images.setLayout(new FlowLayout());
+		images.add(cardImageLabel);
+		images.add(rearCardImageLabel);
+		add(images, BorderLayout.CENTER);
 		
 		refreshDisplay(card);
 	}
@@ -76,37 +88,37 @@ public class CardDisplay extends TitledBorderPanel{
 	public void refreshDisplay(Card newCard)
 	{
 		m_card = newCard;
-		drawCardImage();
+		refreshImages();
 		addCardInfo();
 	}
 	/**
 	 * Adds a card image to the display
 	 * @param grph
 	 */
-	private void drawCardImage() 
+	private void drawCardImage(Image i, JLabel label) 
 	{
 		
 		//top left corner of the image
 				
 		//System.out.println(m_card);//debugging
-		Image cardImage = m_card.getFrontSideImage(); 
+		//Image cardImage = m_card.getFrontSideImage(); 
 		
 		double scaleFactor = .75;
 		
-		if(cardImage == null)
+		if(i == null)
 		{
 			System.out.println("Image not loaded (drawCardImage())");
 		}
-		ImageIcon cardImageIcon = new ImageIcon(cardImage);
-		frontSideImageHeight = cardImageIcon.getIconHeight();
-		frontSideImageWidth = cardImageIcon.getIconWidth();
-		int newWidth = (int) (frontSideImageWidth * scaleFactor);
-		int newHeight = (int) (frontSideImageHeight * scaleFactor);
-		Image resizedImage = cardImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		ImageIcon cardImageIcon = new ImageIcon(i);
+		imageHeight = cardImageIcon.getIconHeight();
+		imageWidth = cardImageIcon.getIconWidth();
+		int newWidth = (int) (imageWidth * scaleFactor);
+		int newHeight = (int) (imageHeight * scaleFactor);
+		Image resizedImage = i.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon = new ImageIcon(resizedImage);
 		
-		cardImageLabel.setIcon(resizedIcon);
-		//grph.drawImage(cardImage, horizontalSpacing, verticalSpacing,frontSideImageWidth, frontSideImageHeight, this);
+		label.setIcon(resizedIcon);
+		//System.out.println("drawCardImage() completed: " + m_card);
 	}
 	
 	private void addCardInfo()
@@ -114,7 +126,46 @@ public class CardDisplay extends TitledBorderPanel{
 		rarity.setValue(m_card.getRarity());
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		information.setText(gsq.getCardField(m_card, "Information"));
-		isPulled.setText(gsq.getCardField(m_card, "IsPulled"));
+		
+		//combine isPulled and isCanceled text
+		String pulledText = gsq.getCardField(m_card, "IsPulled");
+		String cancelledText = gsq.getCardField(m_card, "IsCanceledBy");
+		String combined = "";
+		if(pulledText.length() > 0)
+		{
+			combined += "PULLED BY:\n" + pulledText;
+			if(cancelledText.length() > 0)
+			{
+				combined += "\n\n";
+			}
+		}
+		if(cancelledText.length() > 0)
+		{
+			combined += "CANCELLED BY: \n" + cancelledText;
+		}
+		isPulled.setText(combined);
+	}
+	
+	private void refreshImages()
+	{
+		
+		GridBagConstraints frontCon = new GridBagConstraints();
+		frontCon.gridx = 0;
+		
+		drawCardImage(m_card.getFrontSideImage(), cardImageLabel);
+		if(m_card.getCardType().equals("Objective"))
+		{
+			drawCardImage(m_card.getRearSideImage(), rearCardImageLabel);
+			GridBagConstraints rearImage = new GridBagConstraints();
+			rearImage.gridx = 1;
+			
+			//System.out.println("Rear Image added");
+		}
+		else
+		{
+			rearCardImageLabel.setIcon(null);
+		}
+		
 	}
 
 }

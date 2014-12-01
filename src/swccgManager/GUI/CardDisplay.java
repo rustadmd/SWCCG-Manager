@@ -42,7 +42,7 @@ public class CardDisplay extends TitledBorderPanel{
 		setLayout(new BorderLayout());
 		
 		//Setup card info panel
-		TitledBorderPanel infoPanel = new TitledBorderPanel("Information");
+		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new GridBagLayout());
 		
 		rarity = new FieldDisplay ("Rarity", card.getRarity());

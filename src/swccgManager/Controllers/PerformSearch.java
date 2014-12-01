@@ -107,13 +107,12 @@ public class PerformSearch extends AbstractAction {
 		criteria.setCriteria(Attribute.COL_CONTAINS, whereClause);
 		
 		criteria.setCriteria(Attribute.COL_NAME, collectionName);
-		System.out.println(collectionName);//debugging
+		//System.out.println(collectionName);//debugging
 		
 		m_cardListDisplay.setSelectedItem(0);//reset selected Item to so there are no out of bounds errors
 		//update list with new criteria
 		m_cardList.newCardCriteria(criteria);
-		
-		
+		m_cardListDisplay.updateCardCount();
 
 	}
 

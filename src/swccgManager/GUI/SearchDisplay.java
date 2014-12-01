@@ -5,6 +5,8 @@ package swccgManager.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,7 +68,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		setLayout(new BorderLayout());
 		
 		//add layouts
-		int numRows = 5;
+		int numRows = 6;
 		basicSearchPanel.setLayout(new GridLayout(numRows, 1));
 		addSideAndRarityPanel();
 		addTypePanel();
@@ -455,31 +457,43 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		
 		//-----Add selectors to the display------//
-		JPanel topPanel = new JPanel();
+		basicSearchPanel.add(sideSelection);
+		basicSearchPanel.add(rarityPanel);
+		
+		/*
+		 * JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout());
 		topPanel.add(sideSelection);
 		topPanel.add(rarityPanel);
 		basicSearchPanel.add(topPanel);
+		*/
 	}
 	
 	private void addRealmPanel()
 	{
 		TitledBorderPanel realmPanel = new TitledBorderPanel("Realm");
-		realmPanel.setLayout(new FlowLayout());
+		realmPanel.setLayout(new GridBagLayout());
 		
 		trilogy = new JCheckBox("Original Trilogy");
 		trilogy.setSelected(true);
 		trilogy.addActionListener(performSearch);
-		realmPanel.add(trilogy);
+		GridBagConstraints trilCon = new GridBagConstraints();
+		trilCon.gridwidth = 2;
+		realmPanel.add(trilogy, trilCon);
 		
 		epiOne = new JCheckBox("Episode I");
 		epiOne.setSelected(true);
 		epiOne.addActionListener(performSearch);
-		realmPanel.add(epiOne);
+		GridBagConstraints epiOneCon = new GridBagConstraints();
+		epiOneCon.gridy = 1;
+		realmPanel.add(epiOne, epiOneCon);
 		
 		virtual = new JCheckBox("Virtual");
 		virtual.addActionListener(performSearch);
-		realmPanel.add(virtual);
+		GridBagConstraints virtCon = new GridBagConstraints();
+		virtCon.gridy = 1;
+		virtCon.gridx = 1;
+		realmPanel.add(virtual, virtCon);
 		
 		basicSearchPanel.add(realmPanel);
 	}

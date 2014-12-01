@@ -43,7 +43,7 @@ public class LongDescription extends TitledBorderPanel {
 	public void setText(String t)
 	{
 		text.setText(t);
-		scroller.getVerticalScrollBar().setValue(0);
+		text.setCaretPosition(0);
 	}
 	
 	public void setWidth(int width)

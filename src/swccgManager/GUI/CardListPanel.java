@@ -3,6 +3,8 @@
  */
 package swccgManager.GUI;
 
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -23,6 +25,7 @@ public class CardListPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JList<Card> cardSelector;
 	private CardList m_cardList;
+	private JLabel cardCount = new JLabel();
 	
 	/**
 	 * Establishes a list of cards
@@ -30,6 +33,7 @@ public class CardListPanel extends JPanel{
 	 */
 	public CardListPanel(CardList cardList)
 	{
+		setLayout(new BorderLayout());
 		//Add the card selector
 		m_cardList = cardList;
 		cardSelector = new JList<Card>();
@@ -39,13 +43,23 @@ public class CardListPanel extends JPanel{
 		
 		int numCardsListed = 15;
 		cardSelector.setVisibleRowCount(numCardsListed);
-		add(listScroller);
+		add(listScroller, BorderLayout.CENTER);
 		
 		//Set default to the first item on the list
 		setSelectedItem(0);
 		
 		//Add the listener action
 		//cardSelector.addListSelectionListener();//End listener
+		updateCardCount();
+		add(cardCount, BorderLayout.SOUTH);
+		cardCount.setHorizontalAlignment(JLabel.CENTER);
+	}
+	
+	public void updateCardCount()
+	{
+		int numCards = cardSelector.getModel().getSize();
+		String numCards_s = String.format("%d cards", numCards);
+		cardCount.setText(numCards_s);
 	}
 	
 	public CardList getCardList()
@@ -76,6 +90,7 @@ public class CardListPanel extends JPanel{
 	public void refreshCardList(Card[] cardList)
 	{
 		cardSelector.setListData(cardList);
+		updateCardCount();
 	}
 	
 	/**

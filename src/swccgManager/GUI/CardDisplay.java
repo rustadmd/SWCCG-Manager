@@ -4,6 +4,7 @@
 package swccgManager.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Models.Card;
 
 /**
@@ -81,7 +81,8 @@ public class CardDisplay extends TitledBorderPanel{
 		images.add(cardImageLabel);
 		images.add(rearCardImageLabel);
 		add(images, BorderLayout.CENTER);
-		
+		//this.setSize(600, 500);
+		this.setPreferredSize(new Dimension(600, 540));
 		refreshDisplay(card);
 	}
  
@@ -90,6 +91,7 @@ public class CardDisplay extends TitledBorderPanel{
 		m_card = newCard;
 		refreshImages();
 		addCardInfo();
+		System.out.printf("%d,%d\n", this.getWidth(), this.getHeight());
 	}
 	/**
 	 * Adds a card image to the display
@@ -123,13 +125,16 @@ public class CardDisplay extends TitledBorderPanel{
 	
 	private void addCardInfo()
 	{
+		//System.out.println(m_card);
 		rarity.setValue(m_card.getRarity());
-		GenericSQLQueries gsq = new GenericSQLQueries();
-		information.setText(gsq.getCardField(m_card, "Information"));
+		//GenericSQLQueries gsq = new GenericSQLQueries();
+		String parRegex = "\\\\par(\\s)*";
+		information.setText(m_card.getInformation().replaceAll(parRegex, "\n"));
 		
 		//combine isPulled and isCanceled text
-		String pulledText = gsq.getCardField(m_card, "IsPulled");
-		String cancelledText = gsq.getCardField(m_card, "IsCanceledBy");
+		String pulledText = m_card.getIsPulled().replaceAll(parRegex, "\n");
+		String cancelledText = m_card.getIsCancelledBy().replaceAll(parRegex, "\n");
+		//System.out.printf("%s, %s", m_card.getRarity(), cancelledText);
 		String combined = "";
 		if(pulledText.length() > 0)
 		{

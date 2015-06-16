@@ -33,7 +33,7 @@ public class LongDescription extends TitledBorderPanel {
 		text.setWrapStyleWord(true);
 		
 		scroller = new JScrollPane();
-		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.add(text);
 		//text.getPreferredScrollableViewportSize();
 		scroller.setViewportView(text);

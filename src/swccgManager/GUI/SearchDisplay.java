@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,9 +16,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import swccgManager.Controllers.PerformSearch;
 import swccgManager.Database.GenericSQLQueries;
@@ -65,6 +68,8 @@ public class SearchDisplay extends TitledBorderPanel {
 		
 		collectionDisplay = cd;
 		performSearch = new PerformSearch(cardListDisplay, this, cd);
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressedEnter");
+		getActionMap().put("pressedEnter", performSearch);
 		setLayout(new BorderLayout());
 		
 		//add layouts

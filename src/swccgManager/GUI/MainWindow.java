@@ -35,7 +35,8 @@ public class MainWindow extends JFrame {
 		setupCollectionMenu();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		
 		this.setResizable(false);
 		//Defaults to collection view -- allows you to see all cards and what you own
 		setActivePanel(new CollectionView());
@@ -134,6 +135,7 @@ public class MainWindow extends JFrame {
 		m_activePanel = activePanel;
 		add(m_activePanel);
 		pack();
+		
 	}
 
 }

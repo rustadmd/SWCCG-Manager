@@ -202,7 +202,8 @@ public class GenericSQLQueries {
 			System.out.println(collectionWhere);
 			
 			cardList = swdb.prepareStatement(
-					 "SELECT id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
+					 "SELECT id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness, "
+					 + "Information, IsPulled, IsCanceledBy "
 					+ "FROM SWD "
 					+ collectionJoin
 					+ " WHERE cardName LIKE ? "
@@ -247,7 +248,11 @@ public class GenericSQLQueries {
 				String expansion = cardListResultSet.getString("Expansion");
 				String rarity = cardListResultSet.getString("Rarity");
 				String uniqueness = cardListResultSet.getString("Uniqueness");
-				Card newCard = new Card (cardID, cardName, side, cardType, subType, expansion, rarity, uniqueness);
+				String info = cardListResultSet.getString("Information");
+				String isPulled = cardListResultSet.getString("IsPulled");
+				String isCancelled = cardListResultSet.getString("IsCanceledBy");
+				Card newCard = new Card (cardID, cardName, side, cardType, subType, expansion, 
+						rarity, uniqueness, info, isPulled, isCancelled);
 				list.add(newCard);
 			}
 		}
@@ -290,7 +295,8 @@ public class GenericSQLQueries {
 	{
 		Connection swdb = sqlUtil.getDbConnection();
 		String cardVitalsQuery = 
-				"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness "
+				"SELECT	id, cardName, Grouping, CardType, SubType, Expansion, Rarity, Uniqueness, "
+				+ " Information, IsPulled, IsCanceledBy "
 					+ "FROM SWD "
 					+ "WHERE id = " + cardId;
 	

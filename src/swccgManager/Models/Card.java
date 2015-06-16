@@ -33,7 +33,7 @@ public class Card {
 	private String m_rarity;
 	private String m_uniqueness;
 	
-	//private String m_isPulled, m_isCancelledBy, m_information;
+	private String m_isPulled, m_isCancelledBy, m_information;
 	//private String m_frontSideImagePath;//currently unused, loads the image if there is none.
 	private Image m_frontSideImage, m_rearSideImage;
 	
@@ -56,15 +56,20 @@ public class Card {
 			m_expansion = cardInfo.getString("Expansion");
 			m_rarity = cardInfo.getString("Rarity");
 			m_uniqueness = cardInfo.getString("Uniqueness");
+			m_isPulled = cardInfo.getString("IsPulled");
+			m_isCancelledBy = cardInfo.getString("IsCanceledBy");
+			m_information = cardInfo.getString("Information");
 			System.out.println("Card created: " + m_cardId);
 		} catch (SQLException e) {
 			//handle an empty card
 			m_cardName = "No Results Returned";
 			m_uniqueness = "";
+			System.out.printf("Card could not be found: %d\n", m_cardId);
 			//e.printStackTrace();
 		}
 		m_frontSideImage = null;//safety to ensure no image is there
 		
+		System.out.printf("%s, %s, %s\n", m_isPulled, m_isCancelledBy, m_isPulled);
 		
 	}
 	/**
@@ -79,7 +84,8 @@ public class Card {
 	 * @param uniqueness
 	 * @param img Front side image of the card
 	 */
-	public Card (int cardId, String cardName, String side, String cardType, String subType, String expansion, String rarity, String uniqueness)
+	public Card (int cardId, String cardName, String side, String cardType, String subType, 
+			String expansion, String rarity, String uniqueness, String info, String isPulled, String isCancelled)
 	{
 		m_cardId = cardId;
 		m_cardName = cardName;
@@ -89,6 +95,9 @@ public class Card {
 		m_expansion = expansion;
 		m_rarity = rarity;
 		m_uniqueness = uniqueness;
+		m_information = info;
+		m_isPulled = isPulled;
+		m_isCancelledBy = isCancelled;
 	}
 	/**
 	 * Returns the full name as it would be printed on the card
@@ -153,6 +162,18 @@ public class Card {
 	 */
 	public String getUniqueness() {
 		return m_uniqueness;
+	}
+	
+	public String getInformation() {
+		return m_information;
+	}
+	
+	public String getIsPulled() {
+		return m_isPulled;
+	}
+	
+	public String getIsCancelledBy() {
+		return m_isCancelledBy;
 	}
 
 	/**

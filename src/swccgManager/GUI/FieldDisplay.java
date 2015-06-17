@@ -31,6 +31,11 @@ public class FieldDisplay extends JComponent {
 	private static final Font DEFAULT_TITLE_FONT = mainFont.deriveFont(Font.BOLD, mainFont.getSize() + 2);
 	private static final Font DEFAULT_VALUE_FONT = mainFont;
 	
+	public FieldDisplay(String title)
+	{
+		this(title, "");
+	}
+	
 	public FieldDisplay(String title, String value)
 	{
 		this(title, value, DEFAULT_TITLE_FONT, DEFAULT_VALUE_FONT);	

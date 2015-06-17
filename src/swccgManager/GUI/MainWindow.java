@@ -18,7 +18,7 @@ import java.awt.event.*;
 public class MainWindow extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private JPanel m_activePanel;
+	private JComponent m_activePanel;
 	private JMenuBar mainMenu;
 	
 	public MainWindow()
@@ -37,9 +37,9 @@ public class MainWindow extends JFrame {
 		
 		//this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		
-		this.setResizable(false);
+		//this.setResizable(false);
 		//Defaults to collection view -- allows you to see all cards and what you own
-		setActivePanel(new CollectionView());
+		setActivePanel(new DeckView());
 	}
 	
 	private void setupViewMenu()
@@ -69,6 +69,12 @@ public class MainWindow extends JFrame {
 		//Deck view, for viewing particular decks
 		JMenuItem deckView = new JMenuItem("Deck");
 		viewMenu.add(deckView);
+		deckView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setActivePanel(new DeckView());
+			}
+		});
 		
 		mainMenu.add(viewMenu);
 	}
@@ -126,7 +132,7 @@ public class MainWindow extends JFrame {
 		mainMenu.add(collectionMenu);
 	}
 	
-	private void setActivePanel(JPanel activePanel)
+	private void setActivePanel(JComponent activePanel)
 	{
 		if(m_activePanel != null)
 		{

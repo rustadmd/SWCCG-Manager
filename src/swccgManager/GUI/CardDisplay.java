@@ -91,7 +91,6 @@ public class CardDisplay extends TitledBorderPanel{
 		m_card = newCard;
 		refreshImages();
 		addCardInfo();
-		System.out.printf("%d,%d\n", this.getWidth(), this.getHeight());
 	}
 	/**
 	 * Adds a card image to the display

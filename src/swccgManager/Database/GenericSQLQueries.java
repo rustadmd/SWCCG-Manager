@@ -20,9 +20,12 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
 
+import javax.swing.DefaultListModel;
+
 import swccgManager.Database.CardQueryCriteria.Attribute;
 import swccgManager.Models.Card;
 import swccgManager.Models.Collection;
+import swccgManager.Models.Deck;
 
 public class GenericSQLQueries {
 	private SqlUtilities sqlUtil;
@@ -58,7 +61,7 @@ public class GenericSQLQueries {
 				int extra = exportResults.getInt("Extra");
 				int rating = exportResults.getInt("Rating");
 				String comment = exportResults.getString("Comment");
-						
+
 				//write the output file
 				String sep = "|";
 				String cardEntry = cardId + sep + sortLocation + sep + inventory
@@ -265,6 +268,48 @@ public class GenericSQLQueries {
 		sqlUtil.closeDB(swdb);
 		//return results
 		return list;
+	}
+	/**
+	 * Retrieves a list of all decks
+	 * @return
+	 */
+	public DefaultListModel<Deck> getDeckList()
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		ResultSet deckListRS = null;
+		PreparedStatement deckList_sql = null;
+		
+		DefaultListModel<Deck> deckList = new DefaultListModel<Deck>();
+		
+		try{
+			deckList_sql = swdb.prepareStatement(
+					"SELECT DeckName, DeckDescription, DeckStrategy, "
+					+ "DeckMatchups, DeckNotes, CreateDate, ModifyDate "
+					+ "FROM DeckList "
+					);
+			deckListRS = deckList_sql.executeQuery();
+			
+			while(deckListRS.next())
+			{
+				deckList.addElement(
+					new Deck(deckListRS.getString("DeckName"), 
+							deckListRS.getString("DeckDescription"), 
+							deckListRS.getString("DeckStrategy"), 
+							deckListRS.getString("DeckMatchups"),
+							deckListRS.getString("DeckNotes"),
+							deckListRS.getDate("CreateDate"),
+							deckListRS.getDate("ModifyDate"))
+					);
+				//System.out.println("Deck Added");
+			}
+		}
+		catch (SQLException e){
+			System.out.println("Error retrieving list of decks");
+			e.printStackTrace();
+		}
+		sqlUtil.closeDB(swdb);
+		
+		return deckList;
 	}
 	
 	public String getCardField(Card c, String field)

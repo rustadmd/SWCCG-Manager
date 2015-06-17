@@ -3,6 +3,8 @@
  */
 package swccgManager.GUI;
 
+import java.awt.Color;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -20,17 +22,23 @@ public class LongDescription extends TitledBorderPanel {
 	private static final long serialVersionUID = 1176845722693095375L;
 	private JTextArea text;
 	JScrollPane scroller;
-	private final int DEFAULT_ROWS = 3;
-	private final int DEFAULT_WIDTH = 20;
+	private final static int DEFAULT_ROWS = 3;
+	private final static int DEFAULT_WIDTH = 20;
 	
 	public LongDescription(String title)
 	{
+		this(title, DEFAULT_ROWS, DEFAULT_WIDTH);
+	}
+	
+	public LongDescription(String title, int rows, int width)
+	{
 		super(title);
 		
-		text = new JTextArea(DEFAULT_ROWS, DEFAULT_WIDTH);
+		text = new JTextArea(rows, width);
 		text.setBackground(this.getBackground());
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
+		text.setEditable(false);
 		
 		scroller = new JScrollPane();
 		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -38,6 +46,12 @@ public class LongDescription extends TitledBorderPanel {
 		//text.getPreferredScrollableViewportSize();
 		scroller.setViewportView(text);
 		add(scroller);
+	}
+	
+	public void setEditable(boolean e)
+	{
+		text.setEditable(e);
+		if (e) { text.setBackground(Color.WHITE); }
 	}
 
 	public void setText(String t)

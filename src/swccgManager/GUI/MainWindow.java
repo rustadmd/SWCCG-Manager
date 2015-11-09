@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.GUI;
 
@@ -16,43 +16,43 @@ import java.awt.event.*;
  *
  */
 public class MainWindow extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
 	private JComponent m_activePanel;
 	private JMenuBar mainMenu;
-	
+
 	public MainWindow()
 	{
-		
+
 		super("SWCCG Manager");
 		setLayout(new BorderLayout());
 		setVisible(true);
-		
+
 		//Setup menus
 		mainMenu = new JMenuBar();
 		setJMenuBar(mainMenu);
 		setupViewMenu();
 		setupCollectionMenu();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		//this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		
+
 		//this.setResizable(false);
 		//Defaults to collection view -- allows you to see all cards and what you own
-		setActivePanel(new DeckView());
+		setActivePanel(new CollectionView());
 	}
-	
+
 	private void setupViewMenu()
 	{
 		//Initialize menu
-		
+
 		//Setup view options menus
 		JMenu viewMenu = new JMenu("View");
-		
+
 		//Collecton view, for viewing various collections of cards
 		JMenuItem collectionView = new JMenuItem("Collection");
 		viewMenu.add(collectionView);
-		
+
 		//call the panel and controller for the panel
 		ActionListener collectionView_al = new ActionListener()
 		{
@@ -63,9 +63,9 @@ public class MainWindow extends JFrame {
 			}
 		};
 		collectionView.addActionListener(collectionView_al);
-		
 
-		
+
+
 		//Deck view, for viewing particular decks
 		JMenuItem deckView = new JMenuItem("Deck");
 		viewMenu.add(deckView);
@@ -75,35 +75,35 @@ public class MainWindow extends JFrame {
 				setActivePanel(new DeckView());
 			}
 		});
-		
+
 		mainMenu.add(viewMenu);
 	}
-	
+
 	private void setupCollectionMenu()
 	{
 		//Collection menu options
 		JMenu collectionMenu = new JMenu("Collection");
-		
+
 		//Collecton view, for viewing various collections of cards
 		JMenuItem addCollection = new JMenuItem("New Collection");
 		collectionMenu.add(addCollection);
 		//Collection test = new Collection("Mark", "My Collection");
 		//test.saveCollection();
-		
+
 		//Add the action action to add a new item
 		ActionListener addCollection_al = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				//System.out.println("View > Collection Selected");//testing
-				
+
 				//will need to see if there is a collection display
 				//May need to add more if other panels have a collection display
 				if(m_activePanel.getClass().getSimpleName().equals("CollectionView"))
 				{
 					CollectionView currentView = (CollectionView)m_activePanel;
 					CollectionList collection = currentView.getCollectionList();
-					
+
 					@SuppressWarnings("unused")
 					NewCollectionWindow ncw = new NewCollectionWindow(collection);
 				}
@@ -115,11 +115,11 @@ public class MainWindow extends JFrame {
 			}
 		};
 		addCollection.addActionListener(addCollection_al);
-		
+
 		//Deck view, for viewing particular decks
 		JMenuItem exportCollection = new JMenuItem("Export Collection");
 		collectionMenu.add(exportCollection);
-		
+
 		ActionListener exportCollection_al = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -131,7 +131,7 @@ public class MainWindow extends JFrame {
 		exportCollection.addActionListener(exportCollection_al);
 		mainMenu.add(collectionMenu);
 	}
-	
+
 	private void setActivePanel(JComponent activePanel)
 	{
 		if(m_activePanel != null)
@@ -141,7 +141,7 @@ public class MainWindow extends JFrame {
 		m_activePanel = activePanel;
 		add(m_activePanel);
 		pack();
-		
+
 	}
 
 }

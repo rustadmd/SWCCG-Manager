@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.Database;
 
@@ -18,14 +18,14 @@ import swccgManager.Models.Collection;
  *
  */
 public class InsertQueries {
-	
+
 	SqlUtilities su;
-	
+
 	public InsertQueries()
 	{
 		su = new SqlUtilities();
 	}
-	
+
 	public void insertCardInventory(Card card, Collection collection, int newValue)
 	{
 		PreparedStatement insertInventory;
@@ -34,17 +34,17 @@ public class InsertQueries {
 			insertInventory = swdb.prepareStatement(
 					"INSERT INTO Collection (CollectionName, CardID, Inventory) "
 					+ "VALUES( ?, ?, ? ) ");
-			insertInventory.setString(1, collection.getCollectionName());	
+			insertInventory.setString(1, collection.getCollectionName());
 			insertInventory.setInt(2, card.getCardId());
 			insertInventory.setInt(3, newValue);
 			insertInventory.executeUpdate();
-		
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		su.closeDB();
 	}
-	
+
 	public void updateCardInventory(Card card, Collection collection, int newValue)
 	{
 		PreparedStatement updateInventory;
@@ -54,17 +54,17 @@ public class InsertQueries {
 					"UPDATE Collection SET Inventory = ? "
 					+ " WHERE COllectionName = ? AND cardID = ? ");
 			updateInventory.setInt(1, newValue);
-			updateInventory.setString(2, collection.getCollectionName());	
+			updateInventory.setString(2, collection.getCollectionName());
 			updateInventory.setInt(3, card.getCardId());
-		
+
 			updateInventory.executeUpdate();
-		
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		su.closeDB();
 	}
-	
+
 	public void addCollection(String name, String description)
 	{
 		PreparedStatement insertCollection;
@@ -83,4 +83,21 @@ public class InsertQueries {
 
 	}
 
+	public void addDeck(String name, String description)
+	{
+		PreparedStatement insertDeck;
+		Connection swdb = su.getDbConnection();
+		try {
+			insertDeck = swdb.prepareStatement(
+				"INSERT INTO DeckList (DeckName, DeckDescription) "
+				+ " VALUES (?, ?);");
+			insertDeck.setString(1, name);
+			insertDeck.setString(2, description);
+			insertDeck.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		su.closeDB();
+
+	}
 }

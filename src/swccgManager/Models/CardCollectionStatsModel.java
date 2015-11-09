@@ -23,7 +23,7 @@ public class CardCollectionStatsModel {
 	private Collection m_collection;
 	private Card m_card;
 	private String m_sortLocation;
-	private SpinnerNumberModel m_inventory = new SpinnerNumberModel(0, -99, 99, 1);;
+	private SpinnerNumberModel m_inventory = new SpinnerNumberModel(0, 0, 99, 1);;
 	private int m_desired, m_extra, m_rating;
 	private String m_comment;
 	private boolean isInDB;//for when db needs to be updated

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.GUI;
 
@@ -32,22 +32,22 @@ import swccgManager.Database.GenericSQLQueries;
  *
  */
 public class SearchDisplay extends TitledBorderPanel {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2839662535202758973L;
-	
+
 	private PerformSearch performSearch;
 	private CollectionDisplay collectionDisplay;
-	
+
 	//list options
-	private String[] iconList = {"Astromech", "Creature", "Droid", "Episode 1", "Exterior", "Grabber", 
-			"Independent", "Interior", "Mobile", "Permanent Weapon", 
-			"Pilot", "Planet", "Republic", "Scomp Link", 
+	private String[] iconList = {"Astromech", "Creature", "Droid", "Episode 1", "Exterior", "Grabber",
+			"Independent", "Interior", "Mobile", "Permanent Weapon",
+			"Pilot", "Planet", "Republic", "Scomp Link",
 			"Selective", "Space", "Starship", "Trade Federation", "Underground",
 			"Underwater", "Vehicle", "Warrior"};
-	
+
 	//options
 	private JRadioButton all, light, dark;
 	private JCheckBox trilogy, epiOne, virtual;
@@ -57,21 +57,38 @@ public class SearchDisplay extends TitledBorderPanel {
 	private JTextField loreFilter = new JTextField();
 	private JTextField gameTextFilter = new JTextField();
 	private JRadioButton colContains, colNotContain, colAny;
-	
+
 	//Panel groups
 	private JPanel basicSearchPanel = new JPanel();
 	private JPanel advSearchPanel = new JPanel();
-	
+
 	public SearchDisplay(CardListPanel cardListDisplay, CollectionDisplay cd)
 	{
 		super("Search");
-		
+
 		collectionDisplay = cd;
 		performSearch = new PerformSearch(cardListDisplay, this, cd);
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressedEnter");
 		getActionMap().put("pressedEnter", performSearch);
 		setLayout(new BorderLayout());
-		
+
+		addLayouts();
+
+	}
+
+	public SearchDisplay(CardListPanel cardListDisplay, DeckDisplay dd)
+	{
+		super("Search");
+		addLayouts();
+	}
+
+	public SearchDisplay(CardListPanel cardListDisplay)
+	{
+		this(cardListDisplay, (CollectionDisplay) null);
+	}
+
+	public void addLayouts()
+	{
 		//add layouts
 		int numRows = 6;
 		basicSearchPanel.setLayout(new GridLayout(numRows, 1));
@@ -80,17 +97,12 @@ public class SearchDisplay extends TitledBorderPanel {
 		addExpansionPanel();
 		addRealmPanel();
 		add(basicSearchPanel, BorderLayout.CENTER);
-		
+
 		//setup advanced panel
 		setupAdvPanel();
 		add(advSearchPanel, BorderLayout.EAST);
 	}
-	
-	public SearchDisplay(CardListPanel cardListDisplay)
-	{
-		this(cardListDisplay, null);
-	}
-	
+
 	/**
 	 * Gets the selected card type in SQL formatting
 	 * @return SQL formatted card type
@@ -106,10 +118,10 @@ public class SearchDisplay extends TitledBorderPanel {
 		{
 			cardType = (String) cardTypeSelector.getSelectedItem();
 		}
-		
+
 		return cardType;
 	}
-	
+
 	public String getSelectedSubType()
 	{
 		String subType;
@@ -121,7 +133,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		{
 			subType = (String) cardSubTypeSelector.getSelectedItem();
 		}
-		
+
 		return subType;
 	}
 	/**
@@ -142,7 +154,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		//System.out.println(expansion);//debugging
 		return expansion;
 	}
-	
+
 	/**
 	 * Gets the sql statement that will return the selected resutls
 	 * @return SQL formatted string for WHERE clause
@@ -162,10 +174,10 @@ public class SearchDisplay extends TitledBorderPanel {
 		{
 			sideSql = "Dark";
 		}
-		
+
 		return sideSql;
 	}
-	
+
 	public String getSelectedRarity()
 	{
 		String rarity;
@@ -205,28 +217,28 @@ public class SearchDisplay extends TitledBorderPanel {
 			}
 			realmSql +="'Virtual Card Set #1', 'Virtual Card Set #2', 'Virtual Card Set #3', 'Virtual Card Set #4', 'Virtual Card Set #5', 'Virtual Card Set #6', 'Virtual Card Set #7'";
 		}
-		
+
 		return realmSql;
 	}
-	
+
 	public String getNameFilter()
 	{
 		String nameSql = "%" + nameFilter.getText() + "%";
 		return nameSql;
 	}
-	
+
 	public String getLoreFilter()
 	{
 		String loreSql = "%" + loreFilter.getText() + "%";
 		return loreSql;
 	}
-	
+
 	public String getGameTextFilter()
 	{
 		String gameTextSql = "%" + gameTextFilter.getText() + "%";
 		return gameTextSql;
 	}
-	
+
 	public String getSelectedIcon()
 	{
 		String iconSql;
@@ -241,11 +253,11 @@ public class SearchDisplay extends TitledBorderPanel {
 		//System.out.println(iconSql);//debugging
 		return iconSql;
 	}
-	
+
 	/**
 	 * Retrieves the selected collection contains label, i.e. "Any", "Contains", "Not Contains"
 	 * Returns Null if the filter does not exist
-	 * 
+	 *
 	 * @return Selected collection contains filter
 	 */
 	public String getCollectionContains()
@@ -262,7 +274,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		else {
 			return null;
 		}
-		
+
 	}
 	/**
 	 * Adds all of the search options to the advSearchPanel. Does Not add the advPanel to the display
@@ -278,46 +290,46 @@ public class SearchDisplay extends TitledBorderPanel {
 			numRows = 6;
 			TitledBorderPanel collectionPanel = new TitledBorderPanel("Collection");
 			ButtonGroup collectionGroup = new ButtonGroup();
-			
+
 			colAny = new JRadioButton("Any");
 			collectionGroup.add(colAny);
 			colAny.setSelected(true);
 			colAny.addActionListener(performSearch);
 			collectionPanel.add(colAny);
 			//System.out.println(colAny.getText());
-			
+
 			colContains = new JRadioButton("Contains");
 			collectionGroup.add(colContains);
 			colContains.addActionListener(performSearch);
 			collectionPanel.add(colContains);
-			
+
 			colNotContain = new JRadioButton("Not Contains");
 			collectionGroup.add(colNotContain);
 			colNotContain.addActionListener(performSearch);
 			collectionPanel.add(colNotContain);
-			
+
 			advSearchPanel.add(collectionPanel);
 		}
 		advSearchPanel.setLayout(new GridLayout(numRows, 1));
-		
+
 		//----Add Card Name Filter----//
 		TitledBorderPanel namePanel = new TitledBorderPanel("Name Contains");
 		namePanel.add(nameFilter);
 		nameFilter.setColumns(10);
 		advSearchPanel.add(namePanel);
-		
+
 		//----- Add Lore Filter-----//
 		TitledBorderPanel lorePanel = new TitledBorderPanel("Lore Contains");
 		lorePanel.add(loreFilter);
 		loreFilter.setColumns(10);
 		advSearchPanel.add(lorePanel);
-		
+
 		//----- Add GameText Filter-----//
 		TitledBorderPanel gameTextPanel = new TitledBorderPanel("Game Text Contains");
 		gameTextFilter.setColumns(15);
 		gameTextPanel.add(gameTextFilter);
 		advSearchPanel.add(gameTextPanel);
-		
+
 		//----- Add Icon Filter ------//
 		TitledBorderPanel iconPanel = new TitledBorderPanel("Icons");
 		iconSelector = new JComboBox<String>();
@@ -328,25 +340,25 @@ public class SearchDisplay extends TitledBorderPanel {
 		iconSelector.addActionListener(performSearch);
 		iconPanel.add(iconSelector);
 		advSearchPanel.add(iconPanel);
-		
+
 		//-----add search Button -----//
 		JPanel searchButtonPanel = new JPanel(new FlowLayout());
 		JButton searchButton = new JButton("Search");
 		searchButton.addActionListener(performSearch);
 		searchButtonPanel.add(searchButton);
 		advSearchPanel.add(searchButtonPanel);
-		
+
 	}
-	
+
 	private void addTypePanel()
 	{
-		
+
 		//***Add the super type panel*****//
 		TitledBorderPanel cardTypePanel = new TitledBorderPanel("Type");
-		
+
 		cardTypeSelector = new JComboBox<String>();
 		cardTypeSelector.addItem("All");
-		
+
 		//fill the remainder of the list from the DB
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		ResultSet cardTypeList = gsq.getList("SWD", "CardType");
@@ -359,16 +371,16 @@ public class SearchDisplay extends TitledBorderPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		cardTypeSelector.addActionListener(performSearch);
 		cardTypePanel.add(cardTypeSelector);
-		
+
 		//******add the sub-type panel*****//
 		TitledBorderPanel cardSubTypePanel = new TitledBorderPanel("Subtype");
-		
+
 		cardSubTypeSelector = new JComboBox<String>();
 		cardSubTypeSelector.addItem("All");
-		
+
 		//fill the remainder of the list from the DB
 		ResultSet cardSubTypeList = gsq.getList("SWD", "Subtype");
 		try {
@@ -380,10 +392,10 @@ public class SearchDisplay extends TitledBorderPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		cardSubTypeSelector.addActionListener(performSearch);
 		cardSubTypePanel.add(cardSubTypeSelector);
-		
+
 		//****Add both selectors to panels to display****//
 		//JPanel typePanel = new JPanel();
 		//typePanel.setLayout(new FlowLayout());
@@ -391,17 +403,17 @@ public class SearchDisplay extends TitledBorderPanel {
 		basicSearchPanel.add(cardSubTypePanel);
 		//basicSearchPanel.add(typePanel);
 	}
-	
+
 	/**
 	 * Adds a Dropdown menu to select the expansion
 	 */
 	private void addExpansionPanel()
 	{
 		TitledBorderPanel expansionPanel = new TitledBorderPanel("Expansion");
-		
+
 		expansionSelector = new JComboBox<String>();
 		expansionSelector.addItem("All");
-		
+
 		//fill the remainder of the list from the DB
 		GenericSQLQueries gsq = new GenericSQLQueries();
 		ResultSet cardTypeList = gsq.getList("SWD", "Expansion");
@@ -414,7 +426,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		expansionPanel.add(expansionSelector);
 		expansionSelector.addActionListener(performSearch);
 		basicSearchPanel.add(expansionPanel);
@@ -429,25 +441,25 @@ public class SearchDisplay extends TitledBorderPanel {
 		int numRows = 1, numCols = 3;
 		sideSelection.setLayout(new GridLayout(numRows, numCols));
 		ButtonGroup sideButtonGroup = new ButtonGroup();
-		
+
 		//create and add buttons
 		all = new JRadioButton("All");
 		all.setSelected(true);
 		sideButtonGroup.add(all);
 		all.addActionListener(performSearch);
 		sideSelection.add(all);
-		
+
 		light = new JRadioButton("Light");
 		sideButtonGroup.add(light);
 		light.addActionListener(performSearch);
 		sideSelection.add(light);
-		
+
 		dark = new JRadioButton("Dark");
 		sideButtonGroup.add(dark);
 		dark.addActionListener(performSearch);
 		sideSelection.add(dark);
-		
-		
+
+
 		//*****Create Rarity Selector******//
 		TitledBorderPanel rarityPanel = new TitledBorderPanel("Rarity");
 		raritySelector = new JComboBox<String>();
@@ -459,12 +471,12 @@ public class SearchDisplay extends TitledBorderPanel {
 		raritySelector.addItem("Fixed");
 		raritySelector.addActionListener(performSearch);
 		rarityPanel.add(raritySelector);
-		
-		
+
+
 		//-----Add selectors to the display------//
 		basicSearchPanel.add(sideSelection);
 		basicSearchPanel.add(rarityPanel);
-		
+
 		/*
 		 * JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout());
@@ -473,33 +485,33 @@ public class SearchDisplay extends TitledBorderPanel {
 		basicSearchPanel.add(topPanel);
 		*/
 	}
-	
+
 	private void addRealmPanel()
 	{
 		TitledBorderPanel realmPanel = new TitledBorderPanel("Realm");
 		realmPanel.setLayout(new GridBagLayout());
-		
+
 		trilogy = new JCheckBox("Original Trilogy");
 		trilogy.setSelected(true);
 		trilogy.addActionListener(performSearch);
 		GridBagConstraints trilCon = new GridBagConstraints();
 		trilCon.gridwidth = 2;
 		realmPanel.add(trilogy, trilCon);
-		
+
 		epiOne = new JCheckBox("Episode I");
 		epiOne.setSelected(true);
 		epiOne.addActionListener(performSearch);
 		GridBagConstraints epiOneCon = new GridBagConstraints();
 		epiOneCon.gridy = 1;
 		realmPanel.add(epiOne, epiOneCon);
-		
+
 		virtual = new JCheckBox("Virtual");
 		virtual.addActionListener(performSearch);
 		GridBagConstraints virtCon = new GridBagConstraints();
 		virtCon.gridy = 1;
 		virtCon.gridx = 1;
 		realmPanel.add(virtual, virtCon);
-		
+
 		basicSearchPanel.add(realmPanel);
 	}
 }

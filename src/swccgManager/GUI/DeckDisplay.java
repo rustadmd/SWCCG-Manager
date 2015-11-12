@@ -63,6 +63,9 @@ public class DeckDisplay extends JPanel{
 		//create the combo box
 		listModel = deckListModel;
 		comboListModel = new DeckListComboBoxModel(listModel);
+		if (comboListModel.getSize() == 0) {
+			new NewDeckWindow();
+		}
 		deckSelector = new JComboBox<Deck>(comboListModel);
 		//set default
 		setSelectedDeck(0);

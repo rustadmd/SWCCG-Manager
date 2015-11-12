@@ -40,6 +40,7 @@ public class SearchDisplay extends TitledBorderPanel {
 
 	private PerformSearch performSearch;
 	private CollectionDisplay collectionDisplay;
+	private DeckDisplay deckDisplay;
 
 	//list options
 	private String[] iconList = {"Astromech", "Creature", "Droid", "Episode 1", "Exterior", "Grabber",
@@ -57,6 +58,7 @@ public class SearchDisplay extends TitledBorderPanel {
 	private JTextField loreFilter = new JTextField();
 	private JTextField gameTextFilter = new JTextField();
 	private JRadioButton colContains, colNotContain, colAny;
+	private JRadioButton deckContains, deckAny;
 
 	//Panel groups
 	private JPanel basicSearchPanel = new JPanel();
@@ -68,9 +70,6 @@ public class SearchDisplay extends TitledBorderPanel {
 
 		collectionDisplay = cd;
 		performSearch = new PerformSearch(cardListDisplay, this, cd);
-		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressedEnter");
-		getActionMap().put("pressedEnter", performSearch);
-		setLayout(new BorderLayout());
 
 		addLayouts();
 
@@ -79,6 +78,8 @@ public class SearchDisplay extends TitledBorderPanel {
 	public SearchDisplay(CardListPanel cardListDisplay, DeckDisplay dd)
 	{
 		super("Search");
+		deckDisplay = dd;
+		performSearch = new PerformSearch(cardListDisplay, this, dd);
 		addLayouts();
 	}
 
@@ -89,7 +90,10 @@ public class SearchDisplay extends TitledBorderPanel {
 
 	public void addLayouts()
 	{
+		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressedEnter");
+		getActionMap().put("pressedEnter", performSearch);
 		//add layouts
+		setLayout(new BorderLayout());
 		int numRows = 6;
 		basicSearchPanel.setLayout(new GridLayout(numRows, 1));
 		addSideAndRarityPanel();
@@ -193,6 +197,7 @@ public class SearchDisplay extends TitledBorderPanel {
 		//System.out.println(rarity);//debugging
 		return rarity;
 	}
+
 	public String getSelectedRealms()
 	{
 		String realmSql = "";
@@ -262,6 +267,10 @@ public class SearchDisplay extends TitledBorderPanel {
 	 */
 	public String getCollectionContains()
 	{
+		if (colAny == null || colContains == null || colNotContain == null) {
+			return null;
+		}
+
 		if (colAny.isSelected()){
 			return colAny.getText();
 		}
@@ -276,6 +285,22 @@ public class SearchDisplay extends TitledBorderPanel {
 		}
 
 	}
+
+	public String getDeckContains()
+	{
+		if (deckAny == null || deckContains == null) {
+			return null;
+		}
+		if (deckAny.isSelected()){
+			return deckAny.getText();
+		}
+		else if (deckContains.isSelected()) {
+			return deckContains.getText();
+		}
+		else {
+			return null;
+		}
+	}
 	/**
 	 * Adds all of the search options to the advSearchPanel. Does Not add the advPanel to the display
 	 */
@@ -283,10 +308,26 @@ public class SearchDisplay extends TitledBorderPanel {
 	{
 		int numRows;
 		//------Add Collection filtering if applicable----//
-		if(collectionDisplay == null) {
-			numRows = 5;
+		if(deckDisplay != null) {
+			numRows = 6;
+			TitledBorderPanel deckPanel = new TitledBorderPanel("Deck");
+			ButtonGroup deckGroup = new ButtonGroup();
+
+			deckAny = new JRadioButton("Any");
+			deckGroup.add(deckAny);
+			deckAny.setSelected(true);
+			deckAny.addActionListener(performSearch);
+			deckPanel.add(deckAny);
+			//System.out.println(deckAny.getText());
+
+			deckContains = new JRadioButton("Contains");
+			deckGroup.add(deckContains);
+			deckContains.addActionListener(performSearch);
+			deckPanel.add(deckContains);
+
+			advSearchPanel.add(deckPanel);
 		}
-		else {
+		else if (collectionDisplay != null){
 			numRows = 6;
 			TitledBorderPanel collectionPanel = new TitledBorderPanel("Collection");
 			ButtonGroup collectionGroup = new ButtonGroup();
@@ -309,6 +350,9 @@ public class SearchDisplay extends TitledBorderPanel {
 			collectionPanel.add(colNotContain);
 
 			advSearchPanel.add(collectionPanel);
+		}
+		else {
+			numRows = 5;
 		}
 		advSearchPanel.setLayout(new GridLayout(numRows, 1));
 

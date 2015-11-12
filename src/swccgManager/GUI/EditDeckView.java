@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.*;
 
+import swccgManager.Controllers.Shortcuts.DecrementDeckInventory;
+import swccgManager.Controllers.Shortcuts.IncrementDeckInventory;
 import swccgManager.Database.GenericSQLQueries;
 import swccgManager.GUI.SearchAndListPanel;
 import swccgManager.Models.Card;
@@ -92,7 +94,7 @@ public class EditDeckView extends JPanel{
 		add(statsDisplay, statDisp);
 
 
-		//addKeyBindings();
+		addKeyBindings();
 
 	}
 
@@ -114,19 +116,19 @@ public class EditDeckView extends JPanel{
 			System.out.println("Search parameters returned no results");
 		}
 	}
-/**
+
 	private void addKeyBindings()
 	{
 		//add inventory incrementer
-		IncrementInventory invInc = new IncrementInventory(this);
+		IncrementDeckInventory invInc = new IncrementDeckInventory(this);
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "pressedF1");
 		getActionMap().put("pressedF1", invInc);
 
-		DecrementInventory invDec = new DecrementInventory(this);
+		DecrementDeckInventory invDec = new DecrementDeckInventory(this);
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F2"), "pressedF2");
 		getActionMap().put("pressedF2", invDec);
 	}
-*/
+
 	public Deck getSelectedDeck()
 	{
 		Deck selectedDeck = m_deckDisplay.getSelectedDeck();

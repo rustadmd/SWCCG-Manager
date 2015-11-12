@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.Models;
 
@@ -14,37 +14,37 @@ import swccgManager.Database.GenericSQLQueries;
  * @author Mark Rustad
  * @version .01
  * @date Jul 26, 2014
- * 
+ *
  * This model contains all the information relating to a Card in a collection (how many, etc)
  *
  */
 public class CardCollectionStatsModel {
-	
+
 	private Collection m_collection;
 	private Card m_card;
 	private String m_sortLocation;
-	private SpinnerNumberModel m_inventory = new SpinnerNumberModel(0, 0, 99, 1);;
+	private SpinnerNumberModel m_inventory = new SpinnerNumberModel(0, -99, 99, 1);;
 	private int m_desired, m_extra, m_rating;
 	private String m_comment;
 	private boolean isInDB;//for when db needs to be updated
-	
+
 	public CardCollectionStatsModel(Card card, Collection collection)
 	{
 		//Set the card and collection
 		m_card = card;
 		m_collection = collection;
-		
+
 		//retrieve information from the database
 		int cardID = m_card.getCardId();
 		String collectionName = m_collection.getCollectionName();
 		//System.out.println("CardId: " + cardID + " Collection Name: " + collectionName);//debugging
-		
+
 		GenericSQLQueries gsq = new GenericSQLQueries();
-		
+
 		try{
 			ResultSet cardCollectionStats_rs = gsq.getCardCollectionStats(cardID, collectionName);
 			m_sortLocation = cardCollectionStats_rs.getString("sortLocation");
-			
+
 			int inventory = cardCollectionStats_rs.getInt("inventory");
 			//System.out.println(inventory);//debugging
 			m_inventory.setValue(inventory);
@@ -70,10 +70,10 @@ public class CardCollectionStatsModel {
 		//add change listeners
 		UpdateInventory updateInv = new UpdateInventory(this);
 		m_inventory.addChangeListener(updateInv);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * @return the sortLocation
 	 */

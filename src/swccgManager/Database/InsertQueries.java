@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 import swccgManager.Models.Card;
 import swccgManager.Models.Collection;
+import swccgManager.Models.Deck;
+
 
 
 /**
@@ -24,6 +26,25 @@ public class InsertQueries {
 	public InsertQueries()
 	{
 		su = new SqlUtilities();
+	}
+
+	public void insertCardDeckInventory(Card card, Deck deck, int newValue)
+	{
+		PreparedStatement insertInventory;
+		Connection swdb = su.getDbConnection();
+		try {
+			insertInventory = swdb.prepareStatement(
+					"INSERT INTO Deck (DeckName, ID, Inventory) "
+					+ "VALUES( ?, ?, ? ) ");
+			insertInventory.setString(1, deck.getName());
+			insertInventory.setInt(2, card.getCardId());
+			insertInventory.setInt(3, newValue);
+			insertInventory.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		su.closeDB();
 	}
 
 	public void insertCardInventory(Card card, Collection collection, int newValue)
@@ -52,7 +73,7 @@ public class InsertQueries {
 		try {
 			updateInventory = swdb.prepareStatement(
 					"UPDATE Collection SET Inventory = ? "
-					+ " WHERE COllectionName = ? AND cardID = ? ");
+					+ " WHERE CollectionName = ? AND cardID = ? ");
 			updateInventory.setInt(1, newValue);
 			updateInventory.setString(2, collection.getCollectionName());
 			updateInventory.setInt(3, card.getCardId());
@@ -65,6 +86,25 @@ public class InsertQueries {
 		su.closeDB();
 	}
 
+	public void updateCardDeckInventory(Card card, Deck deck, int newValue)
+	{
+		PreparedStatement updateInventory;
+		Connection swdb = su.getDbConnection();
+		try {
+			updateInventory = swdb.prepareStatement(
+					"UPDATE Deck SET Inventory = ? "
+					+ " WHERE DeckName = ? AND ID = ? ");
+			updateInventory.setInt(1, newValue);
+			updateInventory.setString(2, deck.getName());
+			updateInventory.setInt(3, card.getCardId());
+
+			updateInventory.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		su.closeDB();
+	}
 	public void addCollection(String name, String description)
 	{
 		PreparedStatement insertCollection;

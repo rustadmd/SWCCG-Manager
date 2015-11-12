@@ -39,7 +39,7 @@ public class MainWindow extends JFrame {
 
 		//this.setResizable(false);
 		//Defaults to collection view -- allows you to see all cards and what you own
-		setActivePanel(new CollectionView());
+		setActivePanel(new DeckView());
 	}
 
 	private void setupViewMenu()

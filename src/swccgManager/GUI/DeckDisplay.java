@@ -7,6 +7,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import swccgManager.Database.GenericSQLQueries;
 import swccgManager.Models.Deck;
 import swccgManager.Models.DeckListComboBoxModel;
 
@@ -30,8 +31,15 @@ public class DeckDisplay extends JPanel{
 	{
 		setLayout(new FlowLayout());
 
+		if (deckListModel == null) {
+			deckListModel = new GenericSQLQueries().getDeckList();
+		}
 		addDeckSelector(deckListModel);
 		addDeckDescription();
+	}
+
+	public DeckDisplay(){
+		this(null);
 	}
 
 	public void setSelectedDeck(int index)

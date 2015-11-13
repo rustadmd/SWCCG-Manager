@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.GUI;
 
@@ -18,39 +18,46 @@ import swccgManager.Models.CollectionListComboBoxModel;
  *
  */
 public class CollectionDisplay extends JPanel{
-	
+
 	private static final long serialVersionUID = -2080540917727826932L;
 	private JComboBox<Collection> collectionSelector;
 	private CollectionList listModel;
 	private CollectionListComboBoxModel comboListModel;
-	
+
 	//display fields
 	private JTextArea description_ta;
-	
+
 	public CollectionDisplay(CollectionList collectionListModel)
 	{
 		setLayout(new FlowLayout());
-		
+
+		if (collectionListModel == null) {
+			collectionListModel = new CollectionList();
+		}
 		addCollectionSelector(collectionListModel);
 		addCollectionDescription();
 	}
-	
+
+	public CollectionDisplay() {
+		this(null);
+	}
+
 	public void setSelectedCollection(int index)
 	{
 		collectionSelector.setSelectedIndex(index);
 	}
-	
+
 	public void addCollectionSelectedAction(Action a)
 	{
 		collectionSelector.addActionListener(a);
 	}
-	
+
 	public Collection getSelectedCollection()
 	{
 		Collection selectedCollection = (Collection) collectionSelector.getSelectedItem();
 		return selectedCollection;
 	}
-	
+
 	public void setCollectionDescriptionDisplay(String description)
 	{
 		//System.out.println("Description: " + description);
@@ -69,7 +76,7 @@ public class CollectionDisplay extends JPanel{
 		setSelectedCollection(0);
 		add(collectionSelector);
 	}
-	
+
 	private void addCollectionDescription()
 	{
 		description_ta = new JTextArea(3, 20);
@@ -77,11 +84,11 @@ public class CollectionDisplay extends JPanel{
 		String initialDescription = initialCollection.getCollectionDescription();
 		setCollectionDescriptionDisplay(initialDescription);
 		description_ta.setEditable(false);
-		
+
 		TitledBorderPanel descriptionPanel = new TitledBorderPanel("Description");
 		description_ta.setBackground(descriptionPanel.getBackground());
 		add(descriptionPanel);
-		
+
 		descriptionPanel.add(description_ta);
 	}
 

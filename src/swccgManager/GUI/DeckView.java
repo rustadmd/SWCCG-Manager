@@ -29,6 +29,7 @@ public class DeckView extends JTabbedPane {
 		//Add relevant information
 		this.addTab("Manage Decks", managePanel);
 		this.addTab("Add/Remove Cards", new EditDeckView());
+		this.addTab("Collection Analysis", new DeckCollectionView());
 	}
 
 }

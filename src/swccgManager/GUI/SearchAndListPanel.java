@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import swccgManager.Controllers.CardChangedAction_CV;
+import swccgManager.Controllers.CardChangedAction_EDV;
 import swccgManager.Models.CardList;
 
 /**
@@ -53,9 +54,9 @@ public class SearchAndListPanel extends JPanel {
 		CardList cardList = new CardList();
 		listDisplay = new CardListPanel(cardList);
 		//add listener for changes
-		//CardChangedAction_CV cca = new CardChangedAction_CV(cv);
-		//listDisplay.addCardChangedAction(cca);
-		//listDisplay.addListDataListener(cca);
+		CardChangedAction_EDV cca = new CardChangedAction_EDV(dv);
+		listDisplay.addCardChangedAction(cca);
+		listDisplay.addListDataListener(cca);
 		add(listDisplay, BorderLayout.SOUTH);
 
 		//add the search panel

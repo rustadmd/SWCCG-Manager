@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.*;
 
+import swccgManager.Controllers.CardChangedAction_EDV;
+import swccgManager.Controllers.DeckChangedAction_EDV;
 import swccgManager.Controllers.Shortcuts.DecrementDeckInventory;
 import swccgManager.Controllers.Shortcuts.IncrementDeckInventory;
 import swccgManager.Database.GenericSQLQueries;
@@ -59,8 +61,8 @@ public class EditDeckView extends JPanel{
 		//setCollectionList(model.getCollectionList());
 		m_deckDisplay = new DeckDisplay(m_deckList);
 		//add listener for changes
-		//CollectionChangedAction_CV colca = new CollectionChangedAction_CV(this);
-		//m_deckDisplay.addCollectionSelectedAction(colca);
+		DeckChangedAction_EDV dca = new DeckChangedAction_EDV(this);
+		m_deckDisplay.addDeckSelectedAction(dca);
 
 		GridBagConstraints colDisplay = new GridBagConstraints();
 		colDisplay.gridwidth = 2;

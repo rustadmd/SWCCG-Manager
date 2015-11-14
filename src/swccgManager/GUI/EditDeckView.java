@@ -8,8 +8,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.*;
 
-import swccgManager.Controllers.CardChangedAction_EDV;
 import swccgManager.Controllers.DeckChangedAction_EDV;
+import swccgManager.Controllers.UpdateDeckInventory;
 import swccgManager.Controllers.Shortcuts.DecrementDeckInventory;
 import swccgManager.Controllers.Shortcuts.IncrementDeckInventory;
 import swccgManager.Database.GenericSQLQueries;
@@ -77,11 +77,11 @@ public class EditDeckView extends JPanel{
 		add(searchAndListPanel, searchDisp);
 
 		//create the stats information
-		Card selectedCard = getSelectedCard();
-		Deck selectedDeck = getSelectedDeck();
-		statsModel = new CardDeckStatsModel(selectedCard, selectedDeck);
-
+		updateStatsModel();
+		
+		
 		//Add the basic card information
+		Card selectedCard = getSelectedCard();
 		cardDisplay = new CardDisplay(selectedCard);
 		GridBagConstraints cardDisp = new GridBagConstraints();
 		cardDisp.gridx = 1;
@@ -110,6 +110,8 @@ public class EditDeckView extends JPanel{
 		Deck selectedDeck = getSelectedDeck();
 		Card card = getSelectedCard();
 		statsModel = new CardDeckStatsModel(card, selectedDeck);
+		UpdateDeckInventory udi = new UpdateDeckInventory(statsModel, m_deckDisplay);
+		statsModel.getInventoryModel().addChangeListener(udi);
 		}
 		//if the search returns no results
 		catch (NullPointerException e)

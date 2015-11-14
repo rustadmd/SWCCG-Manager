@@ -47,6 +47,7 @@ public class DeckChangedAction_EDV extends AbstractAction{
 		Deck selectedDeck = m_edv.getSelectedDeck();
 		//System.out.println("Deck Selected: " + selectedDeck.toString());
 		m_edv.getDeckDisplay().setDeckDescriptionDisplay(selectedDeck.getDescription());
+		m_edv.getDeckDisplay().updateCardCount();
 	}
 
 }

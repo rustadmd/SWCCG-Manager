@@ -133,6 +133,75 @@ public class GenericSQLQueries {
 		//sqlUtil.closeDB(swdb);
 		return cardDeckStatsResults;
 	}
+	
+	public int getDeckSize(String deckName)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		PreparedStatement deckCountQuery;
+		ResultSet deckCountResults = null;
+		int count = 0;
+		try {
+			deckCountQuery = swdb.prepareStatement(
+					"SELECT Deck.deckName, SUM(Deck.inventory) as Count "
+					+ "FROM Deck "
+					+ "WHERE Deck.deckName = ? " 
+					+ "GROUP BY Deck.deckName"
+					);
+			deckCountQuery.setString(1, deckName);
+			deckCountResults = deckCountQuery.executeQuery();
+			//System.out.println("Deck Name from GSQ: " + cardDeckStatsResults.getString(1));
+			count = deckCountResults.getInt("Count");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		sqlUtil.closeDB(swdb);
+		return count;
+	}
+	public HashMap<String, Integer> getNeededCards(String deckName){
+		return getNeededCards(deckName, null);
+	}
+	
+	public HashMap<String, Integer> getNeededCards(String deckName, String collectionName) {
+		Connection swdb = sqlUtil.getDbConnection();
+		PreparedStatement deckCountQuery;
+		ResultSet deckCountResults = null;
+		String whereClause = "WHERE Deck.deckName = ? ";
+		if (collectionName != null) {
+			whereClause += " AND Collection.collectionName = ? ";
+		}
+		HashMap<String, Integer> missingMap = new HashMap<String, Integer>();
+		try {
+			deckCountQuery = swdb.prepareStatement(
+					"SELECT SWD.cardName as cardName, SUM(DISTINCT Deck.inventory) - SUM(Collection.inventory) as Count "
+					+ "FROM Deck "
+					+ "LEFT JOIN SWD on Deck.ID = SWD.id "
+					+ "LEFT JOIN Collection on Deck.id = Collection.cardId "
+					+  whereClause
+					+ "GROUP BY Deck.deckName, SWD.CardName "
+					+ "HAVING Count > 0 "
+					+ "ORDER BY SWD.cardName"
+					);
+			deckCountQuery.setString(1, deckName);
+			if (collectionName != null) {
+				deckCountQuery.setString(2, collectionName);
+			}
+			deckCountResults = deckCountQuery.executeQuery();
+			//System.out.println("Deck Name from GSQ: " + cardDeckStatsResults.getString(1));
+			while(deckCountResults.next()) 
+			{
+				missingMap.put(deckCountResults.getString("cardName"), 
+						deckCountResults.getInt("Count"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		sqlUtil.closeDB(swdb);
+		return missingMap;
+	}
 	/**
 	 * Tests the database to see if there is an entry in the system already
 	 * helps test against duplicated entries

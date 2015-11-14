@@ -5,6 +5,8 @@ package swccgManager.GUI;
 
 import javax.swing.JTabbedPane;
 
+import swccgManager.Controllers.UpdateDeckCollectionPanelAction;
+
 /**
  * @author Mark Rustad
  * @version .01
@@ -29,7 +31,9 @@ public class DeckView extends JTabbedPane {
 		//Add relevant information
 		this.addTab("Manage Decks", managePanel);
 		this.addTab("Add/Remove Cards", new EditDeckView());
-		this.addTab("Collection Analysis", new DeckCollectionView());
+		DeckCollectionView dcv = new DeckCollectionView();
+		this.addTab("Collection Analysis", dcv);
+		this.addChangeListener(new UpdateDeckCollectionPanelAction(dcv));
 	}
 
 }

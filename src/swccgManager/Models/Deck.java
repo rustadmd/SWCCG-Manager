@@ -2,8 +2,11 @@ package swccgManager.Models;
 
 import java.sql.Date;
 
+import swccgManager.Database.GenericSQLQueries;
+
 public class Deck {
 	private String name, description, strategy, matchups, notes;
+	private int totalCards;
 	private Date createDate, modifyDate;
 	
 	/**
@@ -24,10 +27,19 @@ public class Deck {
 		this.notes = notes;
 		createDate = cd;
 		modifyDate = md;
+		//updateTotalCards();
 	}
 	
 	public String toString(){ return name; }
 	
+	public int getTotalCards() {
+		return totalCards;
+	}
+
+	public void updateTotalCards() {
+		this.totalCards = new GenericSQLQueries().getDeckSize(name);;
+	}
+
 	public String getName() {
 		return name;
 	}

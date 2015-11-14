@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import javax.swing.SpinnerNumberModel;
 
-import swccgManager.Controllers.UpdateDeckInventory;
 import swccgManager.Database.GenericSQLQueries;
 
 /**
@@ -45,8 +44,7 @@ public class CardDeckStatsModel {
 			//set everything to blank, so it can be displayed
 		}
 
-		UpdateDeckInventory udi = new UpdateDeckInventory(this);
-		m_inventory.addChangeListener(udi);
+		
 	}
 
 	public Card getCard() {

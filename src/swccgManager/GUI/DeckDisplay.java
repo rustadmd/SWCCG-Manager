@@ -23,6 +23,7 @@ public class DeckDisplay extends JPanel{
 	private JComboBox<Deck> deckSelector;
 	private DefaultListModel<Deck> listModel;
 	private DeckListComboBoxModel comboListModel;
+	private FieldDisplay cardCountDisplay;
 
 	//display fields
 	private JTextArea description_ta;
@@ -93,6 +94,17 @@ public class DeckDisplay extends JPanel{
 		add(descriptionPanel);
 
 		descriptionPanel.add(description_ta);
+		
+		//Add card count display
+		cardCountDisplay = new FieldDisplay("Card Count");
+		updateCardCount();
+		this.add(cardCountDisplay);
+	}
+	
+	public void updateCardCount() {
+		getSelectedDeck().updateTotalCards();
+		String count_s = Integer.toString(getSelectedDeck().getTotalCards());
+		cardCountDisplay.setValue(count_s);
 	}
 
 }

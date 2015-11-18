@@ -133,7 +133,7 @@ public class GenericSQLQueries {
 		//sqlUtil.closeDB(swdb);
 		return cardDeckStatsResults;
 	}
-	
+
 	public int getDeckSize(String deckName)
 	{
 		Connection swdb = sqlUtil.getDbConnection();
@@ -144,7 +144,7 @@ public class GenericSQLQueries {
 			deckCountQuery = swdb.prepareStatement(
 					"SELECT Deck.deckName, SUM(Deck.inventory) as Count "
 					+ "FROM Deck "
-					+ "WHERE Deck.deckName = ? " 
+					+ "WHERE Deck.deckName = ? "
 					+ "GROUP BY Deck.deckName"
 					);
 			deckCountQuery.setString(1, deckName);
@@ -162,37 +162,39 @@ public class GenericSQLQueries {
 	public HashMap<String, Integer> getNeededCards(String deckName){
 		return getNeededCards(deckName, null);
 	}
-	
+
 	public HashMap<String, Integer> getNeededCards(String deckName, String collectionName) {
 		Connection swdb = sqlUtil.getDbConnection();
 		PreparedStatement deckCountQuery;
 		ResultSet deckCountResults = null;
-		String whereClause = "WHERE Deck.deckName = ? ";
+		String collectionTable = "";
 		if (collectionName != null) {
-			whereClause += " AND Collection.collectionName = ? ";
+			collectionTable = String.format(
+					("(SELECT * FROM Collection "
+					+ "WHERE Collection.CollectionName = '%s')"), collectionName);
+		}
+		else {
+			collectionTable = "Collection";
 		}
 		HashMap<String, Integer> missingMap = new HashMap<String, Integer>();
 		try {
 			deckCountQuery = swdb.prepareStatement(
-					"SELECT SWD.cardName as cardName, SUM(DISTINCT Deck.inventory) - SUM(Collection.inventory) as Count "
+					"SELECT SWD.cardName as cardName, SUM(DISTINCT Deck.inventory) - Total(c.inventory) as Count "
 					+ "FROM Deck "
 					+ "LEFT JOIN SWD on Deck.ID = SWD.id "
-					+ "LEFT JOIN Collection on Deck.id = Collection.cardId "
-					+  whereClause
+					+ "LEFT JOIN " + collectionTable + " as c on Deck.id = c.cardId "
+					+ "WHERE Deck.deckName = ? "
 					+ "GROUP BY Deck.deckName, SWD.CardName "
-					+ "HAVING Count > 0 "
+					+ "HAVING Count > 0 or c.CollectionName IS NULL "
 					+ "ORDER BY SWD.cardName"
 					);
 			deckCountQuery.setString(1, deckName);
-			if (collectionName != null) {
-				deckCountQuery.setString(2, collectionName);
-			}
 			deckCountResults = deckCountQuery.executeQuery();
 			//System.out.println("Deck Name from GSQ: " + cardDeckStatsResults.getString(1));
-			while(deckCountResults.next()) 
+			while(deckCountResults.next())
 			{
-				missingMap.put(deckCountResults.getString("cardName"), 
-						deckCountResults.getInt("Count"));
+				missingMap.put(deckCountResults.getString("cardName"),
+						(int)deckCountResults.getFloat("Count"));
 			}
 
 		} catch (SQLException e) {

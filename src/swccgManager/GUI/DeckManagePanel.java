@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import swccgManager.Database.GenericSQLQueries;
+import swccgManager.Database.InsertQueries;
 import swccgManager.Models.Deck;
 
 /**
@@ -76,6 +77,24 @@ public class DeckManagePanel extends JPanel {
 		};
 		addDeck_b.addActionListener(addDeck_al);
 		add(addDeck_b, deck_gbc);
+
+		//add new deck button
+		deck_gbc.gridy++;
+		JButton deleteDeck_b = new JButton("Delete Deck");
+		//Add the action action to add a new item
+		ActionListener deleteDeck_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String deckName = deckSelector.getSelectedValue().getName();
+				new InsertQueries().deleteDeck(deckName);
+				deckSelector.setModel(new GenericSQLQueries().getDeckList());
+				deckSelector.setSelectedIndex(0);
+				updateDisplay();
+			}
+		};
+		deleteDeck_b.addActionListener(deleteDeck_al);
+		add(deleteDeck_b, deck_gbc);
 
 		deck_gbc.gridy = 0;
 		deck_gbc.gridx = 1;

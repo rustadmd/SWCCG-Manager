@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package swccgManager.GUI;
 
@@ -22,12 +22,12 @@ import swccgManager.Models.Card;
  * @author Mark Rustad
  * @version .01
  * @date Jul 31, 2014
- * 
+ *
  */
 public class CardDisplay extends TitledBorderPanel{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -9161804104124972916L;
 	Card m_card;
@@ -35,28 +35,28 @@ public class CardDisplay extends TitledBorderPanel{
 	JLabel cardImageLabel, rearCardImageLabel;
 	FieldDisplay rarity;
 	LongDescription information, isPulled;
-	
+
 	public CardDisplay (Card card)
 	{
 		super("Card");
 		setLayout(new BorderLayout());
-		
+
 		//Setup card info panel
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new GridBagLayout());
-		
+
 		rarity = new FieldDisplay ("Rarity", card.getRarity());
 		GridBagConstraints rarCon = new GridBagConstraints();
 		rarCon.gridwidth = 2;
 		infoPanel.add(rarity, rarCon);
-		
+
 		isPulled = new LongDescription("Pulled/Cancelled By");
 		//isPulled.setWidth(15);
 		isPulled.setRows(6);
 		GridBagConstraints pullCon = new GridBagConstraints();
 		pullCon.gridy = 1;
 		infoPanel.add(isPulled, pullCon);
-		
+
 		information = new LongDescription("Information");
 		information.setWidth(22);
 		information.setRows(6);
@@ -64,9 +64,9 @@ public class CardDisplay extends TitledBorderPanel{
 		infoCon.gridx = 1;
 		infoCon.gridy = 1;
 		infoPanel.add(information, infoCon);
-		
+
 		add(infoPanel, BorderLayout.SOUTH);
-		
+
 		//add card image padding
 		cardImageLabel = new JLabel();
 		int verticalSpacing = 5;
@@ -75,7 +75,7 @@ public class CardDisplay extends TitledBorderPanel{
 		//rear image
 		rearCardImageLabel = new JLabel();
 		rearCardImageLabel.setBorder(new EmptyBorder(verticalSpacing, 0, verticalSpacing, horizontalSpacing));
-		
+
 		JPanel images = new JPanel();
 		images.setLayout(new FlowLayout());
 		images.add(cardImageLabel);
@@ -85,7 +85,7 @@ public class CardDisplay extends TitledBorderPanel{
 		this.setPreferredSize(new Dimension(600, 540));
 		refreshDisplay(card);
 	}
- 
+
 	public void refreshDisplay(Card newCard)
 	{
 		m_card = newCard;
@@ -96,16 +96,16 @@ public class CardDisplay extends TitledBorderPanel{
 	 * Adds a card image to the display
 	 * @param grph
 	 */
-	private void drawCardImage(Image i, JLabel label) 
+	private void drawCardImage(Image i, JLabel label)
 	{
-		
+
 		//top left corner of the image
-				
+
 		//System.out.println(m_card);//debugging
-		//Image cardImage = m_card.getFrontSideImage(); 
-		
+		//Image cardImage = m_card.getFrontSideImage();
+
 		double scaleFactor = .75;
-		
+
 		if(i == null)
 		{
 			System.out.println("Image not loaded (drawCardImage())");
@@ -117,11 +117,11 @@ public class CardDisplay extends TitledBorderPanel{
 		int newHeight = (int) (imageHeight * scaleFactor);
 		Image resizedImage = i.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon = new ImageIcon(resizedImage);
-		
+
 		label.setIcon(resizedIcon);
 		//System.out.println("drawCardImage() completed: " + m_card);
 	}
-	
+
 	private void addCardInfo()
 	{
 		//System.out.println(m_card);
@@ -129,7 +129,7 @@ public class CardDisplay extends TitledBorderPanel{
 		//GenericSQLQueries gsq = new GenericSQLQueries();
 		String parRegex = "\\\\par(\\s)*";
 		information.setText(m_card.getInformation().replaceAll(parRegex, "\n"));
-		
+
 		//combine isPulled and isCanceled text
 		String pulledText = m_card.getIsPulled().replaceAll(parRegex, "\n");
 		String cancelledText = m_card.getIsCancelledBy().replaceAll(parRegex, "\n");
@@ -149,27 +149,27 @@ public class CardDisplay extends TitledBorderPanel{
 		}
 		isPulled.setText(combined);
 	}
-	
+
 	private void refreshImages()
 	{
-		
+
 		GridBagConstraints frontCon = new GridBagConstraints();
 		frontCon.gridx = 0;
-		
+
 		drawCardImage(m_card.getFrontSideImage(), cardImageLabel);
-		if(m_card.getCardType().equals("Objective"))
+		if(m_card != null && m_card.getCardType().equals("Objective"))
 		{
 			drawCardImage(m_card.getRearSideImage(), rearCardImageLabel);
 			GridBagConstraints rearImage = new GridBagConstraints();
 			rearImage.gridx = 1;
-			
+
 			//System.out.println("Rear Image added");
 		}
 		else
 		{
 			rearCardImageLabel.setIcon(null);
 		}
-		
+
 	}
 
 }

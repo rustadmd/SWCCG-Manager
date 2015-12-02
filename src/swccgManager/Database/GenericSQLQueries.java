@@ -80,6 +80,44 @@ public class GenericSQLQueries {
 		}
 	}
 
+	public void writeDeckExportFile(File exportFile, String deckName)
+	{
+		Connection swdb = sqlUtil.getDbConnection();
+		try {
+			//Establish print writer
+			PrintWriter pw = new PrintWriter(exportFile);
+			//build query
+			PreparedStatement exportQuery = swdb.prepareStatement(
+					"SELECT Deck.ID, Deck.Inventory, SWD.CardName "
+					+ "FROM Deck JOIN SWD on SWD.id = Deck.ID "
+					+ "WHERE DeckName = ? ");
+			exportQuery.setString(1, deckName);
+			ResultSet exportResults = exportQuery.executeQuery();
+
+			while (exportResults.next())
+			{
+				//get information from query
+				int cardId = exportResults.getInt("ID");
+				String cardName = exportResults.getString("CardName");
+				int inventory = exportResults.getInt("Inventory");
+
+				//write the output file
+				String sep = "|";
+				String cardEntry = cardId + sep + cardName + sep + inventory;
+				String fullLine = String.format("%s\n", cardEntry);
+				//System.out.println(fullLine);//testing
+
+				pw.write(fullLine);
+
+			}
+			pw.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Gets the information concerning a card in a particular collection
 	 * @param cardID

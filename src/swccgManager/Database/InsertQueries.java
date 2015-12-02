@@ -28,6 +28,54 @@ public class InsertQueries {
 		su = new SqlUtilities();
 	}
 
+	public void deleteCollection(String collectionName)
+	{
+		Connection swdb = su.getDbConnection();
+		try {
+			PreparedStatement deleteCollectionCards;
+			deleteCollectionCards = swdb.prepareStatement(
+					"DELETE FROM Collection "
+					+ "WHERE CollectionName =  ? ");
+			deleteCollectionCards.setString(1, collectionName);
+			deleteCollectionCards.executeUpdate();
+
+			PreparedStatement deleteCollection;
+			deleteCollection = swdb.prepareStatement(
+					"DELETE FROM CollectionList "
+					+ "WHERE CollectionName =  ? ");
+			deleteCollection.setString(1, collectionName);
+			deleteCollection.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		su.closeDB();
+	}
+
+	public void deleteDeck(String deckName)
+	{
+		Connection swdb = su.getDbConnection();
+		try {
+			PreparedStatement deleteDeckCards;
+			deleteDeckCards = swdb.prepareStatement(
+					"DELETE FROM Deck "
+					+ "WHERE DeckName =  ? ");
+			deleteDeckCards.setString(1, deckName);
+			deleteDeckCards.executeUpdate();
+
+			PreparedStatement deleteDeck;
+			deleteDeck = swdb.prepareStatement(
+					"DELETE FROM DeckList "
+					+ "WHERE DeckName =  ? ");
+			deleteDeck.setString(1, deckName);
+			deleteDeck.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		su.closeDB();
+	}
+
 	public void insertCardDeckInventory(Card card, Deck deck, int newValue)
 	{
 		PreparedStatement insertInventory;

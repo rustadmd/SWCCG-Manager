@@ -35,7 +35,7 @@ public class CardChangedAction_EDV implements ListSelectionListener, ListDataLis
 	public void contentsChanged(ListDataEvent arg0) {
 		updateDisplays();
 		m_deckView.getListDisplay().setSelectedItem(0);//prevent error, reset
-		m_deckView.getDeckDisplay().setSelectedDeck(0);
+		//m_deckView.getDeckDisplay().setSelectedDeck(0);
 	}
 
 	private void updateDisplays()

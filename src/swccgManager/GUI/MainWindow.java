@@ -33,6 +33,7 @@ public class MainWindow extends JFrame {
 		setJMenuBar(mainMenu);
 		setupViewMenu();
 		setupCollectionMenu();
+		setupDeckMenu();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		//this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
@@ -63,8 +64,6 @@ public class MainWindow extends JFrame {
 			}
 		};
 		collectionView.addActionListener(collectionView_al);
-
-
 
 		//Deck view, for viewing particular decks
 		JMenuItem deckView = new JMenuItem("Deck");
@@ -132,6 +131,45 @@ public class MainWindow extends JFrame {
 		mainMenu.add(collectionMenu);
 	}
 
+	private void setupDeckMenu()
+	{
+		//Collection menu options
+		JMenu deckMenu = new JMenu("Deck");
+
+		//Collecton view, for viewing various collections of cards
+		JMenuItem addDeck = new JMenuItem("New Deck");
+		deckMenu.add(addDeck);
+		//Collection test = new Collection("Mark", "My Collection");
+		//test.saveCollection();
+
+		//Add the action action to add a new item
+		ActionListener addDeck_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				//will need to see if there is a collection display
+				//May need to add more if other panels have a collection display
+                @SuppressWarnings("unused")
+				NewDeckWindow ncw = new NewDeckWindow();
+			}
+		};
+		addDeck.addActionListener(addDeck_al);
+
+		//Deck view, for viewing particular decks
+		JMenuItem exportDeck = new JMenuItem("Export Deck");
+		deckMenu.add(exportDeck);
+
+		ActionListener exportDeck_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				@SuppressWarnings("unused")
+				ExportDeckWindow ecw = new ExportDeckWindow();
+			}
+		};
+		exportDeck.addActionListener(exportDeck_al);
+		mainMenu.add(deckMenu);
+	}
 	private void setActivePanel(JComponent activePanel)
 	{
 		if(m_activePanel != null)

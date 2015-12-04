@@ -14,9 +14,15 @@ package swccgManager.Database;
  *
  */
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
 
@@ -114,6 +120,35 @@ public class GenericSQLQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void importDeck(Path importPath, String deckName)
+	{
+		try {
+			Connection swdb = sqlUtil.getDbConnection();
+			List<String> cardList = Files.readAllLines(importPath,
+										Charset.defaultCharset());
+			for (String temp : cardList) {
+				String[] tokens = temp.split("|");
+				int id = Integer.parseInt(tokens[0]);
+				int inventory = Integer.parseInt(tokens[2]);
+                PreparedStatement exportQuery = swdb.prepareStatement(
+                                "INSERT INTO Deck (ID, DeckName, Inventory)"
+                                + " VALUES (?, ?, ?)" );
+                exportQuery.setInt(1, id);
+                exportQuery.setString(2, deckName);
+                exportQuery.setInt(3, inventory);
+                exportQuery.execute();
+			}
+
+			swdb.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

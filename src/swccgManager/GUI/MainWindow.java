@@ -156,6 +156,20 @@ public class MainWindow extends JFrame {
 		addDeck.addActionListener(addDeck_al);
 
 		//Deck view, for viewing particular decks
+		JMenuItem importDeck = new JMenuItem("Import Deck");
+		deckMenu.add(importDeck);
+
+		ActionListener importDeck_al = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				@SuppressWarnings("unused")
+				ExportDeckWindow ecw = new ExportDeckWindow();
+			}
+		};
+		importDeck.addActionListener(importDeck_al);
+
+		//Deck view, for viewing particular decks
 		JMenuItem exportDeck = new JMenuItem("Export Deck");
 		deckMenu.add(exportDeck);
 
